@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="100" src="https://i.imgur.com/Pv9rx69.png" alt="logo">
+    <img width="300" src="https://i.imgur.com/m1bP7v8.png" alt="logo">
 </p>
 
 # KRR Platform
