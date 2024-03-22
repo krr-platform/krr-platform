@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "KRR Platform",
+  "name": "Knowledge Represetnation and Reasoning Platform",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo-192.png",
+      "src": "logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo-512.png",
+      "src": "logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
