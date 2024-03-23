@@ -3,14 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:3001",
+  "type": "module",
+  "presets": [
+    [
+      "@babel/preset-react",
+      {
+        "runtime": "automatic"
+      }
+    ]
+  ],
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.91",
-    "@types/react": "^18.2.69",
-    "@types/react-dom": "^18.2.22",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -21,7 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint --ext .tsx"
   },
   "browserslist": {
     "production": [
@@ -36,6 +43,9 @@
     ]
   },
   "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.69",
+    "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
     "eslint": "^8.2.0",
