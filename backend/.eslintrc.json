@@ -1,13 +1,11 @@
 {
     "env": {
-        "browser": true,
+        "node": true,
         "es2021": true
     },
     "extends": [
-        "airbnb",
-        "plugin:@typescript-eslint/recommended",
-        "eslint:recommended",
-        "plugin:react/recommended"
+        "airbnb-base",
+        "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -17,20 +15,7 @@
         "ecmaVersion": 2020,
         "sourceType": "module"
     },
-    "overrides": [
-        {
-            "files": [
-                "*.ts",
-                "*.tsx"
-            ],
-            "rules": {
-                "no-undef": "off"
-            }
-        }
-    ],
     "plugins": [
-        "react",
-        "react-hooks",
         "@typescript-eslint"
     ],
     "settings": {
@@ -39,24 +24,30 @@
         }
     },
     "rules": {
+        "@typescript-eslint/semi": [
+            "error"
+        ],
         "indent": [
             "error",
             4
         ],
-        "react/jsx-indent": [
-            "error",
-            4
-        ],
-        "react/jsx-indent-props": [
-            "error",
-            4
-        ],
+        // "@typescript-eslint/no-unsafe-assignment": "off",
         "@typescript-eslint/no-explicit-any": 2,
         "no-use-before-define": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/restrict-template-expressions": "off",
+        "@typescript-eslint/restrict-plus-operands": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^_"
+            }
+        ],
+        "no-case-declarations": "off",
         "@typescript-eslint/no-use-before-define": [
             "error"
         ],
-        "react/react-in-jsx-scope": "off",
         "import/extensions": [
             "error",
             "ignorePackages",
@@ -65,19 +56,16 @@
                 "tsx": "never"
             }
         ],
-        "react/jsx-filename-extension": [
-            "warn",
-            {
-                "extensions": [
-                    ".tsx"
-                ]
-            }
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": [
+            "error"
         ],
         "max-len": [
             "warn",
             {
                 "code": 80
             }
-        ]
+        ],
+        "import/prefer-default-export": "off"
     }
 }
