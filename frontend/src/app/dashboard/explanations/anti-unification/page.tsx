@@ -11,7 +11,7 @@ export default function LessonPage() {
         basics: useRef(null),
         examples: useRef(null),
         applications: useRef(null),
-        algorithms: useRef(null),
+        algorithm: useRef(null),
         resources: useRef(null),
     };
 
@@ -109,207 +109,156 @@ export default function LessonPage() {
                             </p>
                         </div>
 
-                        <div ref={sectionRefs.examples} id="examples">
-                            <h2 className="text-xl font-semibold text-gray-900 mb-1">
+                        <div>
+                            <h2 className="text-xl font-semibold text-gray-900 mb-1" ref={sectionRefs.examples} id="examples">
                                 Examples
                             </h2>
                             <h3 className="text-l font-medium text-gray-900">
-                                Example 1: ...
+                                Example 1: Anti-unification in Arithmetic Expressions
                             </h3>
                             <p className="mb-8">
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
+                                Problem Statement: Find the least general generalization (LGG) of the following two arithmetic expressions:
                             </p>
+                            <ol className="mb-8">
+                                <li className="text-center italic text-lg">3x+5</li>
+                                <li className="text-center italic text-lg">3y+5</li>
+                            </ol>
+                            <p className="mb-8"> Solution: Both expressions share a similar structure: they are sums of a product of 3 and a variable, and the number 5. The difference lies in the variables used (x and y). Anti-unification seeks the most specific structure that captures the similarities and abstracts the differences.</p>
+                            <p className="mb-8">In this case, the LGG would abstract the variable part since it is the only difference between the two expressions. You can represent the variable part by a placeholder, say v, to indicate it can be any variable. Thus, the LGG of these two expressions is:</p>
+                            <p className="mb-8 text-center italic text-lg">3v+5</p>
+                            <p className="mb-8">Explanation: The LGG 3v+5 represents a pattern that both expressions match when v is instantiated to x for the first expression and y for the second expression. The constant 3 and 5 are retained as they are common to both expressions.</p>
                             <h3 className="text-l font-medium text-gray-900">
                                 Example 2: ...
                             </h3>
+                            <p className="mb-8">Problem Statement: Consider the following two pseudocode snippets: </p>
+                            <div className="flex justify-center mb-8">
+                                <div className="self-center">
+                                    <pre className="text-left m-0">
+                                        <code>
+                                            {`if (userInput > 0) {
+  print("Positive")
+}`}
+                                        </code>
+                                    </pre>
+                                </div>
+                            </div>
+                            <div className="flex justify-center mb-8">
+                                <div className="self-center">
+                                    <pre className="text-left m-0">
+                                        <code>
+                                            {`if (userInput < 0) {
+  print("Negative")
+}`}
+                                        </code>
+                                    </pre>
+                                </div>
+                            </div>
+                            <p className="mb-8">Solution: Both code snippets have an if condition followed by a print statement. The difference lies in the condition checked within the if statement and the string printed. Anti-unification would abstract the condition and the message into placeholders. The LGG of these snippets would be: </p>
+                            <div className="flex justify-center mb-8">
+                                <div className="self-center">
+                                    <pre className="text-left m-0">
+                                        <code>
+                                            {`if userInput OPERATOR 0 {
+  print(MESSAGE)
+}`}
+                                        </code>
+                                    </pre>
+                                </div>
+                            </div>
                             <p className="mb-24">
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
+                                Explanation: Here, operator and message are placeholders. The LGG abstracts the specific operators (
+                                {'>'}
+                                ,
+                                {' <'}
+                                ) and the specific messages (Positive, Negative) into these placeholders. This generalized form captures the structure common to both snippets: an if statement comparing userInput with 0 and printing a message.
                             </p>
                         </div>
 
-                        <div ref={sectionRefs.applications} id="applications">
-                            <h2 className="text-xl font-semibold text-gray-900 mb-1">
+                        <div>
+                            <h2 className="text-xl font-semibold text-gray-900 mb-1" ref={sectionRefs.applications} id="applications">
                                 Applications
                             </h2>
                             <h3 className="text-l font-medium text-gray-900">
                                 Code Refactoring
                             </h3>
                             <p className="mb-8">
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
+                                Anti-unification plays a pivotal role in the realm of code refactoring by enabling the systematic identification of common patterns across different code segments. In the process of refactoring, developers aim to simplify and improve the internal structure of code without altering its external behavior. Anti-unification aids this process by identifying structural similarities within disparate code blocks, highlighting recurring patterns that might not be immediately apparent. For instance, if two or more functions across a codebase share a similar sequence of operations but differ in specific variables or function calls, anti-unification can abstract these sequences into a generalized form. This abstraction then serves as a guide for creating more generic functions or classes, thereby reducing code redundancy and improving modularity. The essence of using anti-unification in refactoring lies in its ability to abstract and generalize, transforming specific instances of code into broader templates. Such generalized templates can lead to the development of higher-order functions or polymorphic classes, significantly enhancing code maintainability, readability, and testability. By systematically identifying and abstracting common coding patterns, anti-unification contributes to more efficient, clean, and reusable code architectures, aligning perfectly with the objectives of refactoring.
                             </p>
                             <h3 className="text-l font-medium text-gray-900">
                                 Inductive Language Programming (ILP)
                             </h3>
                             <p className="mb-8">
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
+                                Inductive Logic Programming (ILP), a subfield of machine learning, stands at the confluence of logic programming and inductive learning, offering a powerful framework for learning programs from examples and background knowledge. At its core, ILP leverages the principles of logic programming to induce hypotheses or rules from observed examples, effectively synthesizing logic programs that generalize the input data. This approach allows for the creation of models that can predict unseen instances, making it particularly valuable in domains where understanding the underlying logic of data is crucial, such as bioinformatics, natural language processing, and knowledge discovery in databases.
+
+                                The process of ILP involves searching through a hypothesis space to find a logic program that fits the given examples under the constraints of the background knowledge. Anti-unification plays a critical role in this process, enabling the generalization of specific observed instances into broader rules. By finding the least general generalizations of example pairs, ILP can abstract patterns and regularities from data, encapsulating them in symbolic rules that are interpretable and can be directly executed or queried. This ability to generate explanatory models that not only predict but also provide insights into the logic of the decision-making process distinguishes ILP from many other machine learning paradigms, offering a transparent and theoretically grounded approach to learning from data. Through its integration of logical inference and learning, ILP facilitates a deep interaction between deductive and inductive reasoning, paving the way for advances in artificial intelligence that are both powerful and interpretable.
                             </p>
                             <h3 className="text-l font-medium text-gray-900">
                                 Natural Language Processing (NLP)
                             </h3>
                             <p className="mb-24">
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
+                                Anti-unification holds significant potential in the field of Natural Language Processing (NLP), where it can be harnessed to identify and generalize linguistic patterns from diverse language data. NLP, a domain at the intersection of computer science, artificial intelligence, and linguistics, aims to enable computers to understand, interpret, and generate human language in a way that is both meaningful and contextually appropriate. Anti-unification contributes to this goal by facilitating the abstraction of common structures from different language expressions, enhancing the ability of the machine to understand the inherent variability and complexity of the language. In NLP, anti-unification can be used to generalize over various syntactic or semantic structures found in language data. For instance, when analyzing sentences or phrases, anti-unification can help identify common grammatical patterns or structures across different language expressions, despite their superficial dissimilarities. This capability is particularly valuable in tasks like machine translation, information extraction, and semantic analysis, where understanding the underlying patterns in language data is crucial. By abstracting a generalized form from specific instances of text, anti-unification enables the development of more robust language models that can effectively deal with the nuances and variations inherent in human language. For example, in semantic parsing, anti-unification can help in deriving a generalized representation of sentences that express similar meanings but are phrased differently. Similarly, in the context of dialog systems or chatbots, anti-unification can aid in identifying the underlying intent of user inputs that vary in phrasing but convey the same underlying message, thereby improving the response accuracy of the system. Overall, the application of anti-unification in NLP serves to deepen the understanding of language patterns, supporting the development of systems that can interact with humans more naturally and effectively, and enhancing the ability of machines to process and generate language in a way that is contextually and semantically coherent.
                             </p>
                         </div>
 
-                        <div ref={sectionRefs.algorithms} id="algorithms">
-                            <h2 className="text-xl font-semibold text-gray-900 mb-1">
-                                Algorithms
+                        <div>
+                            <h2 className="text-xl font-semibold text-gray-900 mb-1" ref={sectionRefs.algorithm} id="algorithm">
+                                Algorithm
                             </h2>
                             <h3 className="text-l font-medium text-gray-900">
                                 Idea
                             </h3>
                             <p className="mb-8">
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
+                                If one aims to build an anti-unification algorithm, the foundational idea would be to create a method that identifies the most specific generalization (least general generalizer or LGG) between two or more structures, typically abstract syntax trees in the context of programming or parse trees in natural language processing. The algorithm would analyze these structures to find their highest common abstraction without losing the details that make each instance unique. This involves traversing the given trees or structures, comparing corresponding nodes, and determining the most specific pattern that can represent all instances. For differing nodes, the algorithm introduces variables or placeholders, maintaining the common structure while abstracting the differences. The process is recursive and systematic, ensuring that the resulting generalization captures the shared essence of all inputs. In practice, this would involve detailed comparisons at each node or structural level, creating a new generalized structure where similarities are preserved, and differences are parameterized. Such an algorithm can be immensely useful in various domains, including program analysis, machine learning, and semantic analysis, where identifying underlying patterns and regularities is crucial.
                             </p>
                             <h3 className="text-l font-medium text-gray-900">
                                 Basic Implementation
                             </h3>
                             <p className="mb-8">
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
+                                Implementing a basic anti-unification algorithm typically involves a recursive approach that traverses two given trees (or other hierarchical structures) and constructs their least general generalization (LGG). At each step, the algorithm compares corresponding nodes from both trees. If the nodes are identical, they become part of the LGG directly. In contrast, if the nodes differ, the algorithm introduces a variable or placeholder to represent this divergence in the generalized structure. The recursion continues down the trees, comparing children nodes and either copying them to the LGG or abstracting them as variables, until all nodes have been processed. The end result is a new tree structure that represents the highest level of abstraction common to the input structures, encapsulating the similarities and abstracting the differences. This generalized structure can then be used for further analysis or as a template for recognizing or generating similar structures. The implementation detail includes efficient tree traversal, comparison mechanisms, and an effective way to represent variables or placeholders that capture the divergences between the compared entities.
                             </p>
                             <h3 className="text-l font-medium text-gray-900">
                                 Complexity Discussion
                             </h3>
-                            <p className="mb-8">
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                            </p>
-                            <h3 className="text-l font-medium text-gray-900">
-                                Optimzation
-                            </h3>
                             <p className="mb-24">
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
+                                The complexity of an anti-unification algorithm is primarily influenced by the structures it analyzes and the depth of the recursion needed to find the least general generalization. For tree structures, such as syntax trees in programming or parse trees in natural language processing, the complexity can be broadly considered in terms of the number of nodes and the depth of the trees. The algorithm must visit each node potentially multiple times, once for each level of recursion as it compares and generalizes corresponding nodes across the structures. Thus, if the trees have a maximum depth (d) and there are (n) nodes in total, the computational complexity is often represented as (O(nd)), assuming each node is visited a constant number of times per level of depth. However, this can vary significantly based on the specific implementation details and the nature of the structures being generalized. For instance, highly imbalanced trees or those with a large number of similar subtrees could affect the performance. Additionally, the process of matching and replacing nodes to form the generalization introduces overhead, especially if the matching criteria are complex or if the structures have many commonalities at different levels, requiring intricate comparisons and substitutions.
                             </p>
                         </div>
 
-                        <div ref={sectionRefs.resources} id="resources">
-                            <h2 className="text-xl font-semibold text-gray-900 mb-1">
+                        <div>
+                            <h2 className="text-xl font-semibold text-gray-900 mb-1" ref={sectionRefs.resources} id="resources">
                                 Further Resources
                             </h2>
-                            <p className="mb-24">
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
-                                Anti-unification is a technique used in a lot of fields
-                                in computational logic. In broad terms, anti-unification
-                                allows us to find generalizations to symbols or statements,
-                                enabling us to abstract the differences between them
-                                and emphasize their commonalities.
+                            <p className="mb-8">
+                                Exploring anti-unification further can deepen your understanding and offer insights into its applications and theoretical foundations. Below are various resources, including scientific papers, online blogs, books, and videos, that you can access to learn more about anti-unification:
                             </p>
+                            <ul className="mb-24">
+                                <li className="mb-8">
+                                    <p>Scientific Papers</p>
+                                    <ul className="pl-4 list-disc">
+                                        <li>
+                                            <span className="italic">Generalization and Anti-Unification in the Sciences </span>
+                                            - This scholarly article provides a deep dive into the concepts of generalization and anti-unification, emphasizing their roles in scientific research.
+                                        </li>
+                                        <li>
+                                            <span className="italic">A Survey of Anti-unification </span>
+                                            - A comprehensive review that explores different aspects and applications of anti-unification across various fields.
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li className="mb-8">
+                                    <p>Books</p>
+                                    <ul className="pl-4 list-disc">
+                                        <li>
+                                            <span className="italic">Term Rewriting and All That</span>
+                                            by Franz Baader and Tobias Nipkow - This book offers a chapter dedicated to unification and anti-unification, providing a solid theoretical foundation along with practical examples.
+                                        </li>
+                                        <li>
+                                            <span className="italic">Inductive Logic Programming: Theory and Methods </span>
+                                            - Although focused on ILP, this book delves into anti-unification as a fundamental concept in inductive logic programming, illustrating its significance in the field.
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -320,7 +269,7 @@ export default function LessonPage() {
                             <li className={`border-l-4 pb-1 ${activeSection === 'basics' ? 'border-orange-500 bg-orange-50' : ''}`}><a className="pl-2 font-light text-sm" href="#basics">Basics of Anti-unification</a></li>
                             <li className={`border-l-4 pb-1 ${activeSection === 'examples' ? 'border-orange-500 bg-orange-50' : ''}`}><a className="pl-2 font-light text-sm" href="#examples">Examples</a></li>
                             <li className={`border-l-4 pb-1 ${activeSection === 'applications' ? 'border-orange-500 bg-orange-50' : ''}`}><a className="pl-2 font-light text-sm" href="#applications">Applications</a></li>
-                            <li className={`border-l-4 pb-1 ${activeSection === 'algorithms' ? 'border-orange-500 bg-orange-50' : ''}`}><a className="pl-2 font-light text-sm" href="#algorithms">Algorithms</a></li>
+                            <li className={`border-l-4 pb-1 ${activeSection === 'algorithm' ? 'border-orange-500 bg-orange-50' : ''}`}><a className="pl-2 font-light text-sm" href="#algorithm">Algorithm</a></li>
                             <li className={`border-l-4 pb-1 ${activeSection === 'resources' ? 'border-orange-500 bg-orange-50' : ''}`}><a className="pl-2 font-light text-sm" href="#resources">Further Resources</a></li>
                         </ul>
                     </nav>
