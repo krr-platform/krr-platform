@@ -262,7 +262,7 @@ export default function LessonPage() {
                         </div>
                     </div>
                 </div>
-                <div className="">
+                <div className="hidden lg:block">
                     <nav className="sticky pl-8 z-10 flex-grow w-full top-0">
                         <p className="text-md pb-4 text-gray-700">Lesson Contents</p>
                         <ul>
