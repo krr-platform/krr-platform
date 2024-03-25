@@ -12,7 +12,7 @@ export default function SideNav() {
                  bg-gray-50 md:h-40"
                 href="/"
             >
-                <div className="w-32 text-white md:w-40">
+                <div className="text-white-">
                     <Logo />
                 </div>
             </Link>
