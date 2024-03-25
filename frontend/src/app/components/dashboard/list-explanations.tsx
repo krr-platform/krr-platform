@@ -49,7 +49,8 @@ export default function ListExplanations() {
                                     <p className="text-base font-semibold leading-7 text-gray-950 group-hover:text-orange-500">{item.name}</p>
                                     <p className="mt-1 text-sm leading-5 text-gray-500">{item.shortDesc}</p>
                                 </div>
-                                <div className="hidden group-hover:block rounded-tr-* flex-none rounded m-auto bg-orange-500 h-10 w-10 justify-end ">
+                                <div className="group-hover:hidden flex-none rounded m-auto bg-white h-10 w-10 justify-end " />
+                                <div className="hidden group-hover:block flex-none rounded m-auto bg-orange-500 h-10 w-10 justify-end ">
                                     <ArrowRightCircleIcon className="text-orange-50" w-10 h-10 />
                                 </div>
                             </div>
