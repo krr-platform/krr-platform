@@ -120,12 +120,12 @@ export default function LessonPage() {
                                 Problem Statement: Find the least general generalization (LGG) of the following two arithmetic expressions:
                             </p>
                             <ol className="mb-8">
-                                <li className="text-center italic text-lg">3x+5</li>
-                                <li className="text-center italic text-lg">3y+5</li>
+                                <li className="text-center italic text-lg text-blue-500">3x+5</li>
+                                <li className="text-center italic text-lg text-blue-500">3y+5</li>
                             </ol>
                             <p className="mb-8"> Solution: Both expressions share a similar structure: they are sums of a product of 3 and a variable, and the number 5. The difference lies in the variables used (x and y). Anti-unification seeks the most specific structure that captures the similarities and abstracts the differences.</p>
                             <p className="mb-8">In this case, the LGG would abstract the variable part since it is the only difference between the two expressions. You can represent the variable part by a placeholder, say v, to indicate it can be any variable. Thus, the LGG of these two expressions is:</p>
-                            <p className="mb-8 text-center italic text-lg">3v+5</p>
+                            <p className="mb-8 text-center italic text-lg text-orange-500">3v+5</p>
                             <p className="mb-8">Explanation: The LGG 3v+5 represents a pattern that both expressions match when v is instantiated to x for the first expression and y for the second expression. The constant 3 and 5 are retained as they are common to both expressions.</p>
                             <h3 className="text-l font-medium text-gray-900">
                                 Example 2: ...
@@ -133,7 +133,7 @@ export default function LessonPage() {
                             <p className="mb-8">Problem Statement: Consider the following two pseudocode snippets: </p>
                             <div className="flex justify-center mb-8">
                                 <div className="self-center">
-                                    <pre className="text-left m-0">
+                                    <pre className="text-left m-0 text-blue-500">
                                         <code>
                                             {`if (userInput > 0) {
   print("Positive")
@@ -144,7 +144,7 @@ export default function LessonPage() {
                             </div>
                             <div className="flex justify-center mb-8">
                                 <div className="self-center">
-                                    <pre className="text-left m-0">
+                                    <pre className="text-left m-0 text-blue-500">
                                         <code>
                                             {`if (userInput < 0) {
   print("Negative")
@@ -156,9 +156,9 @@ export default function LessonPage() {
                             <p className="mb-8">Solution: Both code snippets have an if condition followed by a print statement. The difference lies in the condition checked within the if statement and the string printed. Anti-unification would abstract the condition and the message into placeholders. The LGG of these snippets would be: </p>
                             <div className="flex justify-center mb-8">
                                 <div className="self-center">
-                                    <pre className="text-left m-0">
+                                    <pre className="text-left m-0 text-orange-500">
                                         <code>
-                                            {`if userInput OPERATOR 0 {
+                                            {`if (userInput OPERATOR 0) {
   print(MESSAGE)
 }`}
                                         </code>
