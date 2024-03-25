@@ -9,8 +9,10 @@ import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
+import Features from '@/app/components/homepage/Features';
 import logoImage from '../../public/tool-logo.png';
 import mobileLogoImage from '../../public/logo-mobile-transparent.png';
+import Example from './components/homepage/example';
 
 const navigation = [
     { name: 'Explanations', href: 'dashboard/explanations' },
@@ -221,6 +223,8 @@ export default function HomePage() {
                     </div>
                 </div>
             </div>
+            <Features />
+            <Example />
         </main>
     );
 }
