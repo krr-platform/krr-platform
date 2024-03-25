@@ -1,5 +1,6 @@
 'use client';
 
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
@@ -9,6 +10,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import logoImage from '../../public/tool-logo.png';
+import mobileLogoImage from '../../public/logo-mobile-transparent.png';
 
 const navigation = [
     { name: 'Explanations', href: 'dashboard/explanations' },
@@ -16,7 +18,7 @@ const navigation = [
     { name: 'Calculators', href: 'dashboard/calculators' },
 ];
 
-export default function DashboardPage() {
+export default function HomePage() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
@@ -31,13 +33,15 @@ export default function DashboardPage() {
                         <div className="flex lg:flex-1">
                             <Link href="#" className="-m-1.5 p-1.5">
                                 <span className="sr-only">KRR Platform</span>
-                                <Image
-                                    className="h-8 w-auto"
-                                    src={logoImage}
-                                    alt=""
-                                    width={50}
-                                    height={50}
-                                />
+                                {mobileMenuOpen ? <></> : (
+                                    <Image
+                                        className="h-8 w-auto"
+                                        src={logoImage}
+                                        alt=""
+                                        width={50}
+                                        height={50}
+                                    />
+                                )}
                             </Link>
                         </div>
                         <div className="flex lg:hidden">
@@ -48,10 +52,12 @@ export default function DashboardPage() {
                                 onClick={() => setMobileMenuOpen(true)}
                             >
                                 <span className="sr-only">Open main menu</span>
-                                <Bars3Icon
-                                    className="h-6 w-6"
-                                    aria-hidden="true"
-                                />
+                                {mobileMenuOpen ? <></> : (
+                                    <Bars3Icon
+                                        className="h-6 w-6"
+                                        aria-hidden="true"
+                                    />
+                                )}
                             </button>
                         </div>
                         <div className="hidden lg:flex lg:gap-x-12">
@@ -102,7 +108,7 @@ export default function DashboardPage() {
                                     </span>
                                     <Image
                                         className="h-8 w-auto"
-                                        src={logoImage}
+                                        src={mobileLogoImage}
                                         alt=""
                                     />
                                 </Link>
@@ -113,10 +119,14 @@ export default function DashboardPage() {
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     <span className="sr-only">Close menu</span>
-                                    <XMarkIcon
-                                        className="h-6 w-6"
-                                        aria-hidden="true"
-                                    />
+                                    {mobileMenuOpen
+                                        ? (
+                                            <XMarkIcon
+                                                className="h-6 w-6"
+                                                aria-hidden="true"
+                                            />
+                                            // eslint-disable-next-line react/jsx-no-useless-fragment
+                                        ) : <></>}
                                 </button>
                             </div>
                             <div className="mt-6 flow-root">
