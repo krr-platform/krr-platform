@@ -1,6 +1,6 @@
 // import Image from 'next/image';
 import React from 'react';
-import List from '@/app/components/dashboard/list-explanations';
+import ListExplanations from '@/app/components/dashboard/list-explanations';
 
 export default function ExplanationsPage() {
     return (
@@ -13,7 +13,7 @@ export default function ExplanationsPage() {
                 related to artificial intelligence.
             </p>
             <hr className="border-b border-gray-200 my-6 rounded" />
-            <List />
+            <ListExplanations />
         </div>
     );
 }

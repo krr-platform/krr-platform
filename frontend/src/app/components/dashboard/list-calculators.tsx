@@ -11,37 +11,25 @@ interface Item {
     shortDesc: string;
 }
 
-const explanations: Item[] = [
+const calculators: Item[] = [
     {
         id: 1,
-        name: 'Anti-Unification',
-        shortDesc: 'The process of constructing a generalization'
-            + ' common to two given symbolic expressions.',
-    },
-    {
-        id: 2,
-        name: 'Unification',
-        shortDesc: 'The process of making two different logical'
-            + ' atomic expressions identical by finding a substitution.',
-    },
-    {
-        id: 3,
-        name: 'First-order Language',
-        shortDesc: 'First-Order Logic speaks about objects, which'
-            + ' are the domain of discourse or the universe.',
+        name: 'Anti-Unification (First-Order Language)',
+        shortDesc: 'Calculate the anti-unification of first-order'
+            + ' language statements.',
     },
 ];
 /* eslint-disable max-len */
 
-export default function ListExplanations() {
+export default function ListCalculators() {
     return (
         <ul role="list" className="divide-y divide-gray-100">
-            {explanations.map((item: any) => (
+            {calculators.map((item: any) => (
                 <li key={item.email} className="flex w-full justify-between gap-x-6 py-5">
                     <Link
                         className="flex w-full min-w-0 gap-x-4"
                         key={item.id}
-                        href={`/dashboard/explanations/${item.name.toLowerCase().replace(/[()]/g, '').replace(/[\s]/g, '-')}`}
+                        href={`/dashboard/calculators/${item.name.toLowerCase().replace(/[()]/g, '').replace(/[\s()]/g, '-')}`}
                     >
                         <div className="flex min-w-0 gap-x-4 group justify-between w-full">
                             <div className="p-2 pl-5 flex min-w-0 gap-x-4 border-2 border-white w-full group-hover:bg-orange-50 group-hover:border-orange-500 group-hover:rounded">
