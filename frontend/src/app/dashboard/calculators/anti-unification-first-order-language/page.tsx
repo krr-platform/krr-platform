@@ -8,10 +8,11 @@ import { InformationCircleIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24
 import { useState } from 'react';
 
 export default function LessonPage() {
+    const MAX_STATEMENTS = 5;
     const [inputs, setInputs] = useState(['', '']);
 
     const addInputField = () => {
-        if (inputs.length >= 2 && inputs.length <= 4) {
+        if (inputs.length >= 2 && inputs.length <= MAX_STATEMENTS - 1) {
             setInputs([...inputs, '']);
         }
     };
@@ -92,7 +93,7 @@ export default function LessonPage() {
                                     </button>
                                 </div>
                             ))}
-                            <button data-tooltip-target="tooltip-default" onClick={addInputField} disabled={!(inputs.length >= 2 && inputs.length <= 4)} type="button" className="disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 border-2 border-blue-300 text-blue-500 hover:bg-blue-50 hover:border-blue-500 text-bold font-medium py-2 px-4 my-4 rounded transition-colors duration-300"> Add Statement </button>
+                            <button data-tooltip-target="tooltip-default" onClick={addInputField} disabled={!(inputs.length >= 2 && inputs.length <= MAX_STATEMENTS - 1)} type="button" className="disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 border-2 border-blue-300 text-blue-500 hover:bg-blue-50 hover:border-blue-500 text-bold font-medium py-2 px-4 my-4 rounded transition-colors duration-300"> Add Statement </button>
                             <div className="flex justify-end items-center">
                                 <button type="button" onClick={() => { }} className="bg-blue-500 border-2 text-white rounded-lg py-2 px-4 hover:bg-blue-700 mt-2 text-bold font-medium transition-colors duration-300">Calculate</button>
                             </div>
