@@ -144,7 +144,7 @@ export default function HomePage() {
                                                 rounded-lg px-3 py-2
                                                 text-base font-semibold
                                                 leading-7 text-gray-900
-                                                 hover:bg-gray-50"
+                                                 hover:bg-gray-50 transition-colors duration-300"
                                             >
                                                 {item.name}
                                             </Link>
@@ -157,7 +157,7 @@ export default function HomePage() {
                                              px-3 py-2.5 text-base
                                              font-semibold leading-7
                                              text-gray-900
-                                             hover:bg-gray-50"
+                                             hover:bg-gray-50 transition-colors duration-300"
                                         >
                                             Log in
                                         </Link>
@@ -197,7 +197,7 @@ export default function HomePage() {
                             <div className="mt-10 flex items-center justify-center gap-x-6">
                                 <Link
                                     href="dashboard/explanations"
-                                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 >
                                     Get started
                                 </Link>

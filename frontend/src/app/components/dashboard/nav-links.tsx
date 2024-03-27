@@ -43,6 +43,7 @@ export default function NavLinks() {
                             'flex h-[48px] grow items-center justify-center',
                             'gap-2 rounded-md bg-gray-50 p-3',
                             'text-sm font-medium hover:bg-blue-100',
+                            'transition-colors duration-300',
                             'hover:text-blue-500 md:flex-none',
                             'md:justify-start md:p-2 md:px-3',
                             {
