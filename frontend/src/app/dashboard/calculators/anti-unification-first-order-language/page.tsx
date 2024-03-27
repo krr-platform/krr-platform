@@ -1,15 +1,19 @@
 'use client';
 
+/* eslint-disable consistent-return */
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable max-len */
 import Link from 'next/link';
 import { InformationCircleIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
+import axios from 'axios';
 
 export default function LessonPage() {
     const MAX_STATEMENTS = 5;
     const [inputs, setInputs] = useState(['', '']);
+    const [result, setResult] = useState('');
 
     const addInputField = () => {
         if (inputs.length >= 2 && inputs.length <= MAX_STATEMENTS - 1) {
@@ -34,6 +38,19 @@ export default function LessonPage() {
             const newInputs = [...inputs];
             newInputs[idx] = value;
             setInputs(newInputs);
+        }
+    };
+
+    const handleCalculate = async () => {
+        try {
+            const jsonInputs: Record<string, string> = {};
+            inputs.forEach((value, index) => {
+                jsonInputs[index.toString()] = value;
+            });
+            const response = await axios.post('http://localhost:5000/compute/anti-unification-fol', jsonInputs);
+            setResult(response.data);
+        } catch (error) {
+            console.error('Error during computation', error);
         }
     };
 
@@ -95,12 +112,17 @@ export default function LessonPage() {
                             ))}
                             <button data-tooltip-target="tooltip-default" onClick={addInputField} disabled={!(inputs.length >= 2 && inputs.length <= MAX_STATEMENTS - 1)} type="button" className="disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 border-2 border-blue-300 text-blue-500 hover:bg-blue-50 hover:border-blue-500 text-bold font-medium py-2 px-4 my-4 rounded transition-colors duration-300"> Add Statement </button>
                             <div className="flex justify-end items-center">
-                                <button type="button" onClick={() => { }} className="bg-blue-500 border-2 text-white rounded-lg py-2 px-4 hover:bg-blue-700 mt-2 text-bold font-medium transition-colors duration-300">Calculate</button>
+                                <button type="button" onClick={() => { handleCalculate(); }} className="bg-blue-500 border-2 text-white rounded-lg py-2 px-4 hover:bg-blue-700 mt-2 text-bold font-medium transition-colors duration-300">Calculate</button>
                             </div>
                         </div>
 
                         <div className="bg-orange-50 rounded-lg w-full p-8 mt-12 shadow-lg border-2">
                             <p> Output goes here </p>
+                            <p>
+                                {Object.entries(result).map(([key, value], index) => (
+                                    <p key={index}>{`${key}: ${value}`}</p>
+                                ))}
+                            </p>
                         </div>
                     </div>
                 </div>
