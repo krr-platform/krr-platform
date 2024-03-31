@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Features from '@/app/components/homepage/features';
 import Header from '@/app/components/header';
 import Footer from '@/app/components/footer';
-import Example from '@/app/components/homepage/example'
+import Example from '@/app/components/homepage/example';
 
 export default function HomePage() {
     return (
