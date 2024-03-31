@@ -7,3 +7,16 @@
         @apply relative flex;
     }
 }
+
+
+html, body {
+    @apply min-h-screen;
+  }
+  
+  body {
+    @apply flex flex-col min-h-screen;
+  }
+  
+  main {
+    @apply flex-1 min-h-screen;;
+  }
