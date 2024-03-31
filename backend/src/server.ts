@@ -18,10 +18,10 @@ app.get('/ping', (_req, res) => {
     res.send('pong');
 });
 
-app.post('/api/compute', async (req, res) => {
+app.post('/api/compute/anti-unification-fol', async (req, res) => {
     try {
         // Replace 'http://localhost:5000/compute' with your Flask service URL
-        const response = await axios.post('http://localhost:5000/compute', req.body);
+        const response = await axios.post('http://localhost:5000/compute/anti-unification-fol', req.body);
         res.json(response.data);
     } catch (error) {
         res.status(500).send('Error during computation');

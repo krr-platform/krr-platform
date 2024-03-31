@@ -18,18 +18,18 @@ const explanations: Item[] = [
         shortDesc: 'The process of constructing a generalization'
             + ' common to two given symbolic expressions.',
     },
-    {
-        id: 2,
-        name: 'Unification',
-        shortDesc: 'The process of making two different logical'
-            + ' atomic expressions identical by finding a substitution.',
-    },
-    {
-        id: 3,
-        name: 'First-order Language',
-        shortDesc: 'First-Order Logic speaks about objects, which'
-            + ' are the domain of discourse or the universe.',
-    },
+    // {
+    //     id: 2,
+    //     name: 'Unification',
+    //     shortDesc: 'The process of making two different logical'
+    //         + ' atomic expressions identical by finding a substitution.',
+    // },
+    // {
+    //     id: 3,
+    //     name: 'First-order Language',
+    //     shortDesc: 'First-Order Logic speaks about objects, which'
+    //         + ' are the domain of discourse or the universe.',
+    // },
 ];
 /* eslint-disable max-len */
 

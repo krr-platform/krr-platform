@@ -6,6 +6,7 @@ import Image from 'next/image';
 import React, { useEffect, useState, useRef } from 'react';
 
 export default function LessonPage() {
+    // const [progress, setProgress] = useState(0);
     const [activeSection, setActiveSection] = useState<string | null>(null);
     const sectionRefs = {
         basics: useRef(null),
@@ -14,6 +15,26 @@ export default function LessonPage() {
         algorithm: useRef(null),
         resources: useRef(null),
     };
+
+    // const handleScroll = () => {
+    //     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    //     const scrollBottom = (document.documentElement.scrollHeight || document.body.scrollHeight);
+    //     const scrollPercent = (scrollTop / scrollBottom) * 100;
+    //     // const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+    //     // const currentScroll = window.scrollY;
+    //     // const newProgress = (currentScroll / totalScroll) * 100;
+    //     console.log(scrollPercent);
+    //     setProgress(scrollPercent);
+    // };
+
+    // useEffect(() => {
+    //     console.log('Adding scroll event listener');
+    //     window.addEventListener('scroll', handleScroll);
+    //     return () => {
+    //         console.log('Removing scroll event listener');
+    //         window.removeEventListener('scroll', handleScroll);
+    //     };
+    // }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -45,26 +66,30 @@ export default function LessonPage() {
         <div className="max-w-4xl mx-auto flex w-full border-black">
             <div className="flex">
                 <div className="flex flex-col flex-grow w-9/12">
-                    <nav className="flex" aria-label="Breadcrumb">
-                        <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-                            <li className="inline-flex items-center">
-                                <Link
-                                    href="/dashboard/explanations"
-                                    className="inline-flex items-center text-sm font-medium text-gray-400 hover:text-orange-500 transition-colors duration-300"
-                                >
-                                    Explanations
-                                </Link>
-                            </li>
-                            <li aria-current="page">
-                                <div className="flex items-center">
-                                    <svg className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
-                                    </svg>
-                                    <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2">Anti-Unification</span>
-                                </div>
-                            </li>
-                        </ol>
-                    </nav>
+                    {/* <div className="sticky z-10 flex-grow w-full top-0 bg-white"> */}
+                    <div>
+                        {/* <progress className="progress w-full mb-4 progress-secondary" value={progress} max="100" /> */}
+                        <nav className="flex" aria-label="Breadcrumb">
+                            <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                                <li className="inline-flex items-center">
+                                    <Link
+                                        href="/dashboard/explanations"
+                                        className="inline-flex items-center text-sm font-medium text-gray-400 hover:text-orange-500 transition-colors duration-300"
+                                    >
+                                        Explanations
+                                    </Link>
+                                </li>
+                                <li aria-current="page">
+                                    <div className="flex items-center">
+                                        <svg className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
+                                        </svg>
+                                        <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2">Anti-Unification</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
                     <div className="mx-auto py-5 px-4">
                         <h1 className="text-3xl font-bold  text-gray-900 mb-2">
                             Anti-Unification
@@ -128,7 +153,7 @@ export default function LessonPage() {
                             <p className="mb-8 text-center italic text-lg text-orange-500">3v+5</p>
                             <p className="mb-8">Explanation: The LGG 3v+5 represents a pattern that both expressions match when v is instantiated to x for the first expression and y for the second expression. The constant 3 and 5 are retained as they are common to both expressions.</p>
                             <h3 className="text-l font-medium text-gray-900">
-                                Example 2: ...
+                                Example 2: Anti-unification in code
                             </h3>
                             <p className="mb-8">Problem Statement: Consider the following two pseudocode snippets: </p>
                             <div className="flex justify-center mb-8">

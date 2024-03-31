@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable global-require */
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -17,7 +19,24 @@ const config: Config = {
             },
         },
     },
+    daisyui: {
+        themes: [
+            {
+                krr: {
+                    primary: '#3b82f6',
+                    secondary: '#f97316',
+                    accent: '#8b5cf6',
+                    neutral: '#737373',
+                    'base-100': '#ffffff',
+                    info: '#06b6d4',
+                    success: '#22c55e',
+                    warning: '#eab308',
+                    error: '#ef4444',
+                },
+            },
+        ],
+    },
 
-    plugins: [],
+    plugins: [require('daisyui')],
 };
 export default config;

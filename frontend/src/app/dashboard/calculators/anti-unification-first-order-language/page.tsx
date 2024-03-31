@@ -56,6 +56,7 @@ export default function LessonPage() {
 
     return (
         <div className="max-w-4xl mx-auto flex w-full border-black">
+
             <div className="flex">
                 <div className="flex flex-col flex-grow w-9/12">
                     <nav className="flex" aria-label="Breadcrumb">
@@ -97,7 +98,7 @@ export default function LessonPage() {
                                 </button>
                             </div>
                             {inputs.map((input, index) => (
-                                <div key={index} className="flex justify-around">
+                                <div key={index} className="flex justify-between">
                                     <input
                                         onChange={(event) => populateField(index, event.target.value)}
                                         value={inputs[index]}
