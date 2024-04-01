@@ -55,11 +55,10 @@ export default function LessonPage() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto flex w-full border-black">
-
+        <div className="max-w-4xl mx-auto flex w-full border-black pt-4">
             <div className="flex">
                 <div className="flex flex-col flex-grow w-9/12">
-                    <nav className="flex" aria-label="Breadcrumb">
+                    <nav className="flex px-4" aria-label="Breadcrumb">
                         <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                             <li className="inline-flex items-center">
                                 <Link
