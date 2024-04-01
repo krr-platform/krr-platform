@@ -28,6 +28,9 @@ export default function Footer() {
                             <a href="/contact" className="hover:underline me-4 md:me-6">Contact</a>
                         </li>
                         <li>
+                            <a href="/contribute" className="hover:underline me-4 md:me-6">Contribute</a>
+                        </li>
+                        <li>
                             <a href="https://github.com/krr-platform" className="hover:underline">GitHub</a>
                         </li>
                     </ul>
