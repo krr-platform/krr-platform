@@ -101,7 +101,7 @@ export default function LessonPage() {
                         <hr className="border-b border-gray-200 my-6 rounded" />
 
                         <div>
-                            <h2 className="text-xl font-semibold text-gray-900 mb-1" ref={sectionRefs.basics} id="basics">
+                            <h2 className="text-xl font-semibold text-gray-900 mb-1 scroll-mt-12" ref={sectionRefs.basics} id="basics">
                                 Basics of Anti-Unification
                             </h2>
                             <h3 className="text-l font-medium text-gray-900">
@@ -135,7 +135,7 @@ export default function LessonPage() {
                         </div>
 
                         <div>
-                            <h2 className="text-xl font-semibold text-gray-900 mb-1" ref={sectionRefs.examples} id="examples">
+                            <h2 className="text-xl font-semibold text-gray-900 mb-1 scroll-mt-12" ref={sectionRefs.examples} id="examples">
                                 Examples
                             </h2>
                             <h3 className="text-l font-medium text-gray-900">
@@ -200,7 +200,7 @@ export default function LessonPage() {
                         </div>
 
                         <div>
-                            <h2 className="text-xl font-semibold text-gray-900 mb-1" ref={sectionRefs.applications} id="applications">
+                            <h2 className="text-xl font-semibold text-gray-900 mb-1 scroll-mt-12" ref={sectionRefs.applications} id="applications">
                                 Applications
                             </h2>
                             <h3 className="text-l font-medium text-gray-900">
@@ -226,7 +226,7 @@ export default function LessonPage() {
                         </div>
 
                         <div>
-                            <h2 className="text-xl font-semibold text-gray-900 mb-1" ref={sectionRefs.algorithm} id="algorithm">
+                            <h2 className="text-xl font-semibold text-gray-900 mb-1 scroll-mt-12" ref={sectionRefs.algorithm} id="algorithm">
                                 Algorithm
                             </h2>
                             <h3 className="text-l font-medium text-gray-900">
@@ -250,7 +250,7 @@ export default function LessonPage() {
                         </div>
 
                         <div>
-                            <h2 className="text-xl font-semibold text-gray-900 mb-1" ref={sectionRefs.resources} id="resources">
+                            <h2 className="text-xl font-semibold text-gray-900 mb-1 scroll-mt-12" ref={sectionRefs.resources} id="resources">
                                 Further Resources
                             </h2>
                             <p className="mb-8">
