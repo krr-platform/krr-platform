@@ -1,45 +1,85 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from json import dumps
+import re
 
 app = Flask(__name__)
 CORS(app)
 
 
-# class Term:
-#     def __init__(self, identifier, is_variable=False):
-#         self.identifier = identifier
-#         self.is_variable = is_variable
+class Token:
+    def __init__(self, type, value):
+        self.type = type
+        self.value = value
 
-#     def __eq__(self, other):
-#         return self.identifier == other.identifier and self.is_variable == other.is_variable
+    def __repr__(self):
+        return f"Token({self.type}, {self.value})"
 
-#     def __hash__(self):
-#         return hash((self.identifier, self.is_variable))
+    def serialize(self):
+        return {
+            'type': self.type,
+            'value': self.value
+        }
 
-#     def __str__(self):
-#         return self.identifier
 
-# class AntiUnifier:
-#     def anti_unify(self, term1, term2):
-#         if term1 == term2:
-#             return term1
-#         elif term1.is_variable or term2.is_variable:
-#             # X is a placeholder for any term
-#             return Term('X', is_variable=True)
-#         else:
-#             return Term('X', is_variable=True)  # Generalize different terms
+# Input a list of statements and return a tokenized list of each statement
+def tokenize(input_strings):
+    token_specs = [
+        # Variables: lower case letters
+        ('VARIABLE', r'[a-z]'),
+        # Constants: upper case letters
+        ('CONSTANT', r'[A-Z]'),
+        # Functions: lower case letter followed by parentheses
+        ('FUNCTION', r'[a-z]\([a-zA-Z, ]*\)'),
+        # Predicates: upper case letter followed by parentheses
+        ('PREDICATE', r'[A-Z]\([a-zA-Z, ]*\)'),
+        ('LOGICAL_AND', r'\\and'),                          # Logical AND
+        ('LOGICAL_OR', r'\\or'),                            # Logical OR
+        ('LOGICAL_EQUIVALENT', r'\\equals'),                # Logical equivalent
+        ('LOGICAL_IMPLICATION', r'\\implies'),              # Logical implication
+        ('UNIVERSAL_QUANTIFIER', r'\\forall'),              # Universal quantifier
+        # Existential quantifier
+        ('EXISTENTIAL_QUANTIFIER', r'\\exists'),
+        ('LEFT_PAREN', r'\('),                              # Left parenthesis
+        ('RIGHT_PAREN', r'\)'),                             # Right parenthesis
+        ('WHITESPACE', r'[ \t]+'),                          # Skip whitespaces
+        # Any other character
+        ('MISMATCH', r'.'),
+    ]
 
+    tokens_list = []  # This will store a list of token lists, one for each input string
+    for input_string in input_strings:
+        tokens = []  # Initialize a new list for the tokens of this input string
+        token_regex = '|'.join('(?P<%s>%s)' % pair for pair in token_specs)
+        for mo in re.finditer(token_regex, input_string):
+            kind = mo.lastgroup
+            value = mo.group()
+            if kind == 'WHITESPACE':
+                continue
+            elif kind == 'MISMATCH':
+                raise RuntimeError(f'Unexpected character: {value}')
+            else:
+                tokens.append(Token(kind, value))
+        tokens_list.append(tokens)
+    return tokens_list
+
+
+def parse(tokens):
+    # Parse the tokens into a parse tree
+    # This is where you'd implement recursive descent parsing
+    pass
 
 
 @app.route('/compute/anti-unification-fol', methods=['POST'])
 def compute():
-    data = dumps(request.json)
-    # Insert the logic of your calculation here and store the result.
-    result = {'result': 'Computation result based on the provided data: ' + data}
-    print(result)  # This will print to the console.
-
-    # {"0": "one", "1": "two"}
+    # data = dumps(request.json)
+    data = request.json
+    token_lists = tokenize(data)
+    serialized_tokens = [[token.serialize() for token in token_list]
+                         for token_list in token_lists]
+    result = {'data': data,
+              'tokens': serialized_tokens}
+    print(result)
     return jsonify(result)
 
 
