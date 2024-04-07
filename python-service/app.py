@@ -25,25 +25,20 @@ class Token:
 # Input a list of statements and return a tokenized list of each statement
 def tokenize(input_strings):
     token_specs = [
-        # Variables: lower case letters
-        ('VARIABLE', r'[a-z]'),
-        # Constants: upper case letters
-        ('CONSTANT', r'[A-Z]'),
-        # Functions: lower case letter followed by parentheses
         ('FUNCTION', r'[a-z]\([a-zA-Z, ]*\)'),
-        # Predicates: upper case letter followed by parentheses
         ('PREDICATE', r'[A-Z]\([a-zA-Z, ]*\)'),
-        ('LOGICAL_AND', r'\\and'),                          # Logical AND
-        ('LOGICAL_OR', r'\\or'),                            # Logical OR
-        ('LOGICAL_EQUIVALENT', r'\\equals'),                # Logical equivalent
-        ('LOGICAL_IMPLICATION', r'\\implies'),              # Logical implication
-        ('UNIVERSAL_QUANTIFIER', r'\\forall'),              # Universal quantifier
-        # Existential quantifier
+        ('VARIABLE', r'\b[a-z]\b'),
+        ('CONSTANT', r'\b[A-Z]\b'),
+        ('LOGICAL_AND', r'\\and'),
+        ('LOGICAL_OR', r'\\or'),
+        ('LOGICAL_NEG', r'\\not'),
+        ('LOGICAL_EQUIVALENT', r'\\equals'),
+        ('LOGICAL_IMPLICATION', r'\\implies'),
+        ('UNIVERSAL_QUANTIFIER', r'\\forall'),
         ('EXISTENTIAL_QUANTIFIER', r'\\exists'),
-        ('LEFT_PAREN', r'\('),                              # Left parenthesis
-        ('RIGHT_PAREN', r'\)'),                             # Right parenthesis
-        ('WHITESPACE', r'[ \t]+'),                          # Skip whitespaces
-        # Any other character
+        ('LEFT_PAREN', r'\('),
+        ('RIGHT_PAREN', r'\)'),
+        ('WHITESPACE', r'[ \t]+'),
         ('MISMATCH', r'.'),
     ]
 
