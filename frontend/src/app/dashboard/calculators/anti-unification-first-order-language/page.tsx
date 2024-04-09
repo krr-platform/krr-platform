@@ -10,10 +10,22 @@ import { InformationCircleIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24
 import { useState } from 'react';
 import axios from 'axios';
 
-export default function LessonPage() {
+interface Token {
+    type: string;
+    value: string;
+}
+
+interface Result {
+    data: string[];
+    tokens: Token[][];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    root1: any;
+}
+
+export default function CalculatorPage() {
     const MAX_STATEMENTS = 5;
     const [inputs, setInputs] = useState(['', '']);
-    const [result, setResult] = useState('');
+    const [result, setResult] = useState<Result | null>(null);
 
     const addInputField = () => {
         if (inputs.length >= 2 && inputs.length <= MAX_STATEMENTS - 1) {
@@ -43,12 +55,17 @@ export default function LessonPage() {
 
     const handleCalculate = async () => {
         try {
-            const jsonInputs: Record<string, string> = {};
-            inputs.forEach((value, index) => {
-                jsonInputs[index.toString()] = value;
+            // const jsonInputs: Record<string, string> = {};
+            // inputs.forEach((value, index) => {
+            //     jsonInputs[index.toString()] = value;
+            // });
+            const jsonInputs: string[] = [];
+            inputs.forEach((value) => {
+                jsonInputs.push(value);
             });
             const response = await axios.post('http://localhost:5000/compute/anti-unification-fol', jsonInputs);
             setResult(response.data);
+            console.log(response.data);
         } catch (error) {
             console.error('Error during computation', error);
         }
@@ -117,12 +134,32 @@ export default function LessonPage() {
                         </div>
 
                         <div className="bg-orange-50 rounded-lg w-full p-8 mt-12 shadow-lg border-2">
-                            <p> Output goes here </p>
-                            <p>
-                                {Object.entries(result).map(([key, value], index) => (
-                                    <p key={index}>{`${key}: ${value}`}</p>
-                                ))}
-                            </p>
+                            {result?.data && (
+                                <div>
+                                    <h2>Data:</h2>
+                                    {result.data.map((item, idx) => (
+                                        <p key={idx}>{item}</p>
+                                    ))}
+                                </div>
+                            )}
+                            {result?.tokens && (
+                                <div>
+                                    <h2>Tokens:</h2>
+                                    {result.tokens.map((tokenArray, arrayIndex) => (
+                                        <div key={arrayIndex}>
+                                            {tokenArray.map((token, tokenIndex) => (
+                                                <p key={tokenIndex} style={{ marginLeft: '20px' }}>
+                                                    Type:
+                                                    {token.type || 'N/A'}
+                                                    , Value:
+                                                    {token.value || 'N/A'}
+                                                </p>
+                                            ))}
+                                            <p>---</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
