@@ -3,6 +3,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import Logo from '@/../public/favicon.ico';
 
 export default function Footer() {
@@ -31,7 +32,16 @@ export default function Footer() {
                             <a href="/contribute" className="hover:underline me-4 md:me-6">Contribute</a>
                         </li>
                         <li>
-                            <a href="https://github.com/krr-platform" className="hover:underline">GitHub</a>
+                            <a href="https://github.com/krr-platform" target="_blank" className="hover:underline flex align-middle me-4 md:me-6">
+                                Documentation
+                                <ArrowTopRightOnSquareIcon className="h-4 ml-1" />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/krr-platform" target="_blank" className="hover:underline flex align-middle">
+                                GitHub
+                                <ArrowTopRightOnSquareIcon className="h-4 ml-1" />
+                            </a>
                         </li>
                     </ul>
                 </div>
