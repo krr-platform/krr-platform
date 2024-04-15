@@ -15,9 +15,16 @@ interface Token {
     value: string;
 }
 
+interface Node {
+    type: string;
+    value: string;
+    children: Node[];
+}
+
 interface Result {
     data: string[];
     tokens: Token[][];
+    trees: Node[];
 }
 
 export default function CalculatorPage() {
@@ -177,6 +184,23 @@ export default function CalculatorPage() {
                                                     {token.value || 'N/A'}
                                                 </p>
                                             ))}
+                                            <p>---</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                            {result?.trees && (
+                                <div>
+                                    <h2>trees:</h2>
+                                    {result.trees.map((treeNode, treeNodeIndex) => (
+                                        <div key={treeNodeIndex}>
+                                            <p key={treeNodeIndex} style={{ marginLeft: '20px' }}>
+                                                Type:
+                                                {treeNode.type || 'N/A'}
+                                                , Value:
+                                                {treeNode.value || 'N/A'}
+                                                , Children:
+                                            </p>
                                             <p>---</p>
                                         </div>
                                     ))}
