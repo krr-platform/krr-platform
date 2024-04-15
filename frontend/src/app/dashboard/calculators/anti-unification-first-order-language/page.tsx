@@ -26,16 +26,16 @@ export default function CalculatorPage() {
     const [inputs, setInputs] = useState(['', '']);
     const [result, setResult] = useState<Result | null>(null);
 
-    const onDragStart = (e, position) => {
-        e.dataTransfer.setData('text/plain', position);
+    const onDragStart = (e: React.DragEvent<HTMLDivElement>, position: number) => {
+        e.dataTransfer.setData('text/plain', position.toString());
     };
 
-    const onDragOver = (e) => {
+    const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
     };
 
-    const onDrop = (e, newPosition) => {
-        const position = e.dataTransfer.getData('text/plain');
+    const onDrop = (e: React.DragEvent<HTMLDivElement>, newPosition: number) => {
+        const position = parseInt(e.dataTransfer.getData('text/plain'), 10);
         const updatedInputs = [...inputs];
         const itemDragged = updatedInputs.splice(position, 1)[0];
         updatedInputs.splice(newPosition, 0, itemDragged);
