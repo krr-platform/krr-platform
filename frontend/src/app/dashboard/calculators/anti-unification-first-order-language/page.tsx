@@ -122,7 +122,7 @@ export default function CalculatorPage() {
                                         className="w-10/12 rounded-lg my-2 p-2 border-2 focus:border-blue-300 focus:bg-blue-50 hover:border-blue-300 active:border-blue-300 transition-colors duration-300 focus:outline-none focus:ring-blue-500"
                                     />
                                     <Bars3Icon className="w-7 h-7 my-4 px-1 hover:bg-blue-50 hover:text-blue-500 rounded-full align-middle transition-colors duration-300" />
-                                    <button type="button" onClick={() => removeInputField(index)} disabled={inputs.length === 2} className="w-7 h-7 my-4 px-1 hover:bg-red-50 hover:text-red-500 rounded-full align-middle transition-colors duration-300 disabled:text-slate-500 disabled:hover:bg-slate-100">
+                                    <button type="button" onClick={() => removeInputField(index)} disabled={inputs.length === 2} className="w-7 h-7 my-4 px-1 hover:bg-red-50 hover:text-red-500 rounded-full align-middle transition-colors duration-300 disabled:text-slate-500 disabled:hover:bg-slate-100 disabled:cursor-not-allowed">
                                         <XMarkIcon className="" />
                                     </button>
                                 </div>
@@ -145,8 +145,10 @@ export default function CalculatorPage() {
                             {result?.tokens && (
                                 <div>
                                     <h2>Tokens:</h2>
+                                    {/* For each statement */}
                                     {result.tokens.map((tokenArray, arrayIndex) => (
                                         <div key={arrayIndex}>
+                                            {/* For each token in statement */}
                                             {tokenArray.map((token, tokenIndex) => (
                                                 <p key={tokenIndex} style={{ marginLeft: '20px' }}>
                                                     Type:
