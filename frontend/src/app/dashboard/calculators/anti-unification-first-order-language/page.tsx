@@ -18,17 +18,32 @@ interface Token {
 interface Result {
     data: string[];
     tokens: Token[][];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    root1: any;
 }
 
 export default function CalculatorPage() {
+    const MIN_STATEMENTS = 2;
     const MAX_STATEMENTS = 5;
     const [inputs, setInputs] = useState(['', '']);
     const [result, setResult] = useState<Result | null>(null);
 
+    const onDragStart = (e, position) => {
+        e.dataTransfer.setData('text/plain', position);
+    };
+
+    const onDragOver = (e) => {
+        e.preventDefault();
+    };
+
+    const onDrop = (e, newPosition) => {
+        const position = e.dataTransfer.getData('text/plain');
+        const updatedInputs = [...inputs];
+        const itemDragged = updatedInputs.splice(position, 1)[0];
+        updatedInputs.splice(newPosition, 0, itemDragged);
+        setInputs(updatedInputs);
+    };
+
     const addInputField = () => {
-        if (inputs.length >= 2 && inputs.length <= MAX_STATEMENTS - 1) {
+        if (inputs.length >= MIN_STATEMENTS && inputs.length <= MAX_STATEMENTS - 1) {
             setInputs([...inputs, '']);
         }
     };
@@ -40,7 +55,7 @@ export default function CalculatorPage() {
                 ...inputs.slice(idx + 1),
             ]);
         }
-        if (idx === 0 && inputs.length > 2) {
+        if (idx === 0 && inputs.length > MIN_STATEMENTS) {
             setInputs([...inputs.slice(1)]);
         }
     };
@@ -55,17 +70,12 @@ export default function CalculatorPage() {
 
     const handleCalculate = async () => {
         try {
-            // const jsonInputs: Record<string, string> = {};
-            // inputs.forEach((value, index) => {
-            //     jsonInputs[index.toString()] = value;
-            // });
             const jsonInputs: string[] = [];
             inputs.forEach((value) => {
                 jsonInputs.push(value);
             });
             const response = await axios.post('http://localhost:5000/compute/anti-unification-fol', jsonInputs);
             setResult(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error('Error during computation', error);
         }
@@ -113,21 +123,31 @@ export default function CalculatorPage() {
                                     <InformationCircleIcon className="w-5 h-5" />
                                 </button>
                             </div>
-                            {inputs.map((input, index) => (
-                                <div key={index} className="flex justify-between">
-                                    <input
-                                        onChange={(event) => populateField(index, event.target.value)}
-                                        value={inputs[index]}
-                                        placeholder={`Input first-order statement #${index + 1}`}
-                                        className="w-10/12 rounded-lg my-2 p-2 border-2 focus:border-blue-300 focus:bg-blue-50 hover:border-blue-300 active:border-blue-300 transition-colors duration-300 focus:outline-none focus:ring-blue-500"
-                                    />
-                                    <Bars3Icon className="w-7 h-7 my-4 px-1 hover:bg-blue-50 hover:text-blue-500 rounded-full align-middle transition-colors duration-300" />
-                                    <button type="button" onClick={() => removeInputField(index)} disabled={inputs.length === 2} className="w-7 h-7 my-4 px-1 hover:bg-red-50 hover:text-red-500 rounded-full align-middle transition-colors duration-300 disabled:text-slate-500 disabled:hover:bg-slate-100 disabled:cursor-not-allowed">
-                                        <XMarkIcon className="" />
-                                    </button>
-                                </div>
-                            ))}
-                            <button data-tooltip-target="tooltip-default" onClick={addInputField} disabled={!(inputs.length >= 2 && inputs.length <= MAX_STATEMENTS - 1)} type="button" className="disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 border-2 border-blue-300 text-blue-500 hover:bg-blue-50 hover:border-blue-500 text-bold font-medium py-2 px-4 my-4 rounded transition-colors duration-300"> Add Statement </button>
+                            <div className="">
+                                {inputs.map((input, index) => (
+                                    // input container
+                                    <div
+                                        key={index}
+                                        draggable
+                                        onDragStart={(e) => onDragStart(e, index)}
+                                        onDragOver={(e) => onDragOver(e)}
+                                        onDrop={(e) => onDrop(e, index)}
+                                        className="flex justify-between"
+                                    >
+                                        <input
+                                            onChange={(event) => populateField(index, event.target.value)}
+                                            value={inputs[index]}
+                                            placeholder={`Input first-order statement #${index + 1}`}
+                                            className="w-10/12 rounded-lg my-2 p-2 border-2 focus:border-blue-300 focus:bg-blue-50 hover:border-blue-300 active:border-blue-300 transition-colors duration-300 focus:outline-none focus:ring-blue-500"
+                                        />
+                                        <Bars3Icon className="w-7 h-7 my-4 px-1 hover:bg-blue-50 hover:text-blue-500 rounded-full align-middle transition-colors duration-300 cursor-grab active:cursor-grabbing" />
+                                        <button type="button" onClick={() => removeInputField(index)} disabled={inputs.length === MIN_STATEMENTS} className="w-7 h-7 my-4 px-1 hover:bg-red-50 hover:text-red-500 rounded-full align-middle transition-colors duration-300 disabled:text-slate-500 disabled:hover:bg-slate-100 disabled:cursor-not-allowed">
+                                            <XMarkIcon className="" />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                            <button data-tooltip-target="tooltip-default" onClick={addInputField} disabled={!(inputs.length >= MIN_STATEMENTS && inputs.length <= MAX_STATEMENTS - 1)} type="button" className="disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 border-2 border-blue-300 text-blue-500 hover:bg-blue-50 hover:border-blue-500 text-bold font-medium py-2 px-4 my-4 rounded transition-colors duration-300"> Add Statement </button>
                             <div className="flex justify-end items-center">
                                 <button type="button" onClick={() => { handleCalculate(); }} className="bg-blue-500 border-2 text-white rounded-lg py-2 px-4 hover:bg-blue-700 mt-2 text-bold font-medium transition-colors duration-300">Calculate</button>
                             </div>
