@@ -22,5 +22,4 @@ def compute_anti_unification_fol(data):
               'tokens': serialized_tokens,
               'trees': trees
               }
-    print(f'DEBUG: trees = {trees}')
     return jsonify(result)
