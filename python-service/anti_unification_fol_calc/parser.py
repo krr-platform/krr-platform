@@ -25,30 +25,25 @@ def parse(tokens):
     if not tokens:
         return None
 
-    if len(tokens) > 1 and tokens[1]['type'] in ['LOGICAL_AND', 'LOGICAL_OR', 'LOGICAL_EQUIVALENT', 'LOGICAL_IMPLICATION']:
-        token = tokens.pop(1)
+    token = tokens.pop(0)
+    if token['type'] in ['FUNCTION', 'PREDICATE']:
+        node = Node(token['type'], token['value'], children=[])
+        while tokens[0]['type'] != 'RIGHT_PAREN':
+            child = parse(tokens)
+            node.children.append(child)
+            if tokens[0]['type'] == 'COMMA':
+                tokens.pop(0)  # consume comma
+        tokens.pop(0)  # consume right parenthesis
+    elif token['type'] in ['UNIVERSAL_QUANTIFIER', 'EXISTENTIAL_QUANTIFIER', 'LOGICAL_AND', 'LOGICAL_OR', 'LOGICAL_EQUIVALENT', 'LOGICAL_IMPLICATION']:
         node = Node(token['type'], token['value'],
                     children=[parse(tokens), parse(tokens)])
+    elif token['type'] == 'LOGICAL_NEG':
+        node = Node(token['type'], token['value'],
+                    children=[parse(tokens)])
+    elif token['type'] in ['VARIABLE', 'CONSTANT']:
+        node = Node(token['type'], token['value'])
     else:
-        token = tokens.pop(0)
-        if token['type'] in ['FUNCTION', 'PREDICATE']:
-            node = Node(token['type'], token['value'], children=[])
-            while tokens[0]['type'] != 'RIGHT_PAREN':
-                child = parse(tokens)
-                node.children.append(child)
-                if tokens[0]['type'] == 'COMMA':
-                    tokens.pop(0)  # consume comma
-            tokens.pop(0)  # consume right parenthesis
-        elif token['type'] in ['UNIVERSAL_QUANTIFIER', 'EXISTENTIAL_QUANTIFIER']:
-            node = Node(token['type'], token['value'],
-                        children=[parse(tokens), parse(tokens)])
-        elif token['type'] == 'LOGICAL_NEG':
-            node = Node(token['type'], token['value'],
-                        children=[parse(tokens)])
-        elif token['type'] in ['VARIABLE', 'CONSTANT']:
-            node = Node(token['type'], token['value'])
-        else:
-            return None
+        return None
 
     return node.serialize()
 

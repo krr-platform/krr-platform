@@ -124,6 +124,7 @@ export default function CalculatorPage() {
             setResult(response.data);
         } catch (error) {
             toast.error('Error during computation.');
+            console.error(error);
         }
     };
 

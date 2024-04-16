@@ -36,29 +36,6 @@ token_specs = [
 ]
 
 
-# def tokenize(input_strings):
-#     tokens_list = []  # This will store a list of token lists, one for each input string
-#     for input_string in input_strings:
-#         tokens = []  # Initialize a new list for the tokens of this input string
-#         token_regex = '|'.join('(?P<%s>%s)' % pair for pair in token_specs)
-#         for mo in re.finditer(token_regex, input_string):
-#             kind = mo.lastgroup
-#             value = mo.group()
-#             print(
-#                 f"DEBUG: mo={mo}, kind={kind}, value={value}, group0={mo.group(0)}, group1={mo.group(1)}")
-
-#             if kind in ['WHITESPACE', 'COMMA', 'RIGHT_PAREN']:
-#                 continue
-#             elif kind == 'MISMATCH':
-#                 raise RuntimeError(f'Unexpected character: {value}')
-#             else:
-#                 value = mo.group(0)[:-1] if kind in [
-#                     'FUNCTION', 'PREDICATE'] else mo.group()
-#                 tokens.append(Token(kind, value))
-#         tokens_list.append(tokens)
-#     return tokens_list
-
-
 def tokenize(input_strings):
     tokens_list = []  # Stores a list of token lists for each input string
     for input_string in input_strings:
@@ -69,7 +46,6 @@ def tokenize(input_strings):
         for mo in re.finditer(token_regex, input_string):
             kind = mo.lastgroup
             value = mo.group()
-            # print(f"DEBUG: mo={mo}, kind={kind}, value={value}")
 
             if kind == 'WHITESPACE':
                 continue
@@ -86,7 +62,11 @@ def tokenize(input_strings):
             if kind in ['FUNCTION', 'PREDICATE']:
                 value = value[:-1]
 
-            tokens.append(Token(kind, value))
+            if kind in ['LOGICAL_AND', 'LOGICAL_OR', 'LOGICAL_EQUIVALENT', 'LOGICAL_IMPLICATION']:
+                insert_idx = next((i for i, token in enumerate(tokens) if token.type in ['FUNCTION', 'PREDICATE', 'LOGICAL_NEG']), None)
+                tokens.insert(insert_idx, Token(kind, value))
+            else:
+                tokens.append(Token(kind, value))
 
         if parentheses_stack:
             raise RuntimeError("Unmatched left parenthesis")
