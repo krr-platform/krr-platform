@@ -6,15 +6,6 @@ class Token:
         self.type = type
         self.value = value
 
-    def __repr__(self):
-        return f"Token({self.type}, {self.value})"
-
-    def serialize(self):
-        return {
-            'type': self.type,
-            'value': self.value
-        }
-
 
 token_specs = [
     ('FUNCTION', r'([a-z]+[0-9]*)\('),
@@ -69,15 +60,9 @@ def tokenize(input_strings):
             elif kind == 'MISMATCH':
                 raise RuntimeError(f"Unexpected character: {value}")
 
-            # Trim the last character for FUNCTION and PREDICATE tokens (the opening parenthesis)
             if kind in ['FUNCTION', 'PREDICATE']:
                 value = value[:-1]
 
-            # if kind in ['LOGICAL_AND', 'LOGICAL_OR', 'LOGICAL_EQUIVALENT', 'LOGICAL_IMPLICATION']:
-                # insert_idx = next((i for i, token in enumerate(tokens) if token.type in ['FUNCTION', 'PREDICATE', 'LOGICAL_NEG']), None)
-                # tokens.insert(insert_idx, Token(kind, value))
-            # else:
-            #     tokens.append(Token(kind, value))
             tokens.append(Token(kind, value))
 
         if parentheses_stack:
