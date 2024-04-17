@@ -52,21 +52,16 @@ def parse(tokens):
 
     while tokens:
         token = tokens.pop(0)
-        print('DEBUG:', token)
-        # variable or constant -> simple push
         if token['type'] in ['VARIABLE', 'CONSTANT']:
             operands_stack.append(token)
 
-        # function or predicate -> push name, push (, parse normally
         elif token['type'] in ['FUNCTION', 'PREDICATE']:
             fn_pd_stack.append(token)
             operands_stack.append('(')
 
-        # commas -> simple push
         elif token['type'] == 'COMMA':
             operands_stack.append(token)
 
-        # end of fn or pd -> pop name, pop all till (, combine and push
         elif token['type'] == 'RIGHT_PAREN':
             fn_or_pred = fn_pd_stack.pop()
             content = []
@@ -84,64 +79,39 @@ def parse(tokens):
             operators_stack.append('[')
 
         elif token['type'] == 'RIGHT_SQUARE':
-            idx = len(operators_stack) - 1 - operators_stack[::-1].index('[')
-            while len(operators_stack) != idx + 1:
-                operator = operators_stack.pop()
-                if operator['type'] != 'LOGICAL_NEG':
-                    operand2 = operands_stack.pop()
-                    operand1 = operands_stack.pop()
-                    operator['children'] = [operand1, operand2]
-                    operands_stack.append(operator)
-                else:
-                    operand = operands_stack.pop()
-                    operator['children'] = [operand]
-                    operands_stack.append(operator)
+            while operators_stack and operators_stack[-1] != '[':
+                process_operator(operators_stack, operands_stack)
             operators_stack.pop()
-            operator = operators_stack.pop()
-            if operator['type'] != 'LOGICAL_NEG':
-                operand2 = operands_stack.pop()
-                operand1 = operands_stack.pop()
-                operator['children'] = [operand1, operand2]
-                operands_stack.append(operator)
-            else:
-                operand = operands_stack.pop()
-                operator['children'] = [operand]
-                operands_stack.append(operator)
+            if operators_stack:
+                process_operator(operators_stack, operands_stack)
 
         elif token['type'] in ['LOGICAL_AND', 'LOGICAL_OR', 'LOGICAL_IMPLICATION', 'LOGICAL_EQUIVALENT',
                                'UNIVERSAL_QUANTIFIER', 'EXISTENTIAL_QUANTIFIER', 'LOGICAL_NEG']:
-            if (len(operators_stack) == 0) or (getPrecedence(token) <= getPrecedence(operands_stack[-1])):
+            if ((len(operators_stack) == 0) or
+                    ((len(operators_stack) > 0) and
+                     ((getPrecedence(token) <= getPrecedence(operators_stack[-1])) or
+                     (operators_stack[-1] == '[')))):
                 operators_stack.append(token)
             else:
-                operator = operators_stack.pop()
-                if operator['type'] != 'LOGICAL_NEG':
-                    operand2 = operands_stack.pop()
-                    operand1 = operands_stack.pop()
-                    operator['children'] = [operand1, operand2]
-                    operands_stack.append(operator)
-                else:
-                    operand = operands_stack.pop()
-                    operator['children'] = [operand]
-                    operands_stack.append(operator)
+                process_operator(operators_stack, operands_stack)
                 operators_stack.append(token)
-        print('OPERANDS', operands_stack)
-        print('OPERATORS:', operators_stack)
-        print('FN:', fn_pd_stack)
-        print()
 
     while len(operands_stack) > 1:
-        operator = operators_stack.pop()
-        if operator['type'] != 'LOGICAL_NEG':
-            operand2 = operands_stack.pop()
-            operand1 = operands_stack.pop()
-            operator['children'] = [operand1, operand2]
-            operands_stack.append(operator)
-        else:
-            operand = operands_stack.pop()
-            operator['children'] = [operand]
-            operands_stack.append(operator)
+        process_operator(operators_stack, operands_stack)
 
     return operands_stack.pop()
+
+
+def process_operator(operators_stack, operands_stack):
+    operator = operators_stack.pop()
+    if operator['type'] == 'LOGICAL_NEG':
+        operand = operands_stack.pop()
+        operator['children'] = [operand]
+    else:
+        right_operand = operands_stack.pop()
+        left_operand = operands_stack.pop()
+        operator['children'] = [left_operand, right_operand]
+    operands_stack.append(operator)
 
 
 def parseAllTokens(tokensLists):
