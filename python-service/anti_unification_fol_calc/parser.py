@@ -43,25 +43,28 @@ def parse(tokens):
         elif token['type'] in ['FUNCTION', 'PREDICATE']:
             fn_pd_stack.append(token)
             operands_stack.append('(')
-
         # commas -> simple push
         elif token['type'] == 'COMMA':
             operands_stack.append(token)
-
         # end of fn or pd -> pop name, pop all till (, combine and push
         elif token['type'] == 'RIGHT_PAREN':
-            operands_stack.append(token)
             fn_or_pred = fn_pd_stack.pop()
             content = []
             idx = len(operands_stack) - 1 - operands_stack[::-1].index('(')
             while len(operands_stack) != idx + 1:
-                content.append(operands_stack.pop(idx + 1))
+                if operands_stack[idx + 1]['type'] != 'COMMA':
+                    content.append(operands_stack.pop(idx + 1))
+                else:
+                    operands_stack.pop(idx + 1)
             operands_stack.pop()
             fn_or_pred['children'] = content
             operands_stack.append(fn_or_pred)
 
+        elif token['type'] == 'LEFT_SQUARE':
+            operators_stack.append(token)
+        elif token['type'] == 'RIGHT_SQUARE':
+            operators_stack.append(token)
         # elif token['type'] in
-        # elif token['type'] == 'LEFT_SQUARE':
         #     operands_stack.push('[')
     print(operands_stack)
     print(operators_stack)
