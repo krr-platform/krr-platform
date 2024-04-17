@@ -1,5 +1,5 @@
 from flask import jsonify
-from . import tokenizer, parser
+from . import tokenizer, parser, anti_unifier
 
 
 def compute_anti_unification_fol(data):
@@ -7,8 +7,11 @@ def compute_anti_unification_fol(data):
 
     trees = parser.parseAllTokens(tokens)
 
+    generalization = anti_unifier.generalize(trees[0], trees[1])
+
     result = {'data': data,
               'tokens': tokens,
-              'trees': trees
+              'trees': trees,
+              'generalization': generalization
               }
     return jsonify(result)

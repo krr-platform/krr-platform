@@ -76,10 +76,6 @@ def parse(tokens):
             else:
                 process_operator(operators_stack, operands_stack)
                 operators_stack.append(token)
-        print('DEBUG:', token)
-        print('OPERATORS:', operators_stack)
-        print('OPERANDS:', operands_stack)
-        print('FN:', fn_pd_stack)
 
     while len(operands_stack) > 1:
         process_operator(operators_stack, operands_stack)

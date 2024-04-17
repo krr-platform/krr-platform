@@ -1,14 +1,16 @@
 'use client';
 
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/no-array-index-key */
 import Link from 'next/link';
 import { InformationCircleIcon, Bars3Icon, XMarkIcon }
     from '@heroicons/react/24/outline';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useRef, Fragment } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Dialog, Transition } from '@headlessui/react';
 
 interface Token {
     type: string;
@@ -25,11 +27,12 @@ interface Result {
     data: string[];
     tokens: Token[][];
     trees: Node[];
+    generalization: Node;
 }
 
 function renderNode(node: Node): React.ReactNode {
     if (!node || !node.type) {
-        return null; // Return null or handle the error appropriately
+        return null;
     }
 
     if (!node.children || node.children.length === 0) {
@@ -56,6 +59,8 @@ export default function CalculatorPage() {
     const MAX_STATEMENTS = 5;
     const [inputs, setInputs] = useState(['', '']);
     const [result, setResult] = useState<Result | null>(null);
+    const [open, setOpen] = useState(false);
+    const cancelButtonRef = useRef(null);
 
     const onDragStart = (
         e: React.DragEvent<HTMLDivElement>,
@@ -113,7 +118,7 @@ export default function CalculatorPage() {
                 const value = inputs[idx];
                 if (value === '') {
                     toast.error(`Input #${idx + 1} is empty.`);
-                    return; // Exit the function if input is empty
+                    return;
                 }
                 jsonInputs.push(value);
             }
@@ -124,7 +129,6 @@ export default function CalculatorPage() {
             setResult(response.data);
         } catch (error) {
             toast.error('Error during computation.');
-            console.error(error);
         }
     };
 
@@ -208,25 +212,105 @@ export default function CalculatorPage() {
                         shadow-lg
                         border-2"
                         >
-                            <p className="font-medium text-center mb-4">
-                                Calculate anti-unification to first-order
-                                language statements
-                            </p>
-                            <div className="flex items-center mb-4">
-                                <p className="mr-2">Usage</p>
+                            <div className="flex items-center mb-4 justify-between">
+                                <p className="font-medium text-center">
+                                    Calculate anti-unification to first-order
+                                    language statements
+                                </p>
                                 <button
                                     type="button"
-                                    aria-label="Usage Help"
-                                    className="hover:text-blue-500"
+                                    className="border-2 border-transparent
+                                    text-blue-500 hover:bg-blue-50
+                                    hover:border-blue-500 text-bold
+                                    font-medium p-2 rounded-lg
+                                    transition-colors duration-300"
+                                    onClick={() => { setOpen(true); }}
                                 >
-                                    <InformationCircleIcon
-                                        className="w-5 h-5"
-                                    />
+                                    <div className="flex items-center">
+                                        <InformationCircleIcon
+                                            className="w-5 h-5"
+                                        />
+                                        <p className="ml-2">Usage</p>
+                                    </div>
                                 </button>
+                            </div>
+                            <div className="flex items-center mb-4 justify-end">
+                                <Transition.Root show={open} as={Fragment}>
+                                    <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
+                                        <Transition.Child
+                                            as={Fragment}
+                                            enter="ease-out duration-300"
+                                            enterFrom="opacity-0"
+                                            enterTo="opacity-100"
+                                            leave="ease-in duration-200"
+                                            leaveFrom="opacity-100"
+                                            leaveTo="opacity-0"
+                                        >
+                                            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                                        </Transition.Child>
+
+                                        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                                            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                                                <Transition.Child
+                                                    as={Fragment}
+                                                    enter="ease-out duration-300"
+                                                    enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                    enterTo="opacity-100 translate-y-0 sm:scale-100"
+                                                    leave="ease-in duration-200"
+                                                    leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                                                    leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                >
+                                                    <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                                        <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                                            <div className="sm:flex sm:items-start">
+                                                                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
+                                                                    <InformationCircleIcon className="h-6 w-6 text-blue-500" aria-hidden="true" />
+                                                                </div>
+                                                                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                                                    <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                                                        Calculator Usage
+                                                                    </Dialog.Title>
+                                                                    <div className="mt-2">
+                                                                        <p className="text-sm text-gray-900">
+                                                                            You can input from 2 to 5 first-order logic statements.
+                                                                        </p>
+                                                                        <br />
+                                                                        <p className="text-sm font-medium text-gray-950">
+                                                                            Special inputs:
+                                                                        </p>
+                                                                        <ul className="text-sm text-gray-900">
+                                                                            <li>Universal quantifier: \forall </li>
+                                                                            <li>Existential quantifier: \exists </li>
+                                                                            <li>Logical Implication: \implies </li>
+                                                                            <li>Logical Equivalence: \equals </li>
+                                                                            <li>Logical Disjunction: \or </li>
+                                                                            <li>Logical Conjunction: \and </li>
+                                                                            <li>Logical Negation: \not </li>
+                                                                            <li>Grouping: use square brackets [ ]</li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                                            <button
+                                                                type="button"
+                                                                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                                                onClick={() => setOpen(false)}
+                                                                ref={cancelButtonRef}
+                                                            >
+                                                                Close
+                                                            </button>
+                                                        </div>
+                                                    </Dialog.Panel>
+                                                </Transition.Child>
+                                            </div>
+                                        </div>
+                                    </Dialog>
+                                </Transition.Root>
                             </div>
                             <div className="">
                                 {inputs.map((input, index) => (
-                                    // input container
                                     <div
                                         key={index}
                                         draggable
@@ -321,6 +405,14 @@ export default function CalculatorPage() {
                         <div className="bg-orange-50 rounded-lg
                         w-full p-8 mt-12 shadow-lg border-2"
                         >
+                            {result?.generalization && (
+                                <div>
+                                    <h2>Generalization:</h2>
+                                    <p>
+                                        {renderNode(result.generalization)}
+                                    </p>
+                                </div>
+                            )}
                             {result?.data && (
                                 <div>
                                     <h2>Data:</h2>
