@@ -33,7 +33,7 @@ def getPrecedence(token):
     elif token['type'] in ['UNIVERSAL_QUANTIFIER', 'EXISTENTIAL_QUANTIFIER']:
         return 1
     elif token['type'] == 'LOGICAL_NEG':
-        return 2
+        return 1
     elif token['type'] == 'LOGICAL_AND':
         return 3
     elif token['type'] == 'LOGICAL_OR':
