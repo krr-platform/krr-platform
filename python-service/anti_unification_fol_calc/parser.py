@@ -7,25 +7,6 @@ class Node:
         self.value = value
         self.children = children or []
 
-    def serialize(self):
-        if (self.type) in ['LEFT_PAREN']:
-            return {
-                'type': self.type,
-                'value': self.value,
-                'children': []
-            }
-        return {
-            'type': self.type,
-            'value': self.value,
-            'children': [Node(child['type'], child['value'], child['children']).serialize() for child in self.children]
-        }
-
-    def stringify(self):
-        if not self.children:
-            return self.value
-        else:
-            return f"{self.value}({', '.join(child.stringify() if isinstance(child, Node) else str(child) for child in self.children)})"
-
 
 def getPrecedence(token):
     if token['type'] == 'LEFT_SQUARE':
