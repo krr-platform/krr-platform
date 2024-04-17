@@ -1,8 +1,4 @@
-# syntax_checker.py
-
 class SyntaxError(Exception):
-    """Custom exception for syntax errors."""
-
     def __init__(self, message):
         super().__init__(message)
 

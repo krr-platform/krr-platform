@@ -13,6 +13,20 @@ class Token:
         }
 
 
+class TokenizationError(Exception):
+    def __init__(self, message, position=None):
+        super().__init__(message)
+        self.message = message
+        self.position = position
+
+    def to_dict(self):
+        return {
+            'error': 'TokenizationError',
+            'message': self.message,
+            'position': self.position
+        }
+
+
 token_specs = [
     ('FUNCTION', r'([a-z]+[0-9]*)\('),
     ('PREDICATE', r'([A-Z]+[0-9]*)\('),
@@ -37,44 +51,54 @@ token_specs = [
 
 def tokenize(input_strings):
     tokens_list = []  # Stores a list of token lists for each input string
-    for input_string in input_strings:
-        tokens = []  # Initialize a list for the tokens of this input string
-        parentheses_stack = []  # Track open parentheses for basic syntax checking
-        operators_stack = []
-        token_regex = '|'.join('(?P<%s>%s)' % pair for pair in token_specs)
+    errors = []
+    try:
+        for input_string in input_strings:
+            tokens = []  # Initialize a list for the tokens of this input string
+            parentheses_stack = []  # Track open parentheses for basic syntax checking
+            operators_stack = []
+            token_regex = '|'.join('(?P<%s>%s)' % pair for pair in token_specs)
 
-        for mo in re.finditer(token_regex, input_string):
-            kind = mo.lastgroup
-            value = mo.group()
+            for mo in re.finditer(token_regex, input_string):
+                kind = mo.lastgroup
+                value = mo.group()
 
-            if kind == 'WHITESPACE':
-                continue
-            elif kind in ['LEFT_PAREN', 'FUNCTION', 'PREDICATE']:
-                parentheses_stack.append('(')
-            elif kind == 'LEFT_SQUARE':
-                parentheses_stack.append('[')
-            elif kind == 'RIGHT_PAREN':
-                if not parentheses_stack:
-                    raise RuntimeError("Unmatched right parenthesis")
-                if parentheses_stack[-1] != '(':
-                    raise RuntimeError("Unmatched right parenthesis")
-                parentheses_stack.pop()
-            elif kind == 'RIGHT_SQUARE':
-                if parentheses_stack[-1] != '[':
-                    raise RuntimeError("Unmatched right square bracket")
-                parentheses_stack.pop()
-            elif kind == 'MISMATCH':
-                raise RuntimeError(f"Unexpected character: {value}")
+                if kind == 'WHITESPACE':
+                    continue
+                elif kind in ['LEFT_PAREN', 'FUNCTION', 'PREDICATE']:
+                    parentheses_stack.append('(')
+                elif kind == 'LEFT_SQUARE':
+                    parentheses_stack.append('[')
+                elif kind == 'RIGHT_PAREN':
+                    if not parentheses_stack or parentheses_stack[-1] != '(':
+                        raise TokenizationError(
+                            "Unmatched right parenthesis", position=0)
+                    parentheses_stack.pop()
+                elif kind == 'RIGHT_SQUARE':
+                    if not parentheses_stack or parentheses_stack[-1] != '[':
+                        raise TokenizationError(
+                            "Unmatched right square bracket", position=0)
+                    parentheses_stack.pop()
+                elif kind == 'MISMATCH':
+                    raise TokenizationError(
+                        f"Unexpected character: {value}", position=0)
 
-            if kind in ['FUNCTION', 'PREDICATE']:
-                value = value[:-1]
+                if kind in ['FUNCTION', 'PREDICATE']:
+                    value = value[:-1]
 
-            tokens.append(Token(kind, value))
+                tokens.append(Token(kind, value))
 
-        if parentheses_stack:
-            raise RuntimeError("Unmatched left parenthesis")
+            if parentheses_stack:
+                raise TokenizationError(
+                    "Unmatched left parenthesis or square bracket at end of input", position=0)
 
-        tokens_list.append(tokens)
+            tokens_list.append(tokens)
+
+    except TokenizationError as e:
+        errors.append(e.to_dict())
+
+    if errors:
+        return {"errors": errors}
 
     serialized_tokens = [[token.serialize() for token in token_list]
                          for token_list in tokens_list]
