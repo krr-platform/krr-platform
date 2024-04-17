@@ -6,6 +6,12 @@ class Token:
         self.type = type
         self.value = value
 
+    def serialize(self):
+        return {
+            'type': self.type,
+            'value': self.value
+        }
+
 
 token_specs = [
     ('FUNCTION', r'([a-z]+[0-9]*)\('),
