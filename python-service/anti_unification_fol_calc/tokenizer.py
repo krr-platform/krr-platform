@@ -76,4 +76,6 @@ def tokenize(input_strings):
 
         tokens_list.append(tokens)
 
-    return tokens_list
+    serialized_tokens = [[token.serialize() for token in token_list]
+                         for token_list in tokens_list]
+    return serialized_tokens

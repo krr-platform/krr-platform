@@ -1,25 +1,14 @@
-# integrates these components.
-# This file would typically handle the overall workflow,
-# invoking functions from the other files to process the input,
-# perform anti-unification, and output the results.
 from flask import jsonify
-from json import dumps
 from . import tokenizer, parser
 
 
 def compute_anti_unification_fol(data):
-    # tokenization & syntax checking
-    token_lists = tokenizer.tokenize(data)
-    serialized_tokens = [[token.serialize() for token in token_list]
-                         for token_list in token_lists]
+    tokens = tokenizer.tokenize(data)
 
-    # parsing into trees
-    trees = parser.parseAllTokens(serialized_tokens)
-
-    # comparing trees and finding generalization
+    trees = parser.parseAllTokens(tokens)
 
     result = {'data': data,
-              'tokens': serialized_tokens,
+              'tokens': tokens,
               'trees': trees
               }
     return jsonify(result)
