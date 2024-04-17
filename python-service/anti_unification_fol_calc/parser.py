@@ -89,12 +89,16 @@ def parse(tokens):
                                'UNIVERSAL_QUANTIFIER', 'EXISTENTIAL_QUANTIFIER', 'LOGICAL_NEG']:
             if ((len(operators_stack) == 0) or
                     ((len(operators_stack) > 0) and
-                     ((getPrecedence(token) <= getPrecedence(operators_stack[-1])) or
-                     (operators_stack[-1] == '[')))):
+                     ((operators_stack[-1] == '[') or
+                      (getPrecedence(token) <= getPrecedence(operators_stack[-1]))))):
                 operators_stack.append(token)
             else:
                 process_operator(operators_stack, operands_stack)
                 operators_stack.append(token)
+        print('DEBUG:', token)
+        print('OPERATORS:', operators_stack)
+        print('OPERANDS:', operands_stack)
+        print('FN:', fn_pd_stack)
 
     while len(operands_stack) > 1:
         process_operator(operators_stack, operands_stack)
