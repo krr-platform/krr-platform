@@ -69,7 +69,7 @@ const ExpressionTree: React.FC<ExpressionTreeProps> = ({ expression }) => {
             {node.name.split('').map((letter, index) => (
                 <span
                     key={index}
-                    className={`text-white px-2 py-1 rounded-full font-bold ${['∧', '∨', '¬', '↔', '→', '∀', '∃'].includes(letter) ? 'bg-orange-500' : 'bg-blue-500'}`}
+                    className={`text-white px-2 py-1 my-1 block max-w-min rounded-full font-bold ${['∧', '∨', '¬', '↔', '→', '∀', '∃'].includes(letter) ? 'bg-orange-500' : 'bg-blue-500'}`}
                 >
                     {letter}
                 </span>

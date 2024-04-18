@@ -371,6 +371,16 @@ export default function CalculatorPage() {
                                                                         </p>
                                                                         <br />
                                                                         <p className="text-sm font-medium text-gray-950">
+                                                                            Regular inputs:
+                                                                        </p>
+                                                                        <ul className="text-sm text-gray-900">
+                                                                            <li>Variables: lower-case letters, might be followed by numbers </li>
+                                                                            <li>Constants: upper-case letters, might be followed by numbers </li>
+                                                                            <li>Functions: lower-case letters, might be followed by numbers, must be followed by a parentheses </li>
+                                                                            <li>Predicates: upper-case letters, might be followed by numbers, must be followed by a parentheses </li>
+                                                                        </ul>
+                                                                        <br />
+                                                                        <p className="text-sm font-medium text-gray-950">
                                                                             Special inputs:
                                                                         </p>
                                                                         <ul className="text-sm text-gray-900">
@@ -383,6 +393,13 @@ export default function CalculatorPage() {
                                                                             <li>Logical Negation: \not </li>
                                                                             <li>Grouping: use square brackets [ ]</li>
                                                                         </ul>
+                                                                        <br />
+                                                                        <p className="text-sm font-medium text-gray-950">
+                                                                            Example:
+                                                                        </p>
+                                                                        <p className="text-sm text-gray-900">
+                                                                            ∀ var5 [ function1(var5) ∧ PREDICATE99(var5, CONST101) ]
+                                                                        </p>
                                                                     </div>
                                                                 </div>
                                                             </div>
