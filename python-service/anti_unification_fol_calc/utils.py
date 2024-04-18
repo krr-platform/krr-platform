@@ -1,13 +1,14 @@
 class Token:
-    def __init__(self, type, value):
+    def __init__(self, type, value=None):
         self.type = type
         self.value = value
 
     def serialize(self):
-        return {
-            'type': self.type,
-            'value': self.value
-        }
+        # Ensure that the serialized output only includes 'value' if it is not None
+        if self.value is not None:
+            return {'type': self.type, 'value': self.value}
+        else:
+            return {'type': self.type}
 
 
 class CalculatorError(Exception):

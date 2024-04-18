@@ -41,7 +41,7 @@ function renderNode(node: Node): React.ReactNode {
 
     return (
         <span>
-            {node.value}
+            {node.type in ['FUNCTION', 'PREDICATE', 'VARIABLE', 'CONSTANT'] ? node.value : node.type}
             (
             {node.children.map((child, index) => (
                 <React.Fragment key={index}>
@@ -459,10 +459,8 @@ export default function CalculatorPage() {
                                                         { marginLeft: '20px' }
                                                     }
                                                 >
-                                                    Type:
-                                                    {token.type || 'N/A'}
-                                                    , Value:
-                                                    {token.value || 'N/A'}
+                                                    {`Type: ${token.type}`}
+                                                    {token.value ? `, Value: ${token.value}` : ''}
                                                 </p>
                                             ))}
                                             <p>---</p>

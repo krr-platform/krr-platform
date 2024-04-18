@@ -40,7 +40,10 @@ def tokenize(input_strings):
                 if kind in ['FUNCTION', 'PREDICATE']:
                     value = value[:-1]
 
-                tokens.append(utils.Token(kind, value))
+                if kind in ['FUNCTION', 'PREDICATE', 'VARIABLE', 'CONSTANT']:
+                    tokens.append(utils.Token(kind, value))
+                else:
+                    tokens.append(utils.Token(kind))
 
             if parentheses_stack:
                 raise utils.CalculatorError(
