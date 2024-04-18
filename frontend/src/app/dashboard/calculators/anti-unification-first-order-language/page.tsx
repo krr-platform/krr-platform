@@ -171,10 +171,19 @@ export default function CalculatorPage() {
         }
     };
 
+    const transformInput = (input: string) => input.replace(/\\and/g, '∧')
+        .replace(/\\or/g, '∨')
+        .replace(/\\not/g, '¬')
+        .replace(/\\equals/g, '↔')
+        .replace(/\\implies/g, '→')
+        .replace(/\\forall/g, '∀')
+        .replace(/\\exists/g, '∃');
+
     const populateField = (idx: number, value: string) => {
         if (idx > -1 && idx < inputs.length) {
             const newInputs = [...inputs];
             newInputs[idx] = value;
+            newInputs[idx] = transformInput(value);
             setInputs(newInputs);
         }
     };
