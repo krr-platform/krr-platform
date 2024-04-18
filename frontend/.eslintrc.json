@@ -57,7 +57,10 @@
     "no-multiple-empty-lines": "error",
     "indent": [
       "error",
-      4
+      4,
+      {
+        "SwitchCase": 1
+      }
     ],
     "react/jsx-indent": [
       "error",

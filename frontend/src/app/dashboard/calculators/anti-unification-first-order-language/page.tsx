@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+
 'use client';
 
 /* eslint-disable max-len */
@@ -39,9 +41,33 @@ function renderNode(node: Node): React.ReactNode {
         return <span>{node.value}</span>;
     }
 
+    function getDisplayValue(node: Node) {
+        switch (node.type) {
+            case 'FUNCTION' || 'PREDICATE' || 'VARIABLE' || 'CONSTANT':
+                return node.value;
+            case 'LOGICAL_AND':
+                return '∧';
+            case 'LOGICAL_OR':
+                return '∨';
+            case 'LOGICAL_NEG':
+                return '¬';
+            case 'LOGICAL_EQUIVALENT':
+                return '↔';
+            case 'LOGICAL_IMPLICATION':
+                return '→';
+            case 'UNIVERSAL_QUANTIFIER':
+                return '∀';
+            case 'EXISTENTIAL_QUANTIFIER':
+                return '∃';
+            default:
+                return node.type;
+        }
+    }
+
     return (
         <span>
-            {node.type in ['FUNCTION', 'PREDICATE', 'VARIABLE', 'CONSTANT'] ? node.value : node.type}
+            {getDisplayValue(node)}
+
             (
             {node.children.map((child, index) => (
                 <React.Fragment key={index}>
