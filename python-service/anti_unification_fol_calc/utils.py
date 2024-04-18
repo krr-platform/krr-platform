@@ -10,7 +10,7 @@ class Token:
         }
 
 
-class TokenizationError(Exception):
+class CalculatorError(Exception):
     def __init__(self, message, position=None):
         super().__init__(message)
         self.message = message
@@ -18,7 +18,7 @@ class TokenizationError(Exception):
 
     def to_dict(self):
         return {
-            'error': 'TokenizationError',
+            'error': 'CalculatorError',
             'message': self.message,
             'position': self.position
         }

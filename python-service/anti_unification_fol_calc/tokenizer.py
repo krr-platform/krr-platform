@@ -25,16 +25,16 @@ def tokenize(input_strings):
                     parentheses_stack.append('[')
                 elif kind == 'RIGHT_PAREN':
                     if not parentheses_stack or parentheses_stack[-1] != '(':
-                        raise utils.TokenizationError(
+                        raise utils.CalculatorError(
                             "Unmatched right parenthesis", position=0)
                     parentheses_stack.pop()
                 elif kind == 'RIGHT_SQUARE':
                     if not parentheses_stack or parentheses_stack[-1] != '[':
-                        raise utils.TokenizationError(
+                        raise utils.CalculatorError(
                             "Unmatched right square bracket", position=0)
                     parentheses_stack.pop()
                 elif kind == 'MISMATCH':
-                    raise utils.TokenizationError(
+                    raise utils.CalculatorError(
                         f"Unexpected character: {value}", position=0)
 
                 if kind in ['FUNCTION', 'PREDICATE']:
@@ -43,12 +43,12 @@ def tokenize(input_strings):
                 tokens.append(utils.Token(kind, value))
 
             if parentheses_stack:
-                raise utils.TokenizationError(
+                raise utils.CalculatorError(
                     "Unmatched left parenthesis or square bracket at end of input", position=0)
 
             tokens_list.append(tokens)
 
-    except utils.TokenizationError as e:
+    except utils.CalculatorError as e:
         errors.append(e.to_dict())
 
     if errors:
