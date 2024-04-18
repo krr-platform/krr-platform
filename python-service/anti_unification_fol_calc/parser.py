@@ -1,29 +1,5 @@
 import copy
-
-
-class Node:
-    def __init__(self, type, value, children=[]):
-        self.type = type
-        self.value = value
-        self.children = children or []
-
-
-def getPrecedence(token):
-    if token['type'] == 'LEFT_SQUARE':
-        return 0
-    elif token['type'] in ['UNIVERSAL_QUANTIFIER', 'EXISTENTIAL_QUANTIFIER']:
-        return 1
-    elif token['type'] == 'LOGICAL_NEG':
-        return 1
-    elif token['type'] == 'LOGICAL_AND':
-        return 3
-    elif token['type'] == 'LOGICAL_OR':
-        return 4
-    elif token['type'] == 'LOGICAL_IMPLICATION':
-        return 5
-    elif token['type'] == 'LOGICAL_EQUIVALENT':
-        return 6
-    return 10
+from . import utils
 
 
 def parse(tokens):
@@ -71,7 +47,7 @@ def parse(tokens):
             if ((len(operators_stack) == 0) or
                     ((len(operators_stack) > 0) and
                      ((operators_stack[-1] == '[') or
-                      (getPrecedence(token) <= getPrecedence(operators_stack[-1]))))):
+                      (utils.getPrecedence(token) <= utils.getPrecedence(operators_stack[-1]))))):
                 operators_stack.append(token)
             else:
                 process_operator(operators_stack, operands_stack)
