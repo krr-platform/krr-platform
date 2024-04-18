@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-
 'use client';
 
 /* eslint-disable max-len */
@@ -13,6 +11,7 @@ import React, { useState, useRef, Fragment } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Dialog, Transition } from '@headlessui/react';
+import ExpressionTree from '../../../components/dashboard/expression-tree';
 
 interface Token {
     type: string;
@@ -41,9 +40,12 @@ function renderNode(node: Node): React.ReactNode {
         return <span>{node.value}</span>;
     }
 
-    function getDisplayValue(node: Node) {
+    function getDisplayValue() {
         switch (node.type) {
-            case 'FUNCTION' || 'PREDICATE' || 'VARIABLE' || 'CONSTANT':
+            case 'FUNCTION':
+            case 'PREDICATE':
+            case 'VARIABLE':
+            case 'CONSTANT':
                 return node.value;
             case 'LOGICAL_AND':
                 return '∧';
@@ -66,8 +68,7 @@ function renderNode(node: Node): React.ReactNode {
 
     return (
         <span>
-            {getDisplayValue(node)}
-
+            {getDisplayValue()}
             (
             {node.children.map((child, index) => (
                 <React.Fragment key={index}>
@@ -78,6 +79,47 @@ function renderNode(node: Node): React.ReactNode {
             )
         </span>
     );
+}
+
+function vizNode(node: Node): string {
+    if (!node || !node.type) {
+        return '';
+    }
+
+    if (!node.children || node.children.length === 0) {
+        return node.value;
+    }
+
+    function getDisplayValue(): string {
+        switch (node.type) {
+            case 'FUNCTION':
+            case 'PREDICATE':
+            case 'VARIABLE':
+            case 'CONSTANT':
+                return node.value;
+            case 'LOGICAL_AND':
+                return '∧';
+            case 'LOGICAL_OR':
+                return '∨';
+            case 'LOGICAL_NEG':
+                return '¬';
+            case 'LOGICAL_EQUIVALENT':
+                return '↔';
+            case 'LOGICAL_IMPLICATION':
+                return '→';
+            case 'UNIVERSAL_QUANTIFIER':
+                return '∀';
+            case 'EXISTENTIAL_QUANTIFIER':
+                return '∃';
+            default:
+                return node.type;
+        }
+    }
+
+    // Construct the string representation of the node and its children
+    const childrenStrings = node.children.map((child) => vizNode(child));
+    const childrenJoined = childrenStrings.join(', ');
+    return `${getDisplayValue()}(${childrenJoined})`;
 }
 
 export default function CalculatorPage() {
@@ -450,12 +492,17 @@ export default function CalculatorPage() {
                         w-full p-8 mt-12 shadow-lg border-2"
                         >
                             {result?.generalization && (
-                                <div>
-                                    <h2>Generalization:</h2>
-                                    <p>
-                                        {renderNode(result.generalization)}
-                                    </p>
-                                </div>
+                                <>
+                                    <div>
+                                        <h2>Generalization:</h2>
+                                        <p>
+                                            {renderNode(result.generalization)}
+                                        </p>
+                                        <br />
+                                    </div>
+                                    <ExpressionTree expression={vizNode(result.generalization)} />
+                                    <br />
+                                </>
                             )}
                             {result?.data && (
                                 <div>

@@ -10,11 +10,10 @@ def generalize(trees):
     # Function to generalize nodes across multiple trees
     def generalize_nodes(*nodes):
         first_type = nodes[0]['type']
-        # Use getattr to handle missing value safely
-        first_value = getattr(nodes[0], 'value', None)
+        first_value = nodes[0].get('value', None)
 
         # Check if all nodes are of the same type and have the same value (if they have a value)
-        if all(node['type'] == first_type and getattr(node, 'value', None) == first_value for node in nodes):
+        if all(node['type'] == first_type and node.get('value', None) == first_value for node in nodes):
             if 'children' in nodes[0]:
                 generalized_children = []
                 # Use a generator expression to collect corresponding children from each node
