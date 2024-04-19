@@ -8,7 +8,6 @@ import { getPrecedence } from '../../../lib/CalculatorUtils';
 type TreeNodeOrString = TreeNode | string;
 
 function processOperator(operatorsStack: TreeNodeOrString[], operandsStack: TreeNodeOrString[]): void {
-    console.log('DEBUG', operatorsStack, operandsStack);
     const operator = operatorsStack.pop() as TreeNode;
     if (operator.type === 'LOGICAL_NEG') {
         const operand = operandsStack.pop()!;
@@ -22,15 +21,19 @@ function processOperator(operatorsStack: TreeNodeOrString[], operandsStack: Tree
 }
 
 function parse(tokens: Token[]): TreeNode {
-    console.log('PARSER');
-    console.log(tokens);
+    // console.log('PARSER');
+    // console.log(tokens);
     const operandsStack: TreeNodeOrString[] = [];
     const operatorsStack: TreeNodeOrString[] = [];
     const fnPdStack: TreeNode[] = [];
 
     while (tokens.length > 0) {
         const token = tokens.pop()!;
-        console.log(token);
+        console.log(token.type);
+        console.log('OPERANDS BEFORE:', operandsStack);
+        console.log('OPERATORS BEFORE:', operatorsStack);
+        console.log('FNS BEFORE:', fnPdStack);
+        // console.log(token);
         if ((token.type === 'VARIABLE' || token.type === 'CONSTANT') && token.value !== undefined) {
             const node = new TreeNode(token.type, token.value);
             operandsStack.push(node);
@@ -42,12 +45,15 @@ function parse(tokens: Token[]): TreeNode {
             const node = new TreeNode(token.type);
             operandsStack.push(node);
         } else if (token.type === 'RIGHT_PAREN') {
+            console.log('RIGHT PAREN');
             const fnOrPred = fnPdStack.pop();
             const content: TreeNode[] = [];
             const idx = operandsStack.length - 1 - operandsStack.slice().reverse().indexOf('(');
+            console.log(idx);
             while (operandsStack.length !== idx + 1) {
                 const operandAfterIdx = operandsStack[idx + 1];
-                if (operandAfterIdx instanceof Token && operandAfterIdx.type !== 'COMMA') {
+                console.log(operandAfterIdx);
+                if (operandAfterIdx instanceof TreeNode && operandAfterIdx.type !== 'COMMA') {
                     const operandToken = (operandsStack.splice(idx + 1, 1)[0] as Token);
                     const node = new TreeNode(operandToken.type, operandToken.value);
                     content.push(node);
@@ -60,6 +66,7 @@ function parse(tokens: Token[]): TreeNode {
                 fnOrPred.children = content;
                 operandsStack.push(fnOrPred);
             }
+            console.log(content);
         } else if (token.type === 'LEFT_SQUARE') {
             operatorsStack.push('[');
         } else if (token.type === 'RIGHT_SQUARE') {
@@ -87,6 +94,9 @@ function parse(tokens: Token[]): TreeNode {
             const node = new TreeNode(token.type, token.value, []);
             operatorsStack.push(node);
         }
+        console.log('OPERANDS AFTER:', operandsStack);
+        console.log('OPERATORS AFTER:', operatorsStack);
+        console.log('FNS AFTER:', fnPdStack);
     }
 
     while (operandsStack.length > 1) {
@@ -100,10 +110,7 @@ export default function parseAllTokens(tokensLists: Token[][]): TreeNode[] {
     const result: TreeNode[] = [];
     tokensLists.forEach((tokensList) => {
         const tempTokensList = [...tokensList].reverse();
-        console.log('BEFORE', tokensList);
-        console.log('AFTER', tempTokensList);
         result.push(parse(tempTokensList));
-        // result.push(parse(tokensList));
     });
     return result;
 }
