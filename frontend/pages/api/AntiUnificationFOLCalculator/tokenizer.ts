@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-console */
 /* eslint-disable max-len */
 import { tokenSpecs } from '../../../lib/CalculatorUtils';
 import CalculatorError from '../../../lib/CalculatorError';
@@ -6,15 +8,18 @@ import Token from '../../../lib/Token';
 export default function tokenize(inputStrings: string[]): Token[][] {
     const allTokens: Token[][] = [];
     inputStrings.forEach((inputString) => {
+        console.log(inputString);
         const tokens: Token[] = [];
         const parenthesesStack: string[] = [];
         const tokenRegex = new RegExp(
             tokenSpecs.map(([kind, regex]) => `(?<${kind}>${regex.source})`).join('|'),
             'g',
         );
-
-        const match: RegExpExecArray | null = tokenRegex.exec(inputString);
-        while (match !== null) {
+        console.log(tokenRegex);
+        // const match: RegExpExecArray | null = tokenRegex.exec(inputString);
+        // while (match !== null) {
+        for (const match of inputString.matchAll(tokenRegex)) {
+            console.log(match);
             const kind = Object.keys(match.groups ?? {}).find((key) => match.groups?.[key] !== undefined);
             const value = match[0];
 

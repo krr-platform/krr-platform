@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-len */
@@ -7,14 +8,26 @@ import { getPrecedence } from '../../../lib/CalculatorUtils';
 import CalculatorError from '../../../lib/CalculatorError';
 
 // Utility function to zip children arrays of nodes
-function* zipChildren(nodes: TreeNode[][]): Generator<TreeNode[]> {
+// function* zipChildren(nodes: TreeNode[][]): Generator<TreeNode[]> {
+//     const minLength = Math.min(...nodes.map((node) => node.length));
+//     for (let i = 0; i < minLength; i += 1) {
+//         yield nodes.map((node) => node[i]);
+//     }
+// }
+function zipChildren(nodes: TreeNode[][]): TreeNode[][] {
     const minLength = Math.min(...nodes.map((node) => node.length));
+    const zipped: TreeNode[][] = [];
     for (let i = 0; i < minLength; i += 1) {
-        yield nodes.map((node) => node[i]);
+        const childGroup: TreeNode[] = [];
+        nodes.forEach((node) => {
+            childGroup.push(node[i]);
+        });
+        zipped.push(childGroup);
     }
+    return zipped;
 }
 
-function generalize(trees: TreeNode[]): TreeNode {
+export default function generalize(trees: TreeNode[]): TreeNode {
     if (!(trees.length >= 2 && trees.length <= 5)) {
         throw new CalculatorError(`Generalizer requires between 2 and 5 trees, but received ${trees.length}.`);
     }
@@ -26,9 +39,9 @@ function generalize(trees: TreeNode[]): TreeNode {
         if (nodes.every((node) => node.type === firstType && (node.value ?? null) === firstValue)) {
             if (nodes[0].children) {
                 const generalizedChildren: TreeNode[] = [];
-                for (const childGroup of zipChildren(nodes)) {
-                    generalizedChildren.push(generalizeNodes(...childGroup));
-                }
+                // for (const childGroup of zipChildren(nodes)) {
+                //     generalizedChildren.push(generalizeNodes(...childGroup));
+                // }
                 return firstValue !== null ? { type: firstType, value: firstValue, children: generalizedChildren } : { type: firstType, children: generalizedChildren };
             }
             // Return the node structure based on whether it has a value

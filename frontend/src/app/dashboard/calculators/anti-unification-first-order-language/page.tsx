@@ -6,32 +6,24 @@
 import Link from 'next/link';
 import { InformationCircleIcon, Bars3Icon, XMarkIcon }
     from '@heroicons/react/24/outline';
-import axios from 'axios';
+// import axios from 'axios';
 import React, { useState, useRef, Fragment } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Dialog, Transition } from '@headlessui/react';
 import ExpressionTree from '../../../components/dashboard/expression-tree';
-
-interface Token {
-    type: string;
-    value: string;
-}
-
-interface Node {
-    type: string;
-    value: string;
-    children: Node[];
-}
+import computeAntiUnificationFOL from '../../../../../pages/api/AntiUnificationFOLCalculator';
+import Token from '../../../../../lib/Token';
+import TreeNode from '../../../../../lib/TreeNode';
 
 interface Result {
     data: string[];
     tokens: Token[][];
-    trees: Node[];
-    generalization: Node;
+    trees: TreeNode[];
+    generalization: TreeNode;
 }
 
-function renderNode(node: Node): React.ReactNode {
+function renderNode(node: TreeNode): React.ReactNode {
     if (!node || !node.type) {
         return null;
     }
@@ -70,10 +62,10 @@ function renderNode(node: Node): React.ReactNode {
         <span>
             {getDisplayValue()}
             (
-            {node.children.map((child, index) => (
+            {node.children && node.children.map((child, index) => (
                 <React.Fragment key={index}>
                     {renderNode(child)}
-                    {index !== node.children.length - 1 && ', '}
+                    {index !== node.children!.length - 1 && ', '}
                 </React.Fragment>
             ))}
             )
@@ -81,13 +73,13 @@ function renderNode(node: Node): React.ReactNode {
     );
 }
 
-function vizNode(node: Node): string {
+function vizNode(node: TreeNode): string {
     if (!node || !node.type) {
         return '';
     }
 
     if (!node.children || node.children.length === 0) {
-        return node.value;
+        return node.value ?? '';
     }
 
     function getDisplayValue(): string {
@@ -96,7 +88,7 @@ function vizNode(node: Node): string {
             case 'PREDICATE':
             case 'VARIABLE':
             case 'CONSTANT':
-                return node.value;
+                return node.value ?? '';
             case 'LOGICAL_AND':
                 return '∧';
             case 'LOGICAL_OR':
@@ -199,31 +191,34 @@ export default function CalculatorPage() {
                 }
                 jsonInputs.push(value);
             }
-            const response = await axios.post(
-                'http://localhost:5000/compute/anti-unification-fol',
-                jsonInputs,
-            );
-            setResult(response.data);
-        } catch (error: unknown) { // Mark error as unknown type
+            // const response = await axios.post(
+            //     'http://localhost:5000/compute/anti-unification-fol',
+            //     jsonInputs,
+            // );
+            // setResult(response.data);
+            setResult(computeAntiUnificationFOL(jsonInputs));
+        } catch (error) { // Mark error as unknown type
             // First check if error is an instance of AxiosError
-            if (axios.isAxiosError(error)) {
-                // Check if error has a response with the data property and errors array
-                if (error.response && error.response.data && 'errors' in error.response.data) {
-                    // Safely access the errors array and message
-                    const { errors } = error.response.data;
-                    if (errors.length > 0 && errors[0].message) {
-                        toast.error(errors[0].message);
-                    } else {
-                        toast.error('Error during computation.');
-                    }
-                } else {
-                    // Handle cases where the error format is not as expected
-                    toast.error('Unexpected error format from server.');
-                }
-            } else {
-                // Handle non-Axios errors (could be network issues, or other unexpected errors)
-                toast.error('Network or unknown error occurred.');
-            }
+            // if (axios.isAxiosError(error)) {
+            // Check if error has a response with the data property and errors array
+
+            // if (error.response && error.response.data && 'errors' in error.response.data) {
+            //     // Safely access the errors array and message
+            //     const { errors } = error.response.data;
+            //     if (errors.length > 0 && errors[0].message) {
+            //         toast.error(errors[0].message);
+            //     } else {
+            //         toast.error('Error during computation.');
+            //     }
+            // } else {
+            //     // Handle cases where the error format is not as expected
+            //     toast.error('Unexpected error format from server.');
+            // }
+
+            // } else {
+            // Handle non-Axios errors (could be network issues, or other unexpected errors)
+            // toast.error('Network or unknown error occurred.');
+            // }
         }
     };
 

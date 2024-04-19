@@ -1,25 +1,32 @@
 import Token from '../../../lib/Token';
-import TreeNode from '../../../lib/TreeNode';
+// import TreeNode from '../../../lib/TreeNode';
 import tokenize from './tokenizer';
-import parseAllTokens from './parser';
+// import parseAllTokens from './parser';
+// import generalize from './generalizer';
 
 interface AntiUnificationResult {
     data: string[];
     tokens: Token[][];
-    trees: TreeNode[];
-    generalization: TreeNode;
+    // trees: TreeNode[];
+    // generalization: TreeNode;
 }
 
-function computeAntiUnificationFOL(data: string[]): AntiUnificationResult {
+export default function computeAntiUnificationFOL(
+    data: string[],
+): AntiUnificationResult {
+    console.log('came here');
     const tokens = tokenize(data);
-    const trees = parseAllTokens(tokens);
-    const generalization = generalize(trees);
+    console.log('TOKEN:', tokens);
+    // const trees = parseAllTokens(tokens);
+    // console.log('TREES:', trees);
+    // const generalization = generalize(trees);
+    // console.log('GNRLN:', generalization);
 
     const result: AntiUnificationResult = {
         data,
         tokens,
-        trees,
-        generalization,
+        // trees,
+        // generalization,
     };
 
     return (result);

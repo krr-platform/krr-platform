@@ -21,6 +21,7 @@ function processOperator(operatorsStack: TreeNodeOrString[], operandsStack: Tree
 }
 
 function parse(tokens: Token[]): TreeNode {
+    console.log('PARSER');
     const operandsStack: TreeNodeOrString[] = [];
     const operatorsStack: TreeNodeOrString[] = [];
     const fnPdStack: TreeNode[] = [];
