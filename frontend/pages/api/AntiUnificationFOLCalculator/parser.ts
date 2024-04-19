@@ -8,6 +8,7 @@ import { getPrecedence } from '../../../lib/CalculatorUtils';
 type TreeNodeOrString = TreeNode | string;
 
 function processOperator(operatorsStack: TreeNodeOrString[], operandsStack: TreeNodeOrString[]): void {
+    console.log('DEBUG', operatorsStack, operandsStack);
     const operator = operatorsStack.pop() as TreeNode;
     if (operator.type === 'LOGICAL_NEG') {
         const operand = operandsStack.pop()!;
@@ -22,12 +23,14 @@ function processOperator(operatorsStack: TreeNodeOrString[], operandsStack: Tree
 
 function parse(tokens: Token[]): TreeNode {
     console.log('PARSER');
+    console.log(tokens);
     const operandsStack: TreeNodeOrString[] = [];
     const operatorsStack: TreeNodeOrString[] = [];
     const fnPdStack: TreeNode[] = [];
 
     while (tokens.length > 0) {
         const token = tokens.pop()!;
+        console.log(token);
         if ((token.type === 'VARIABLE' || token.type === 'CONSTANT') && token.value !== undefined) {
             const node = new TreeNode(token.type, token.value);
             operandsStack.push(node);
@@ -96,8 +99,11 @@ function parse(tokens: Token[]): TreeNode {
 export default function parseAllTokens(tokensLists: Token[][]): TreeNode[] {
     const result: TreeNode[] = [];
     tokensLists.forEach((tokensList) => {
-        const tempTokensList = [...tokensList];
+        const tempTokensList = [...tokensList].reverse();
+        console.log('BEFORE', tokensList);
+        console.log('AFTER', tempTokensList);
         result.push(parse(tempTokensList));
+        // result.push(parse(tokensList));
     });
     return result;
 }
