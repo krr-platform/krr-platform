@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-class CalculatorError extends Error {
+export default class CalculatorError extends Error {
     message: string;
 
     position?: number;

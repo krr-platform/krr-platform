@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-class Token {
+export default class Token {
     type: string;
 
     value?: string;
