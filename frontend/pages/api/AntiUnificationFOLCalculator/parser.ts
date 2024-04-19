@@ -21,19 +21,12 @@ function processOperator(operatorsStack: TreeNodeOrString[], operandsStack: Tree
 }
 
 function parse(tokens: Token[]): TreeNode {
-    // console.log('PARSER');
-    // console.log(tokens);
     const operandsStack: TreeNodeOrString[] = [];
     const operatorsStack: TreeNodeOrString[] = [];
     const fnPdStack: TreeNode[] = [];
 
     while (tokens.length > 0) {
         const token = tokens.pop()!;
-        console.log(token.type);
-        console.log('OPERANDS BEFORE:', operandsStack);
-        console.log('OPERATORS BEFORE:', operatorsStack);
-        console.log('FNS BEFORE:', fnPdStack);
-        // console.log(token);
         if ((token.type === 'VARIABLE' || token.type === 'CONSTANT') && token.value !== undefined) {
             const node = new TreeNode(token.type, token.value);
             operandsStack.push(node);
@@ -45,14 +38,11 @@ function parse(tokens: Token[]): TreeNode {
             const node = new TreeNode(token.type);
             operandsStack.push(node);
         } else if (token.type === 'RIGHT_PAREN') {
-            console.log('RIGHT PAREN');
             const fnOrPred = fnPdStack.pop();
             const content: TreeNode[] = [];
             const idx = operandsStack.length - 1 - operandsStack.slice().reverse().indexOf('(');
-            console.log(idx);
             while (operandsStack.length !== idx + 1) {
                 const operandAfterIdx = operandsStack[idx + 1];
-                console.log(operandAfterIdx);
                 if (operandAfterIdx instanceof TreeNode && operandAfterIdx.type !== 'COMMA') {
                     const operandToken = (operandsStack.splice(idx + 1, 1)[0] as Token);
                     const node = new TreeNode(operandToken.type, operandToken.value);
@@ -66,11 +56,10 @@ function parse(tokens: Token[]): TreeNode {
                 fnOrPred.children = content;
                 operandsStack.push(fnOrPred);
             }
-            console.log(content);
         } else if (token.type === 'LEFT_SQUARE') {
             operatorsStack.push('[');
         } else if (token.type === 'RIGHT_SQUARE') {
-            while (operatorsStack.length > 0 && ((operatorsStack[operatorsStack.length - 1] as TreeNode).type !== 'LEFT_SQUARE')) {
+            while (operatorsStack.length > 0 && ((operatorsStack[operatorsStack.length - 1] as string) !== '[')) {
                 processOperator(operatorsStack, operandsStack);
             }
             operatorsStack.pop();
@@ -94,9 +83,6 @@ function parse(tokens: Token[]): TreeNode {
             const node = new TreeNode(token.type, token.value, []);
             operatorsStack.push(node);
         }
-        console.log('OPERANDS AFTER:', operandsStack);
-        console.log('OPERATORS AFTER:', operatorsStack);
-        console.log('FNS AFTER:', fnPdStack);
     }
 
     while (operandsStack.length > 1) {

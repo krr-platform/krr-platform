@@ -15,7 +15,7 @@ export default function computeAntiUnificationFOL(
     data: string[],
 ): AntiUnificationResult {
     const tokens = tokenize(data);
-    // console.log(tokens);
+    console.log(tokens);
     const trees = parseAllTokens(tokens);
     console.log('TREES:', trees);
     const generalization = generalize(trees);
