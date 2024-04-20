@@ -19,7 +19,7 @@ export default function TreeVisualizer(generalization: TreeNode) {
     const parentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!parentRef.current) return;
+        if (typeof window === 'undefined' || !parentRef.current) return;
         setDepth(calculateDepth(generalization));
         const parentWidth = parentRef.current.offsetWidth;
         const nodeWidth = 50;
