@@ -110,35 +110,35 @@ function calculateDepth(node: TreeNode, depth: number = 1): number {
     return maxChildDepth;
 }
 
-function calculateBreadth(node: TreeNode): number {
-    if (!node) {
-        return 0; // If the node is null or undefined, return 0
-    }
+// function calculateBreadth(node: TreeNode): number {
+//     if (!node) {
+//         return 0; // If the node is null or undefined, return 0
+//     }
 
-    const queue: TreeNode[] = [node]; // Initialize a queue with the root node
-    let breadth = 0; // Initialize breadth counter
+//     const queue: TreeNode[] = [node]; // Initialize a queue with the root node
+//     let breadth = 0; // Initialize breadth counter
 
-    while (queue.length > 0) {
-        const levelSize = queue.length; // Number of nodes at the current level
+//     while (queue.length > 0) {
+//         const levelSize = queue.length; // Number of nodes at the current level
 
-        // Iterate over all nodes at the current level
-        for (let i = 0; i < levelSize; i += 1) {
-            const currentNode = queue.shift()!; // Dequeue the current node
+//         // Iterate over all nodes at the current level
+//         for (let i = 0; i < levelSize; i += 1) {
+//             const currentNode = queue.shift()!; // Dequeue the current node
 
-            // Enqueue all child nodes of the current node
-            if (currentNode.children && currentNode.children.length > 0) {
-                queue.push(...currentNode.children);
-            }
-        }
+//             // Enqueue all child nodes of the current node
+//             if (currentNode.children && currentNode.children.length > 0) {
+//                 queue.push(...currentNode.children);
+//             }
+//         }
 
-        // Update the breadth if the current level has more nodes
-        breadth = Math.max(breadth, levelSize);
-    }
+//         // Update the breadth if the current level has more nodes
+//         breadth = Math.max(breadth, levelSize);
+//     }
 
-    return breadth; // Return the maximum breadth of the tree
-}
+//     return breadth; // Return the maximum breadth of the tree
+// }
 
 export {
     tokenSpecs, getPrecedence, getDisplayValue,
-    calculateDepth, calculateBreadth, getDisplayColor,
+    calculateDepth, getDisplayColor,
 };

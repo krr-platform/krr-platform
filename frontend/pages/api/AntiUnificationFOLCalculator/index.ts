@@ -3,7 +3,7 @@ import TreeNode from '../../../lib/TreeNode';
 import tokenize from './tokenizer';
 import parseAllTokens from './parser';
 import generalize from './generalizer';
-import { calculateBreadth, calculateDepth } from '../../../lib/CalculatorUtils';
+import { calculateDepth } from '../../../lib/CalculatorUtils';
 
 interface AntiUnificationResult {
     data: string[];

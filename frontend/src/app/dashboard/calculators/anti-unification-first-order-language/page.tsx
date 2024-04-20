@@ -1,6 +1,6 @@
-/* eslint-disable react/jsx-props-no-spreading */
 'use client';
 
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/no-array-index-key */
