@@ -15,8 +15,8 @@ import TreeNode from '../../../../lib/TreeNode';
 
 export default function TreeVisualizer(generalization: TreeNode) {
     const [depth, setDepth] = useState(calculateDepth(generalization));
-    console.log('DEBUG', generalization);
-    console.log('DEPTH', depth);
+    // console.log('DEBUG', generalization);
+    // console.log('DEPTH', depth);
     const parentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -30,19 +30,23 @@ export default function TreeVisualizer(generalization: TreeNode) {
             const horizontalSpacing = 50;
             const verticalSpacing = 50;
             const w = parentWidth;
-            const h = nodeHeight * (depth / 2) + verticalSpacing * (depth - 1);
+            const h = nodeHeight * depth + verticalSpacing;
 
             const drawTree = (p: p5, node: TreeNode, x: number, y: number, dx: number, dy: number) => {
+                const numChildren = node.children ? node.children.length : 0;
+                const spacingFactor = 2 / numChildren; // Adjust this factor as needed
+                const adjustedDx = dx * spacingFactor;
+
                 if (node.children) {
-                    const startX = x - (dx * (node.children.length - 1)) / 2;
+                    const startX = x - (adjustedDx * (node.children.length - 1)) / 2;
                     const startY = y + dy;
                     for (let i = 0; i < node.children.length; i += 1) {
                         const child = node.children[i];
-                        const childX = startX + i * dx;
+                        const childX = startX + i * adjustedDx;
                         const childY = startY;
                         p.stroke(0);
                         p.line(x, y, childX, childY); // Draw edge
-                        drawTree(p, child, childX, childY, dx, dy);
+                        drawTree(p, child, childX, childY, adjustedDx, dy);
                     }
                 }
                 p.noStroke();

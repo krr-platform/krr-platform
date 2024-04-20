@@ -83,6 +83,11 @@ function parse(tokens: Token[]): TreeNode {
             const node = new TreeNode(token.type, token.value, []);
             operatorsStack.push(node);
         }
+        console.log(token);
+        console.log('OPERATORS', operatorsStack);
+        console.log('OPERANDS', operandsStack);
+        console.log('FN', fnPdStack);
+        console.log();
     }
 
     while (operandsStack.length > 1) {

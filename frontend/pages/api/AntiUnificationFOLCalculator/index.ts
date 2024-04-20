@@ -25,8 +25,8 @@ export default function computeAntiUnificationFOL(
         trees,
         generalization,
     };
-    console.log(result);
-    console.log(generalization);
+    // console.log(result);
+    // console.log(generalization);
     console.log(calculateDepth(generalization));
 
     return (result);
