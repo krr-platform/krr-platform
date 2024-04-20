@@ -75,19 +75,20 @@ function getDisplayColor(node: TreeNode): number[] {
     switch (node.type) {
         case 'FUNCTION':
         case 'PREDICATE':
-            return [255, 255, 255];
+            return [13, 59, 102];
         case 'VARIABLE':
         case 'CONSTANT':
-            return [253, 186, 116];
+            return [72, 159, 181];
         case 'LOGICAL_AND':
         case 'LOGICAL_OR':
         case 'LOGICAL_NEG':
         case 'LOGICAL_EQUIVALENT':
         case 'LOGICAL_IMPLICATION':
-            return [12, 12, 12];
+            return [255, 176, 31];
         case 'UNIVERSAL_QUANTIFIER':
         case 'EXISTENTIAL_QUANTIFIER':
-            return [10, 10, 10];
+            return [233, 19, 99];
+
         default:
             return [0, 0, 0];
     }

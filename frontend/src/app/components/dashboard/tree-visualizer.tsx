@@ -27,7 +27,7 @@ export default function TreeVisualizer(generalization: TreeNode) {
         const horizontalSpacing = 50;
         const verticalSpacing = 50;
         const w = parentWidth;
-        const h = nodeHeight * depth + verticalSpacing * (depth - 1);
+        const h = nodeHeight * (depth / 2) + verticalSpacing * (depth - 1);
 
         const drawTree = (p: p5, node: TreeNode, x: number, y: number, dx: number, dy: number) => {
             if (node.children) {
@@ -70,5 +70,5 @@ export default function TreeVisualizer(generalization: TreeNode) {
         };
     }, [generalization, depth]);
 
-    return <div ref={parentRef} style={{ position: 'relative' }} />;
+    return <div ref={parentRef} style={{ position: 'relative' }} className="overflow-visible" />;
 }
