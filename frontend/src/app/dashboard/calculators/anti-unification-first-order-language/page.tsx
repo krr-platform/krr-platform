@@ -450,7 +450,7 @@ export default function CalculatorPage() {
                                             </p>
                                             <br />
                                         </div>
-                                        <TreeVisualizer {...result.generalization} />
+                                        {typeof window !== 'undefined' && <TreeVisualizer {...result.generalization} />}
                                         <br />
                                     </div>
                                 )}
