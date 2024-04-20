@@ -1,26 +1,16 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-len */
-import Token from '../../../lib/Token';
 import TreeNode from '../../../lib/TreeNode';
-import { getPrecedence } from '../../../lib/CalculatorUtils';
 import CalculatorError from '../../../lib/CalculatorError';
 
-// Utility function to zip children arrays of nodes
-// function* zipChildren(nodes: TreeNode[][]): Generator<TreeNode[]> {
-//     const minLength = Math.min(...nodes.map((node) => node.length));
-//     for (let i = 0; i < minLength; i += 1) {
-//         yield nodes.map((node) => node[i]);
-//     }
-// }
-function zipChildren(nodes: TreeNode[][]): TreeNode[][] {
-    const minLength = Math.min(...nodes.map((node) => node.length));
+function zipChildren(nodes: TreeNode[]): TreeNode[][] {
+    const minLength = Math.min(...nodes.map((node) => (node.children ? node.children.length : 0)));
     const zipped: TreeNode[][] = [];
     for (let i = 0; i < minLength; i += 1) {
         const childGroup: TreeNode[] = [];
         nodes.forEach((node) => {
-            childGroup.push(node[i]);
+            if (node.children && node.children[i]) {
+                childGroup.push(node.children[i]);
+            }
         });
         zipped.push(childGroup);
     }
@@ -32,6 +22,30 @@ export default function generalize(trees: TreeNode[]): TreeNode {
         throw new CalculatorError(`Generalizer requires between 2 and 5 trees, but received ${trees.length}.`);
     }
 
+    let variableCount = 0;
+    let constantCount = 0;
+    let functionCount = 0;
+    let predicateCount = 0;
+
+    function generateIdentifier(type: string): string {
+        switch (type) {
+            case 'VARIABLE':
+                variableCount += 1;
+                return `:v${variableCount}`;
+            case 'CONSTANT':
+                constantCount += 1;
+                return `:C${constantCount}`;
+            case 'FUNCTION':
+                functionCount += 1;
+                return `:f${functionCount}`;
+            case 'PREDICATE':
+                predicateCount += 1;
+                return `:P${predicateCount}`;
+            default:
+                return ':x';
+        }
+    }
+
     function generalizeNodes(...nodes: TreeNode[]): TreeNode {
         const firstType = nodes[0].type;
         const firstValue = nodes[0].value ?? null;
@@ -39,16 +53,18 @@ export default function generalize(trees: TreeNode[]): TreeNode {
         if (nodes.every((node) => node.type === firstType && (node.value ?? null) === firstValue)) {
             if (nodes[0].children) {
                 const generalizedChildren: TreeNode[] = [];
-                // for (const childGroup of zipChildren(nodes)) {
-                //     generalizedChildren.push(generalizeNodes(...childGroup));
-                // }
+                // eslint-disable-next-line no-restricted-syntax
+                for (const childGroup of zipChildren(nodes)) {
+                    generalizedChildren.push(generalizeNodes(...childGroup));
+                }
                 return firstValue !== null ? { type: firstType, value: firstValue, children: generalizedChildren } : { type: firstType, children: generalizedChildren };
             }
             // Return the node structure based on whether it has a value
             return firstValue !== null ? { type: firstType, value: firstValue } : { type: firstType };
         }
         // Nodes differ, use a placeholder
-        return { type: 'VARIABLE', value: 'x' };
+        // return { type: 'VARIABLE', value: 'x' };
+        return { type: firstType, value: generateIdentifier(firstType) }; // Generate unique identifier based on node type
     }
 
     // Start the generalization from the root nodes of each tree
