@@ -4,8 +4,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import p5 from 'p5';
 import React, { useEffect, useRef, RefObject } from 'react';
+import p5 from 'p5';
 
 export default function TreeVisualizer() {
     const breadth = 4;
