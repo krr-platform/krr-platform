@@ -28,7 +28,6 @@ export default function computeAntiUnificationFOL(
     console.log(result);
     console.log(generalization);
     console.log(calculateDepth(generalization));
-    console.log(calculateBreadth(generalization));
 
     return (result);
 }

@@ -45,7 +45,7 @@ function getPrecedence(token: { type: string }): number {
     }
 }
 
-function getDisplayValue(node: TreeNode) {
+function getDisplayValue(node: TreeNode): string {
     switch (node.type) {
         case 'FUNCTION':
         case 'PREDICATE':
@@ -68,6 +68,28 @@ function getDisplayValue(node: TreeNode) {
             return '∃';
         default:
             return node.type;
+    }
+}
+
+function getDisplayColor(node: TreeNode): number[] {
+    switch (node.type) {
+        case 'FUNCTION':
+        case 'PREDICATE':
+            return [255, 255, 255];
+        case 'VARIABLE':
+        case 'CONSTANT':
+            return [253, 186, 116];
+        case 'LOGICAL_AND':
+        case 'LOGICAL_OR':
+        case 'LOGICAL_NEG':
+        case 'LOGICAL_EQUIVALENT':
+        case 'LOGICAL_IMPLICATION':
+            return [12, 12, 12];
+        case 'UNIVERSAL_QUANTIFIER':
+        case 'EXISTENTIAL_QUANTIFIER':
+            return [10, 10, 10];
+        default:
+            return [0, 0, 0];
     }
 }
 
@@ -117,5 +139,5 @@ function calculateBreadth(node: TreeNode): number {
 
 export {
     tokenSpecs, getPrecedence, getDisplayValue,
-    calculateDepth, calculateBreadth,
+    calculateDepth, calculateBreadth, getDisplayColor,
 };

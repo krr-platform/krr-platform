@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 'use client';
 
 /* eslint-disable max-len */
@@ -449,7 +450,7 @@ export default function CalculatorPage() {
                                             </p>
                                             <br />
                                         </div>
-                                        <TreeVisualizer />
+                                        <TreeVisualizer {...result.generalization} />
                                         <br />
                                     </div>
                                 )}
