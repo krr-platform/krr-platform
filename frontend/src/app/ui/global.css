@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components{
+/* @layer components{
     .balabizo {
         @apply relative flex;
     }
@@ -15,8 +15,4 @@ html, body {
   
   body {
     @apply flex flex-col min-h-screen;
-  }
-  
-  main {
-    @apply flex-1 min-h-screen;;
-  }
+  } */

@@ -10,10 +10,11 @@ import React, { useState, useRef, Fragment } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Dialog, Transition } from '@headlessui/react';
-import ExpressionTree from '../../../components/dashboard/expression-tree';
 import computeAntiUnificationFOL from '../../../../../pages/api/AntiUnificationFOLCalculator';
 import Token from '../../../../../lib/Token';
 import TreeNode from '../../../../../lib/TreeNode';
+import { getDisplayValue } from '../../../../../lib/CalculatorUtils';
+import TreeVisualizer from '@/app/components/dashboard/tree-visualizer';
 
 interface Result {
     data: string[];
@@ -31,35 +32,9 @@ function renderNode(node: TreeNode): React.ReactNode {
         return <span>{node.value}</span>;
     }
 
-    function getDisplayValue() {
-        switch (node.type) {
-            case 'FUNCTION':
-            case 'PREDICATE':
-            case 'VARIABLE':
-            case 'CONSTANT':
-                return node.value;
-            case 'LOGICAL_AND':
-                return '∧';
-            case 'LOGICAL_OR':
-                return '∨';
-            case 'LOGICAL_NEG':
-                return '¬';
-            case 'LOGICAL_EQUIVALENT':
-                return '↔';
-            case 'LOGICAL_IMPLICATION':
-                return '→';
-            case 'UNIVERSAL_QUANTIFIER':
-                return '∀';
-            case 'EXISTENTIAL_QUANTIFIER':
-                return '∃';
-            default:
-                return node.type;
-        }
-    }
-
     return (
         <span>
-            {getDisplayValue()}
+            {getDisplayValue(node)}
             (
             {node.children && node.children.map((child, index) => (
                 <React.Fragment key={index}>
@@ -70,47 +45,6 @@ function renderNode(node: TreeNode): React.ReactNode {
             )
         </span>
     );
-}
-
-function vizNode(node: TreeNode): string {
-    if (!node || !node.type) {
-        return '';
-    }
-
-    if (!node.children || node.children.length === 0) {
-        return node.value ?? '';
-    }
-
-    function getDisplayValue(): string {
-        switch (node.type) {
-            case 'FUNCTION':
-            case 'PREDICATE':
-            case 'VARIABLE':
-            case 'CONSTANT':
-                return node.value ?? '';
-            case 'LOGICAL_AND':
-                return '∧';
-            case 'LOGICAL_OR':
-                return '∨';
-            case 'LOGICAL_NEG':
-                return '¬';
-            case 'LOGICAL_EQUIVALENT':
-                return '↔';
-            case 'LOGICAL_IMPLICATION':
-                return '→';
-            case 'UNIVERSAL_QUANTIFIER':
-                return '∀';
-            case 'EXISTENTIAL_QUANTIFIER':
-                return '∃';
-            default:
-                return node.type;
-        }
-    }
-
-    // Construct the string representation of the node and its children
-    const childrenStrings = node.children.map((child) => vizNode(child));
-    const childrenJoined = childrenStrings.join(', ');
-    return `${getDisplayValue()}(${childrenJoined})`;
 }
 
 export default function CalculatorPage() {
@@ -217,7 +151,7 @@ export default function CalculatorPage() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto flex w-full border-black pt-4">
+        <div className="max-w-4xl mx-auto py-10 pt-4">
             <div className="flex">
                 <div className="flex flex-col flex-grow w-9/12">
                     <nav className="flex px-4" aria-label="Breadcrumb">
@@ -279,7 +213,7 @@ export default function CalculatorPage() {
                             </li>
                         </ol>
                     </nav>
-                    <div className="mx-auto py-5 px-4">
+                    <div className="py-5 px-4">
                         <h1 className="text-3xl font-bold  text-gray-900 mb-2">
                             Anti-Unification (First-order Language)
                         </h1>
@@ -473,22 +407,22 @@ export default function CalculatorPage() {
                                     </div>
                                 ))}
                             </div>
-                            <button
-                                data-tooltip-target="tooltip-default"
-                                onClick={addInputField}
-                                disabled={!(inputs.length >= MIN_STATEMENTS
-                                    && inputs.length <= MAX_STATEMENTS - 1)}
-                                type="button"
-                                className="disabled:border-slate-200
+                            <div className="flex justify-between items-center mt-4">
+                                <button
+                                    data-tooltip-target="tooltip-default"
+                                    onClick={addInputField}
+                                    disabled={!(inputs.length >= MIN_STATEMENTS
+                                        && inputs.length <= MAX_STATEMENTS - 1)}
+                                    type="button"
+                                    className="disabled:border-slate-200
                                 disabled:bg-slate-50 disabled:text-slate-500
                                 border-2 border-blue-300 text-blue-500
                                 hover:bg-blue-50 hover:border-blue-500
                                 text-bold font-medium py-2 px-4 my-4 rounded
                                 transition-colors duration-300"
-                            >
-                                Add Statement
-                            </button>
-                            <div className="flex justify-end items-center">
+                                >
+                                    Add Statement
+                                </button>
                                 <button
                                     type="button"
                                     onClick={() => { handleCalculate(); }}
@@ -502,84 +436,85 @@ export default function CalculatorPage() {
                                 </button>
                             </div>
                         </div>
-
-                        <div className="bg-orange-50 rounded-lg
-                        w-full p-8 mt-12 shadow-lg border-2"
-                        >
-                            {result?.generalization && (
-                                <>
+                        {result && (
+                            <div className="bg-orange-50 rounded-lg
+                            w-full p-8 mt-12 shadow-lg border-2"
+                            >
+                                {result?.generalization && (
                                     <div>
-                                        <h2>Generalization:</h2>
-                                        <p>
-                                            {renderNode(result.generalization)}
-                                        </p>
+                                        <div>
+                                            <h2>Generalization:</h2>
+                                            <p>
+                                                {renderNode(result.generalization)}
+                                            </p>
+                                            <br />
+                                        </div>
+                                        <TreeVisualizer />
                                         <br />
                                     </div>
-                                    <ExpressionTree expression={vizNode(result.generalization)} />
-                                    <br />
-                                </>
-                            )}
-                            {result?.data && (
-                                <div>
-                                    <h2>Data:</h2>
-                                    {result.data.map((item, idx) => (
-                                        <p key={idx}>{item}</p>
-                                    ))}
-                                </div>
-                            )}
-                            {result?.tokens && (
-                                <div>
-                                    <h2>Tokens:</h2>
-                                    {/* For each statement */}
-                                    {result.tokens.map((
-                                        tokenArray,
-                                        arrayIndex,
-                                    ) => (
-                                        <div key={arrayIndex}>
-                                            {/* For each token in statement */}
-                                            {tokenArray.map((
-                                                token,
-                                                tokenIndex,
-                                            ) => (
+                                )}
+                                {result?.data && (
+                                    <div>
+                                        <h2>Data:</h2>
+                                        {result.data.map((item, idx) => (
+                                            <p key={idx}>{item}</p>
+                                        ))}
+                                    </div>
+                                )}
+                                {result?.tokens && (
+                                    <div>
+                                        <h2>Tokens:</h2>
+                                        {/* For each statement */}
+                                        {result.tokens.map((
+                                            tokenArray,
+                                            arrayIndex,
+                                        ) => (
+                                            <div key={arrayIndex}>
+                                                {/* For each token in statement */}
+                                                {tokenArray.map((
+                                                    token,
+                                                    tokenIndex,
+                                                ) => (
+                                                    <p
+                                                        key={tokenIndex}
+                                                        style={
+                                                            { marginLeft: '20px' }
+                                                        }
+                                                    >
+                                                        {`Type: ${token.type}`}
+                                                        {token.value ? `, Value: ${token.value}` : ''}
+                                                    </p>
+                                                ))}
+                                                <p>---</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                                {result?.trees && (
+                                    <div>
+                                        <h2>trees:</h2>
+                                        {result.trees.map((
+                                            treeNode,
+                                            treeNodeIndex,
+                                        ) => (
+                                            <div key={treeNodeIndex}>
                                                 <p
-                                                    key={tokenIndex}
-                                                    style={
-                                                        { marginLeft: '20px' }
-                                                    }
+                                                    key={treeNodeIndex}
+                                                    style={{ marginLeft: '20px' }}
                                                 >
-                                                    {`Type: ${token.type}`}
-                                                    {token.value ? `, Value: ${token.value}` : ''}
+                                                    {renderNode(treeNode)}
                                                 </p>
-                                            ))}
-                                            <p>---</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                            {result?.trees && (
-                                <div>
-                                    <h2>trees:</h2>
-                                    {result.trees.map((
-                                        treeNode,
-                                        treeNodeIndex,
-                                    ) => (
-                                        <div key={treeNodeIndex}>
-                                            <p
-                                                key={treeNodeIndex}
-                                                style={{ marginLeft: '20px' }}
-                                            >
-                                                {renderNode(treeNode)}
-                                            </p>
-                                            <p
-                                                style={{ marginLeft: '20px' }}
-                                            >
-                                                ---
-                                            </p>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                                                <p
+                                                    style={{ marginLeft: '20px' }}
+                                                >
+                                                    ---
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
