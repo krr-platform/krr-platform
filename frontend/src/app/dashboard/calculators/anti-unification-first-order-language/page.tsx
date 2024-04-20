@@ -11,11 +11,11 @@ import React, { useState, useRef, Fragment } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Dialog, Transition } from '@headlessui/react';
+import TreeVisualizer from '@/app/components/dashboard/tree-visualizer';
 import computeAntiUnificationFOL from '../../../../../pages/api/AntiUnificationFOLCalculator';
 import Token from '../../../../../lib/Token';
 import TreeNode from '../../../../../lib/TreeNode';
 import { getDisplayValue } from '../../../../../lib/CalculatorUtils';
-import TreeVisualizer from '@/app/components/dashboard/tree-visualizer';
 
 interface Result {
     data: string[];
