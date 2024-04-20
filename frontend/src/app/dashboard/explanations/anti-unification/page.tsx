@@ -23,15 +23,12 @@ export default function LessonPage() {
     //     // const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
     //     // const currentScroll = window.scrollY;
     //     // const newProgress = (currentScroll / totalScroll) * 100;
-    //     console.log(scrollPercent);
     //     setProgress(scrollPercent);
     // };
 
     // useEffect(() => {
-    //     console.log('Adding scroll event listener');
     //     window.addEventListener('scroll', handleScroll);
     //     return () => {
-    //         console.log('Removing scroll event listener');
     //         window.removeEventListener('scroll', handleScroll);
     //     };
     // }, []);

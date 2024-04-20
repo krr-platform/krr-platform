@@ -1,7 +1,14 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
+  "name": "krr-platform",
+  "version": "1.0.0",
+  "description": "Open source platform to learn artificial intelligence concepts in a modern and interactive way.",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krr-platform/krr-platform"
+  },
+  "author": "john-roufaeil",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
