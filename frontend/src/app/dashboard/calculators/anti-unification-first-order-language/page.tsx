@@ -11,7 +11,7 @@ import React, { useState, useRef, Fragment } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Dialog, Transition } from '@headlessui/react';
-// import TreeVisualizer from '@/app/components/dashboard/tree-visualizer';
+import TreeVisualizer from '@/app/components/dashboard/tree-visualizer';
 import computeAntiUnificationFOL from '../../../../../pages/api/AntiUnificationFOLCalculator';
 import Token from '../../../../../lib/Token';
 import TreeNode from '../../../../../lib/TreeNode';
@@ -450,7 +450,7 @@ export default function CalculatorPage() {
                                             </p>
                                             <br />
                                         </div>
-                                        {/* {typeof window !== 'undefined' && <TreeVisualizer {...result.generalization} />} */}
+                                        {typeof window !== 'undefined' && <TreeVisualizer {...result.generalization} />}
                                         <br />
                                     </div>
                                 )}
