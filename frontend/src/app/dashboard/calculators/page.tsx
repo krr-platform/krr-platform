@@ -1,8 +1,7 @@
-// import Image from 'next/image';
 import React from 'react';
 import ListCalculators from '@/app/components/dashboard/list-calculators';
 
-export default function CalculatorssPage() {
+export default function CalculatorsPage() {
     return (
         <div className="max-w-4xl mx-auto py-10 px-4">
             <h1 className="text-3xl font-bold  text-gray-900 mb-2">

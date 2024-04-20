@@ -123,7 +123,6 @@ export default function Header() {
                                         className="h-6 w-6"
                                         aria-hidden="true"
                                     />
-                                    // eslint-disable-next-line react/jsx-no-useless-fragment
                                 ) : <></>}
                         </button>
                     </div>

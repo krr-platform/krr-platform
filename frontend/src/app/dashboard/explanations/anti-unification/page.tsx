@@ -1,12 +1,12 @@
 'use client';
 
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-len */
 import Link from 'next/link';
 import Image from 'next/image';
 import React, { useEffect, useState, useRef } from 'react';
 
 export default function LessonPage() {
-    // const [progress, setProgress] = useState(0);
     const [activeSection, setActiveSection] = useState<string | null>(null);
     const sectionRefs = {
         basics: useRef(null),
@@ -15,23 +15,6 @@ export default function LessonPage() {
         algorithm: useRef(null),
         resources: useRef(null),
     };
-
-    // const handleScroll = () => {
-    //     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    //     const scrollBottom = (document.documentElement.scrollHeight || document.body.scrollHeight);
-    //     const scrollPercent = (scrollTop / scrollBottom) * 100;
-    //     // const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-    //     // const currentScroll = window.scrollY;
-    //     // const newProgress = (currentScroll / totalScroll) * 100;
-    //     setProgress(scrollPercent);
-    // };
-
-    // useEffect(() => {
-    //     window.addEventListener('scroll', handleScroll);
-    //     return () => {
-    //         window.removeEventListener('scroll', handleScroll);
-    //     };
-    // }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -63,9 +46,7 @@ export default function LessonPage() {
         <div className="max-w-4xl mx-auto flex w-full border-black pt-4">
             <div className="flex">
                 <div className="flex flex-col flex-grow w-9/12">
-                    {/* <div className="sticky z-10 flex-grow w-full top-0 bg-white"> */}
                     <div>
-                        {/* <progress className="progress w-full mb-4 progress-secondary" value={progress} max="100" /> */}
                         <nav className="flex px-4" aria-label="Breadcrumb">
                             <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                                 <li className="inline-flex items-center">

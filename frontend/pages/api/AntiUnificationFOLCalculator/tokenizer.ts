@@ -14,8 +14,7 @@ export default function tokenize(inputStrings: string[]): Token[][] {
             tokenSpecs.map(([kind, regex]) => `(?<${kind}>${regex.source})`).join('|'),
             'g',
         );
-        // const match: RegExpExecArray | null = tokenRegex.exec(inputString);
-        // while (match !== null) {
+
         for (const match of inputString.matchAll(tokenRegex)) {
             const kind = Object.keys(match.groups ?? {}).find((key) => match.groups?.[key] !== undefined);
             const value = match[0];

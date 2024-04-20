@@ -21,7 +21,6 @@ const calculators: Item[] = [
 
 export default function ListCalculators() {
     return (
-        // <ul role="list" className="divide-y divide-gray-100">
         <ul role="list">
             {calculators.map((item: any) => (
                 <li key={item.id} className="flex w-full justify-between gap-x-6 py-2">

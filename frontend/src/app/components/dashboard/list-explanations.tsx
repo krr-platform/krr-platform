@@ -1,6 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/no-redundant-roles */
+/* eslint-disable max-len */
 import Link from 'next/link';
 
 interface Item {
@@ -16,20 +17,7 @@ const explanations: Item[] = [
         shortDesc: 'The process of constructing a generalization'
             + ' common to two given symbolic expressions.',
     },
-    // {
-    //     id: 2,
-    //     name: 'Unification',
-    //     shortDesc: 'The process of making two different logical'
-    //         + ' atomic expressions identical by finding a substitution.',
-    // },
-    // {
-    //     id: 3,
-    //     name: 'First-order Language',
-    //     shortDesc: 'First-Order Logic speaks about objects, which'
-    //         + ' are the domain of discourse or the universe.',
-    // },
 ];
-/* eslint-disable max-len */
 
 export default function ListExplanations() {
     return (

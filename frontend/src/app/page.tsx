@@ -1,8 +1,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-// eslint-disable-next-line import/no-extraneous-dependencies
-
 import Link from 'next/link';
 import Features from '@/app/components/homepage/features';
 import Header from '@/app/components/header';

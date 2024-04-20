@@ -6,7 +6,6 @@
 import Link from 'next/link';
 import { InformationCircleIcon, Bars3Icon, XMarkIcon }
     from '@heroicons/react/24/outline';
-// import axios from 'axios';
 import React, { useState, useRef, Fragment } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -191,11 +190,6 @@ export default function CalculatorPage() {
                 }
                 jsonInputs.push(value);
             }
-            // const response = await axios.post(
-            //     'http://localhost:5000/compute/anti-unification-fol',
-            //     jsonInputs,
-            // );
-            // setResult(response.data);
             setResult(computeAntiUnificationFOL(jsonInputs));
         } catch (error) { // Mark error as unknown type
             // First check if error is an instance of AxiosError
