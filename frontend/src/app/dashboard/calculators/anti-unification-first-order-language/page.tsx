@@ -119,7 +119,6 @@ export default function CalculatorPage() {
     const populateField = (idx: number, value: string) => {
         if (idx > -1 && idx < inputs.length) {
             const newInputs = [...inputs];
-            newInputs[idx] = value;
             newInputs[idx] = transformInput(value);
             setInputs(newInputs);
         }
@@ -359,7 +358,7 @@ export default function CalculatorPage() {
                             <div className="">
                                 {inputs.map((input, index) => (
                                     <div
-                                        key={uuidv4()}
+                                        key={index}
                                         draggable
                                         onDragStart={
                                             (e) => onDragStart(e, index)
@@ -369,12 +368,7 @@ export default function CalculatorPage() {
                                         className="flex justify-between"
                                     >
                                         <input
-                                            onChange={
-                                                (event) => populateField(
-                                                    index,
-                                                    event.target.value,
-                                                )
-                                            }
+                                            onInput={(event) => populateField(index, (event.target as HTMLInputElement).value)}
                                             value={inputs[index]}
                                             placeholder={
                                                 'Input first-order'
@@ -493,12 +487,13 @@ export default function CalculatorPage() {
                                         aria-labelledby="accordion-open-heading-1"
                                     >
                                         {result && (
-                                            inputs.map((
+                                            // inputs.every((input) => input.trim() !== '')
+                                            result.data.map((
                                                 input,
                                                 inputIdx,
                                             ) => (
                                                 <div key={uuidv4()} className="border-2 w-full p-4 shadow rounded-lg mb-8 flex flex-col sm:flex-row">
-                                                    <div className="sm:w-2/6 w-full text-center">
+                                                    <div className="sm:w-2/5 w-full text-center">
                                                         <p className="text-center">
                                                             Input #
                                                             {inputIdx + 1}
@@ -508,7 +503,7 @@ export default function CalculatorPage() {
                                                             {input}
                                                         </p>
                                                         {
-                                                            result.tokens[inputIdx].map((token) => {
+                                                            result.tokens[inputIdx] && result.tokens[inputIdx].map((token) => {
                                                                 let tokenComponent;
                                                                 switch (token.type) {
                                                                     case 'FUNCTION':
@@ -573,10 +568,10 @@ export default function CalculatorPage() {
                                                             })
                                                         }
                                                     </div>
-                                                    <div className="flex items-center justify-center w-full sm:w-1/6">
-                                                        <ArrowRightIcon className="w-1/6 m-auto text-orange-200 rotate-90 sm:rotate-0 sm:w-1/3 my-4" />
+                                                    <div className="flex items-center justify-center w-full sm:w-1/5">
+                                                        <ArrowRightIcon className="w-1/5 m-auto text-orange-200 rotate-90 sm:rotate-0 sm:w-1/3 my-4" />
                                                     </div>
-                                                    <div className="sm:w-3/6 w-full">
+                                                    <div className="sm:w-2/5 w-full">
                                                         <p className="text-center">
                                                             Input #
                                                             {inputIdx + 1}
