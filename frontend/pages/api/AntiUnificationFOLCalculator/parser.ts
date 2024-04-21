@@ -44,8 +44,8 @@ function parse(tokens: Token[]): TreeNode {
             while (operandsStack.length !== idx + 1) {
                 const operandAfterIdx = operandsStack[idx + 1];
                 if (operandAfterIdx instanceof TreeNode && operandAfterIdx.type !== 'COMMA') {
-                    const operandToken = (operandsStack.splice(idx + 1, 1)[0] as Token);
-                    const node = new TreeNode(operandToken.type, operandToken.value);
+                    const operandNode = (operandsStack.splice(idx + 1, 1)[0] as TreeNode);
+                    const node = new TreeNode(operandNode.type, operandNode.value, operandNode.children);
                     content.push(node);
                 } else {
                     operandsStack.splice(idx + 1, 1);
@@ -83,11 +83,11 @@ function parse(tokens: Token[]): TreeNode {
             const node = new TreeNode(token.type, token.value, []);
             operatorsStack.push(node);
         }
-        console.log(token);
-        console.log('OPERATORS', operatorsStack);
-        console.log('OPERANDS', operandsStack);
-        console.log('FN', fnPdStack);
-        console.log();
+        // console.log(token);
+        // console.log('OPERATORS', operatorsStack);
+        // console.log('OPERANDS', operandsStack);
+        // console.log('FN', fnPdStack);
+        // console.log();
     }
 
     while (operandsStack.length > 1) {

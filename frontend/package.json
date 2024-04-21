@@ -27,7 +27,8 @@
     "react-dom": "^18",
     "react-p5": "^1.4.1",
     "react-p5-wrapper": "^4.1.2",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -35,6 +36,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-toastify": "^4.1.0",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
     "autoprefixer": "^10.0.1",

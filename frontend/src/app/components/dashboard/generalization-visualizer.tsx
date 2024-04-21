@@ -6,17 +6,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
 import React, { useEffect, useRef, useState } from 'react';
-// import p5 from 'p5';
 import * as p5 from 'p5';
 import { calculateDepth, getDisplayValue, getDisplayColor } from '../../../../lib/CalculatorUtils';
 import TreeNode from '../../../../lib/TreeNode';
 
 export default function GeneralizationVisualizer(generalization: TreeNode) {
     const [depth, setDepth] = useState(calculateDepth(generalization));
-    // console.log('DEBUG', generalization);
-    // console.log('DEPTH', depth);
     const parentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -60,15 +56,9 @@ export default function GeneralizationVisualizer(generalization: TreeNode) {
             const sketch = (p: p5) => {
                 p.setup = () => {
                     p.createCanvas(w, h).parent(parentRef.current!);
-                    // p.background(255, 237, 213);
                     p.background(255, 247, 237);
                     drawTree(p, generalization, p.width / 2, 50, 100, 50);
-
-                    // p.background(255);
                     p.noLoop();
-                    // p.translate(w / 2, 50);
-                    // p.circle(0, 0, 50);
-                    // p.text('forall', -15, 0);
                 };
             };
 

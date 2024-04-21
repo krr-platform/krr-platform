@@ -8,13 +8,14 @@
 /* eslint-disable react/no-array-index-key */
 import Link from 'next/link';
 import {
-    InformationCircleIcon, Bars3Icon, XMarkIcon, EyeIcon, ChevronUpIcon, ArrowRightIcon,
+    InformationCircleIcon, Bars3Icon, XMarkIcon, ChevronUpIcon, ArrowRightIcon,
 }
     from '@heroicons/react/24/outline';
 import React, { useState, useRef, Fragment } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Dialog, Transition } from '@headlessui/react';
+import { v4 as uuidv4 } from 'uuid';
 import GeneralizationVisualizer from '@/app/components/dashboard/generalization-visualizer';
 import TreeVisualizer from '@/app/components/dashboard/tree-visualizer';
 import computeAntiUnificationFOL from '../../../../../pages/api/AntiUnificationFOLCalculator';
@@ -43,7 +44,7 @@ function renderNode(node: TreeNode): React.ReactNode {
             {getDisplayValue(node)}
             (
             {node.children && node.children.map((child, index) => (
-                <React.Fragment key={index}>
+                <React.Fragment key={uuidv4()}>
                     {renderNode(child)}
                     {index !== node.children!.length - 1 && ', '}
                 </React.Fragment>
@@ -358,7 +359,7 @@ export default function CalculatorPage() {
                             <div className="">
                                 {inputs.map((input, index) => (
                                     <div
-                                        key={index}
+                                        key={uuidv4()}
                                         draggable
                                         onDragStart={
                                             (e) => onDragStart(e, index)
@@ -397,18 +398,6 @@ export default function CalculatorPage() {
                                             duration-300 cursor-grab
                                             active:cursor-grabbing"
                                         />
-                                        <button
-                                            type="button"
-                                            onClick={
-                                                () => removeInputField(index)
-                                            }
-                                            className="w-7 h-7 my-4 px-1 hover:bg-blue-50
-                                            hover:text-blue-500 rounded-full
-                                            align-middle transition-colors
-                                            duration-300 cursor-pointer"
-                                        >
-                                            <EyeIcon className="" />
-                                        </button>
                                         <button
                                             type="button"
                                             onClick={
@@ -508,8 +497,8 @@ export default function CalculatorPage() {
                                                 input,
                                                 inputIdx,
                                             ) => (
-                                                <div key={inputIdx} className="border-2 w-full p-4 shadow rounded-lg mb-8 flex">
-                                                    <div className="w-2/5">
+                                                <div key={uuidv4()} className="border-2 w-full p-4 shadow rounded-lg mb-8 flex flex-col sm:flex-row">
+                                                    <div className="sm:w-2/6 w-full text-center">
                                                         <p className="text-center">
                                                             Input #
                                                             {inputIdx + 1}
@@ -519,17 +508,17 @@ export default function CalculatorPage() {
                                                             {input}
                                                         </p>
                                                         {
-                                                            result.tokens[inputIdx].map((token, tokenIdx) => {
+                                                            result.tokens[inputIdx].map((token) => {
                                                                 let tokenComponent;
                                                                 switch (token.type) {
                                                                     case 'FUNCTION':
                                                                     case 'PREDICATE':
                                                                         tokenComponent = (
-                                                                            <div key={tokenIdx} className="flex">
-                                                                                <p className="bg-blue-900 border-4 border-blue-950 w-1/2 text-white p-2" key={tokenIdx}>
+                                                                            <div key={uuidv4()} className="flex">
+                                                                                <p className="bg-blue-900 border-4 border-blue-950 w-1/2 text-white p-2 text-sm" key={uuidv4()}>
                                                                                     {token.type}
                                                                                 </p>
-                                                                                <p className="bg-blue-900 border-4 border-blue-950 w-1/2 text-white p-2" key={tokenIdx}>
+                                                                                <p className="bg-blue-900 border-4 border-l-0 border-blue-950 w-1/2 text-white p-2 text-sm" key={uuidv4()}>
                                                                                     {token.value}
                                                                                 </p>
                                                                             </div>
@@ -538,8 +527,8 @@ export default function CalculatorPage() {
                                                                     case 'UNIVERSAL_QUANTIFIER':
                                                                     case 'EXISTENTIAL_QUANTIFIER':
                                                                         tokenComponent = (
-                                                                            <div key={tokenIdx} className="flex">
-                                                                                <p className="bg-rose-600 border-4 border-rose-700 w-full text-white p-2" key={tokenIdx}>
+                                                                            <div key={uuidv4()} className="flex">
+                                                                                <p className="bg-rose-600 border-4 border-rose-700 w-full text-white p-2 text-sm" key={uuidv4()}>
                                                                                     {token.type}
                                                                                 </p>
                                                                             </div>
@@ -548,22 +537,32 @@ export default function CalculatorPage() {
                                                                     case 'VARIABLE':
                                                                     case 'CONSTANT':
                                                                         tokenComponent = (
-                                                                            <div key={tokenIdx} className="flex">
-                                                                                <p className="bg-cyan-600 border-4 border-cyan-700 w-1/2 text-white p-2" key={tokenIdx}>
+                                                                            <div key={uuidv4()} className="flex">
+                                                                                <p className="bg-cyan-600 border-4 border-cyan-700 w-1/2 text-white p-2 text-sm" key={uuidv4()}>
                                                                                     {token.type}
                                                                                 </p>
-                                                                                <p className="bg-cyan-600 border-4 border-cyan-700 w-1/2 text-white p-2" key={tokenIdx}>
+                                                                                <p className="bg-cyan-600 border-4 border-l-0 border-cyan-700 w-1/2 text-white p-2 text-sm" key={uuidv4()}>
                                                                                     {token.value}
                                                                                 </p>
                                                                             </div>
                                                                         );
                                                                         break;
                                                                     case 'RIGHT_PAREN':
+                                                                    case 'COMMA':
+                                                                    case 'RIGHT_SQUARE':
+                                                                    case 'LEFT_SQUARE':
+                                                                        // tokenComponent = (
+                                                                        //     <div key={uuidv4()}>
+                                                                        //         <p className="bg-gray-800 border-4 border-gray-900 w-full text-white p-2" key={uuidv4()}>
+                                                                        //             {token.type}
+                                                                        //         </p>
+                                                                        //     </div>
+                                                                        // );
                                                                         break;
                                                                     default:
                                                                         tokenComponent = (
-                                                                            <div key={tokenIdx}>
-                                                                                <p className="bg-yellow-500 border-4 border-yellow-600 w-full text-white p-2" key={tokenIdx}>
+                                                                            <div key={uuidv4()}>
+                                                                                <p className="bg-yellow-500 border-4 border-yellow-600 w-full text-white p-2 text-sm" key={uuidv4()}>
                                                                                     {token.type}
                                                                                 </p>
                                                                             </div>
@@ -574,10 +573,10 @@ export default function CalculatorPage() {
                                                             })
                                                         }
                                                     </div>
-                                                    <div className="w-1/5 flex items-center justify-center">
-                                                        <ArrowRightIcon className="w-1/3 m-auto text-orange-200" />
+                                                    <div className="flex items-center justify-center w-full sm:w-1/6">
+                                                        <ArrowRightIcon className="w-1/6 m-auto text-orange-200 rotate-90 sm:rotate-0 sm:w-1/3 my-4" />
                                                     </div>
-                                                    <div className="w-2/5">
+                                                    <div className="sm:w-3/6 w-full">
                                                         <p className="text-center">
                                                             Input #
                                                             {inputIdx + 1}

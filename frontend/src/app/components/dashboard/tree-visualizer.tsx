@@ -28,13 +28,13 @@ export default function TreeVisualizer(tree: TreeNode) {
             const nodeWidth = 50;
             const nodeHeight = 50;
             const horizontalSpacing = 50;
-            const verticalSpacing = 50;
+            const verticalSpacing = 200;
             const w = parentWidth;
             const h = nodeHeight * depth + verticalSpacing;
 
             const drawTree = (p: p5, node: TreeNode, x: number, y: number, dx: number, dy: number) => {
                 const numChildren = node.children ? node.children.length : 0;
-                const spacingFactor = 2 / numChildren; // Adjust this factor as needed
+                const spacingFactor = 1.5 / numChildren; // Adjust this factor as needed
                 const adjustedDx = dx * spacingFactor;
 
                 if (node.children) {
@@ -43,7 +43,7 @@ export default function TreeVisualizer(tree: TreeNode) {
                     for (let i = 0; i < node.children.length; i += 1) {
                         const child = node.children[i];
                         const childX = startX + i * adjustedDx;
-                        const childY = startY;
+                        const childY = startY + 50;
                         p.stroke(0);
                         p.line(x, y, childX, childY); // Draw edge
                         drawTree(p, child, childX, childY, adjustedDx, dy);
