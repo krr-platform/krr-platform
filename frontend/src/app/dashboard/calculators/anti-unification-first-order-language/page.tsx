@@ -8,7 +8,7 @@
 /* eslint-disable react/no-array-index-key */
 import Link from 'next/link';
 import {
-    InformationCircleIcon, Bars3Icon, XMarkIcon, EyeIcon, ChevronDownIcon, ChevronUpIcon,
+    InformationCircleIcon, Bars3Icon, XMarkIcon, EyeIcon, ChevronUpIcon,
 }
     from '@heroicons/react/24/outline';
 import React, { useState, useRef, Fragment } from 'react';
@@ -479,7 +479,7 @@ export default function CalculatorPage() {
                                     <h2 id="accordion-open-heading-1">
                                         <button
                                             type="button"
-                                            className={`flex items-center justify-between w-full p-5 rtl:text-right bg-orange-100  hover:text-orange-500 hover:font-medium gap-3 ${detailsOpen ? '' : 'rounded-b-lg'}`}
+                                            className={`flex items-center justify-between w-full p-5 rtl:text-right bg-orange-100 hover:text-orange-500 hover:font-medium gap-3 ${detailsOpen ? '' : 'rounded-b-lg'} duration-300 hover:border-b-8 border-b-4 hover:border-orange-500 border-orange-200`}
                                             data-accordion-target="#accordion-open-body-1"
                                             aria-expanded={detailsOpen}
                                             aria-controls="accordion-open-body-1"
@@ -487,9 +487,6 @@ export default function CalculatorPage() {
                                         >
                                             <div className="flex flex-col">
                                                 <span className="flex items-center">
-                                                    {/* <svg className="w-5 h-5 me-2 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-                                                    </svg> */}
                                                     <p className="text-lg">More Details</p>
                                                 </span>
                                                 <p className="text-sm text-gray-500">
@@ -497,73 +494,85 @@ export default function CalculatorPage() {
                                                     {detailsOpen ? 'Hide' : 'Expand'}
                                                 </p>
                                             </div>
-                                            {detailsOpen ? <ChevronUpIcon className="w-5 h-5 shrink-0" /> : <ChevronDownIcon className="w-5 h-5 shrink-0" />}
+                                            <ChevronUpIcon className={` ${detailsOpen ? '' : 'rotate-180'} w-5 h-5 shrink-0 transition-all duration-300`} />
                                         </button>
                                     </h2>
                                     <div
                                         id="accordion-open-body-1"
-                                        className={`transition-opacity duration-1000 ease-in-out ${detailsOpen ? 'opacity-100' : 'opacity-0 hidden'} rounded-b-lg bg-orange-100 p-4`}
+                                        className={`transition-opacity ease-in-out duration-300 ${detailsOpen ? 'opacity-100' : 'opacity-0 hidden'} rounded-b-lg bg-orange-100 p-8`}
                                         aria-labelledby="accordion-open-heading-1"
                                     >
-                                        {result?.data && (
-                                            <div>
-                                                <h2>Data:</h2>
-                                                {result.data.map((item, idx) => (
-                                                    <p key={idx}>{item}</p>
-                                                ))}
-                                            </div>
-                                        )}
-                                        {result?.tokens && (
-                                            <div>
-                                                <h2>Tokens:</h2>
-                                                {/* For each statement */}
-                                                {result.tokens.map((
-                                                    tokenArray,
-                                                    arrayIndex,
-                                                ) => (
-                                                    <div key={arrayIndex}>
-                                                        {/* For each token in statement */}
-                                                        {tokenArray.map((
-                                                            token,
-                                                            tokenIndex,
-                                                        ) => (
-                                                            <p
-                                                                key={tokenIndex}
-                                                                style={
-                                                                    { marginLeft: '20px' }
-                                                                }
-                                                            >
-                                                                {`Type: ${token.type}`}
-                                                                {token.value ? `, Value: ${token.value}` : ''}
-                                                            </p>
-                                                        ))}
-                                                        <p>---</p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                        {result?.trees && (
-                                            <div>
-                                                <h2>trees:</h2>
-                                                {result.trees.map((
-                                                    treeNode,
-                                                    treeNodeIndex,
-                                                ) => (
-                                                    <div key={treeNodeIndex}>
-                                                        <p
-                                                            key={treeNodeIndex}
-                                                            style={{ marginLeft: '20px' }}
-                                                        >
-                                                            {renderNode(treeNode)}
-                                                        </p>
-                                                        <p
-                                                            style={{ marginLeft: '20px' }}
-                                                        >
-                                                            ---
-                                                        </p>
-                                                    </div>
-                                                ))}
-                                            </div>
+                                        {result && (
+                                            inputs.map((
+                                                input,
+                                                inputIdx,
+                                            ) => (
+                                                <div key={inputIdx} className="border-2 w-full p-4 shadow rounded-lg mb-8">
+                                                    <p className="text-lg">
+                                                        Input #
+                                                        {inputIdx + 1}
+                                                        &nbsp;Tokens
+                                                    </p>
+                                                    <p className="text-lg mb-4">
+                                                        {input}
+                                                    </p>
+                                                    {
+                                                        result.tokens[inputIdx].map((token, tokenIdx) => {
+                                                            let tokenComponent;
+                                                            switch (token.type) {
+                                                                case 'FUNCTION':
+                                                                case 'PREDICATE':
+                                                                    tokenComponent = (
+                                                                        <div key={tokenIdx} className="flex">
+                                                                            <p className="bg-blue-900 border-2 border-blue-950 w-1/5 text-white p-2" key={tokenIdx}>
+                                                                                {token.type}
+                                                                            </p>
+                                                                            <p className="bg-blue-900 border-2 border-blue-950 w-1/5 text-white p-2" key={tokenIdx}>
+                                                                                {token.value}
+                                                                            </p>
+                                                                        </div>
+                                                                    );
+                                                                    break;
+                                                                case 'UNIVERSAL_QUANTIFIER':
+                                                                case 'EXISTENTIAL_QUANTIFIER':
+                                                                    tokenComponent = (
+                                                                        <div key={tokenIdx} className="flex">
+                                                                            <p className="bg-rose-600 border-2 border-rose-700 w-2/5 text-white p-2" key={tokenIdx}>
+                                                                                {token.type}
+                                                                            </p>
+                                                                        </div>
+                                                                    );
+                                                                    break;
+                                                                case 'VARIABLE':
+                                                                case 'CONSTANT':
+                                                                    tokenComponent = (
+                                                                        <div key={tokenIdx} className="flex">
+                                                                            <p className="bg-cyan-600 border-2 border-cyan-700 w-1/5 text-white p-2" key={tokenIdx}>
+                                                                                {token.type}
+                                                                            </p>
+                                                                            <p className="bg-cyan-600 border-2 border-cyan-700 w-1/5 text-white p-2" key={tokenIdx}>
+                                                                                {token.value}
+                                                                            </p>
+                                                                        </div>
+                                                                    );
+                                                                    break;
+                                                                case 'RIGHT_PAREN':
+                                                                    break;
+                                                                default:
+                                                                    tokenComponent = (
+                                                                        <div key={tokenIdx}>
+                                                                            <p className="bg-yellow-500 border-2 border-yellow-600 w-2/5 text-white p-2" key={tokenIdx}>
+                                                                                {token.type}
+                                                                            </p>
+                                                                        </div>
+                                                                    );
+                                                                    break;
+                                                            }
+                                                            return tokenComponent;
+                                                        })
+                                                    }
+                                                </div>
+                                            ))
                                         )}
                                     </div>
                                 </div>
@@ -575,3 +584,64 @@ export default function CalculatorPage() {
         </div>
     );
 }
+
+// {result?.data && (
+//     <div>
+//     <h2>Data:</h2>
+//     {result.data.map((item, idx) => (
+//         <p key={idx}>{item}</p>
+//     ))}
+// </div>
+// )}
+// {result?.tokens && (
+// <div>
+//     <h2>Tokens:</h2>
+//     {/* For each statement */}
+//     {result.tokens.map((
+//         tokenArray,
+//         arrayIndex,
+//     ) => (
+//         <div key={arrayIndex}>
+//             {/* For each token in statement */}
+//             {tokenArray.map((
+//                 token,
+//                 tokenIndex,
+//             ) => (
+//                 <p
+//                     key={tokenIndex}
+//                     style={
+//                         { marginLeft: '20px' }
+//                     }
+//                 >
+//                     {`Type: ${token.type}`}
+//                     {token.value ? `, Value: ${token.value}` : ''}
+//                 </p>
+//             ))}
+//             <p>---</p>
+//         </div>
+//     ))}
+// </div>
+// )}
+// {result?.trees && (
+// <div>
+//     <h2>trees:</h2>
+//     {result.trees.map((
+//         treeNode,
+//         treeNodeIndex,
+//     ) => (
+//         <div key={treeNodeIndex}>
+//             <p
+//                 key={treeNodeIndex}
+//                 style={{ marginLeft: '20px' }}
+//             >
+//                 {renderNode(treeNode)}
+//             </p>
+//             <p
+//                 style={{ marginLeft: '20px' }}
+//             >
+//                 ---
+//             </p>
+//         </div>
+//     ))}
+// </div>
+// )}
