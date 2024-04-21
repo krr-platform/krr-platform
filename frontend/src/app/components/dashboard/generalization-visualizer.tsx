@@ -13,9 +13,9 @@ import * as p5 from 'p5';
 import { calculateDepth, getDisplayValue, getDisplayColor } from '../../../../lib/CalculatorUtils';
 import TreeNode from '../../../../lib/TreeNode';
 
-export default function TreeVisualizer(tree: TreeNode) {
-    const [depth, setDepth] = useState(calculateDepth(tree));
-    // console.log('DEBUG', tree);
+export default function GeneralizationVisualizer(generalization: TreeNode) {
+    const [depth, setDepth] = useState(calculateDepth(generalization));
+    // console.log('DEBUG', generalization);
     // console.log('DEPTH', depth);
     const parentRef = useRef<HTMLDivElement>(null);
 
@@ -23,7 +23,7 @@ export default function TreeVisualizer(tree: TreeNode) {
         import('p5').then((p5) => {
             if (typeof window === 'undefined' || !parentRef.current) return;
             parentRef.current.innerHTML = '';
-            setDepth(calculateDepth(tree));
+            setDepth(calculateDepth(generalization));
             const parentWidth = parentRef.current.offsetWidth;
             const nodeWidth = 50;
             const nodeHeight = 50;
@@ -60,9 +60,9 @@ export default function TreeVisualizer(tree: TreeNode) {
             const sketch = (p: p5) => {
                 p.setup = () => {
                     p.createCanvas(w, h).parent(parentRef.current!);
-                    p.background(255, 237, 213);
-                    // p.background(255, 247, 237);
-                    drawTree(p, tree, p.width / 2, 50, 100, 50);
+                    // p.background(255, 237, 213);
+                    p.background(255, 247, 237);
+                    drawTree(p, generalization, p.width / 2, 50, 100, 50);
 
                     // p.background(255);
                     p.noLoop();
@@ -78,7 +78,7 @@ export default function TreeVisualizer(tree: TreeNode) {
                 p5Instance.remove();
             };
         });
-    }, [tree, depth]);
+    }, [generalization, depth]);
 
     return <div ref={parentRef} style={{ position: 'relative' }} className="overflow-visible" />;
 }

@@ -8,13 +8,14 @@
 /* eslint-disable react/no-array-index-key */
 import Link from 'next/link';
 import {
-    InformationCircleIcon, Bars3Icon, XMarkIcon, EyeIcon, ChevronUpIcon,
+    InformationCircleIcon, Bars3Icon, XMarkIcon, EyeIcon, ChevronUpIcon, ArrowRightIcon,
 }
     from '@heroicons/react/24/outline';
 import React, { useState, useRef, Fragment } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Dialog, Transition } from '@headlessui/react';
+import GeneralizationVisualizer from '@/app/components/dashboard/generalization-visualizer';
 import TreeVisualizer from '@/app/components/dashboard/tree-visualizer';
 import computeAntiUnificationFOL from '../../../../../pages/api/AntiUnificationFOLCalculator';
 import Token from '../../../../../lib/Token';
@@ -471,7 +472,7 @@ export default function CalculatorPage() {
                                             </p>
                                         </div>
                                         <br />
-                                        {typeof window !== 'undefined' && <TreeVisualizer {...result.generalization} />}
+                                        {typeof window !== 'undefined' && <GeneralizationVisualizer {...result.generalization} />}
                                         <br />
                                     </div>
                                 )}
@@ -507,70 +508,88 @@ export default function CalculatorPage() {
                                                 input,
                                                 inputIdx,
                                             ) => (
-                                                <div key={inputIdx} className="border-2 w-full p-4 shadow rounded-lg mb-8">
-                                                    <p className="text-lg">
-                                                        Input #
-                                                        {inputIdx + 1}
-                                                        &nbsp;Tokens
-                                                    </p>
-                                                    <p className="text-lg mb-4">
-                                                        {input}
-                                                    </p>
-                                                    {
-                                                        result.tokens[inputIdx].map((token, tokenIdx) => {
-                                                            let tokenComponent;
-                                                            switch (token.type) {
-                                                                case 'FUNCTION':
-                                                                case 'PREDICATE':
-                                                                    tokenComponent = (
-                                                                        <div key={tokenIdx} className="flex">
-                                                                            <p className="bg-blue-900 border-2 border-blue-950 w-1/5 text-white p-2" key={tokenIdx}>
-                                                                                {token.type}
-                                                                            </p>
-                                                                            <p className="bg-blue-900 border-2 border-blue-950 w-1/5 text-white p-2" key={tokenIdx}>
-                                                                                {token.value}
-                                                                            </p>
-                                                                        </div>
-                                                                    );
-                                                                    break;
-                                                                case 'UNIVERSAL_QUANTIFIER':
-                                                                case 'EXISTENTIAL_QUANTIFIER':
-                                                                    tokenComponent = (
-                                                                        <div key={tokenIdx} className="flex">
-                                                                            <p className="bg-rose-600 border-2 border-rose-700 w-2/5 text-white p-2" key={tokenIdx}>
-                                                                                {token.type}
-                                                                            </p>
-                                                                        </div>
-                                                                    );
-                                                                    break;
-                                                                case 'VARIABLE':
-                                                                case 'CONSTANT':
-                                                                    tokenComponent = (
-                                                                        <div key={tokenIdx} className="flex">
-                                                                            <p className="bg-cyan-600 border-2 border-cyan-700 w-1/5 text-white p-2" key={tokenIdx}>
-                                                                                {token.type}
-                                                                            </p>
-                                                                            <p className="bg-cyan-600 border-2 border-cyan-700 w-1/5 text-white p-2" key={tokenIdx}>
-                                                                                {token.value}
-                                                                            </p>
-                                                                        </div>
-                                                                    );
-                                                                    break;
-                                                                case 'RIGHT_PAREN':
-                                                                    break;
-                                                                default:
-                                                                    tokenComponent = (
-                                                                        <div key={tokenIdx}>
-                                                                            <p className="bg-yellow-500 border-2 border-yellow-600 w-2/5 text-white p-2" key={tokenIdx}>
-                                                                                {token.type}
-                                                                            </p>
-                                                                        </div>
-                                                                    );
-                                                                    break;
-                                                            }
-                                                            return tokenComponent;
-                                                        })
-                                                    }
+                                                <div key={inputIdx} className="border-2 w-full p-4 shadow rounded-lg mb-8 flex">
+                                                    <div className="w-2/5">
+                                                        <p className="text-center">
+                                                            Input #
+                                                            {inputIdx + 1}
+                                                            &nbsp;Tokens
+                                                        </p>
+                                                        <p className="text-xl mb-4 text-center">
+                                                            {input}
+                                                        </p>
+                                                        {
+                                                            result.tokens[inputIdx].map((token, tokenIdx) => {
+                                                                let tokenComponent;
+                                                                switch (token.type) {
+                                                                    case 'FUNCTION':
+                                                                    case 'PREDICATE':
+                                                                        tokenComponent = (
+                                                                            <div key={tokenIdx} className="flex">
+                                                                                <p className="bg-blue-900 border-4 border-blue-950 w-1/2 text-white p-2" key={tokenIdx}>
+                                                                                    {token.type}
+                                                                                </p>
+                                                                                <p className="bg-blue-900 border-4 border-blue-950 w-1/2 text-white p-2" key={tokenIdx}>
+                                                                                    {token.value}
+                                                                                </p>
+                                                                            </div>
+                                                                        );
+                                                                        break;
+                                                                    case 'UNIVERSAL_QUANTIFIER':
+                                                                    case 'EXISTENTIAL_QUANTIFIER':
+                                                                        tokenComponent = (
+                                                                            <div key={tokenIdx} className="flex">
+                                                                                <p className="bg-rose-600 border-4 border-rose-700 w-full text-white p-2" key={tokenIdx}>
+                                                                                    {token.type}
+                                                                                </p>
+                                                                            </div>
+                                                                        );
+                                                                        break;
+                                                                    case 'VARIABLE':
+                                                                    case 'CONSTANT':
+                                                                        tokenComponent = (
+                                                                            <div key={tokenIdx} className="flex">
+                                                                                <p className="bg-cyan-600 border-4 border-cyan-700 w-1/2 text-white p-2" key={tokenIdx}>
+                                                                                    {token.type}
+                                                                                </p>
+                                                                                <p className="bg-cyan-600 border-4 border-cyan-700 w-1/2 text-white p-2" key={tokenIdx}>
+                                                                                    {token.value}
+                                                                                </p>
+                                                                            </div>
+                                                                        );
+                                                                        break;
+                                                                    case 'RIGHT_PAREN':
+                                                                        break;
+                                                                    default:
+                                                                        tokenComponent = (
+                                                                            <div key={tokenIdx}>
+                                                                                <p className="bg-yellow-500 border-4 border-yellow-600 w-full text-white p-2" key={tokenIdx}>
+                                                                                    {token.type}
+                                                                                </p>
+                                                                            </div>
+                                                                        );
+                                                                        break;
+                                                                }
+                                                                return tokenComponent;
+                                                            })
+                                                        }
+                                                    </div>
+                                                    <div className="w-1/5 flex items-center justify-center">
+                                                        <ArrowRightIcon className="w-1/3 m-auto text-orange-200" />
+                                                    </div>
+                                                    <div className="w-2/5">
+                                                        <p className="text-center">
+                                                            Input #
+                                                            {inputIdx + 1}
+                                                            &nbsp;Tree
+                                                        </p>
+                                                        <p className="text-xl mb-4 text-center">
+                                                            {renderNode(result.trees[inputIdx])}
+                                                        </p>
+                                                        <div>
+                                                            {typeof window !== 'undefined' && <TreeVisualizer {...result.trees[inputIdx]} />}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             ))
                                         )}
@@ -584,64 +603,3 @@ export default function CalculatorPage() {
         </div>
     );
 }
-
-// {result?.data && (
-//     <div>
-//     <h2>Data:</h2>
-//     {result.data.map((item, idx) => (
-//         <p key={idx}>{item}</p>
-//     ))}
-// </div>
-// )}
-// {result?.tokens && (
-// <div>
-//     <h2>Tokens:</h2>
-//     {/* For each statement */}
-//     {result.tokens.map((
-//         tokenArray,
-//         arrayIndex,
-//     ) => (
-//         <div key={arrayIndex}>
-//             {/* For each token in statement */}
-//             {tokenArray.map((
-//                 token,
-//                 tokenIndex,
-//             ) => (
-//                 <p
-//                     key={tokenIndex}
-//                     style={
-//                         { marginLeft: '20px' }
-//                     }
-//                 >
-//                     {`Type: ${token.type}`}
-//                     {token.value ? `, Value: ${token.value}` : ''}
-//                 </p>
-//             ))}
-//             <p>---</p>
-//         </div>
-//     ))}
-// </div>
-// )}
-// {result?.trees && (
-// <div>
-//     <h2>trees:</h2>
-//     {result.trees.map((
-//         treeNode,
-//         treeNodeIndex,
-//     ) => (
-//         <div key={treeNodeIndex}>
-//             <p
-//                 key={treeNodeIndex}
-//                 style={{ marginLeft: '20px' }}
-//             >
-//                 {renderNode(treeNode)}
-//             </p>
-//             <p
-//                 style={{ marginLeft: '20px' }}
-//             >
-//                 ---
-//             </p>
-//         </div>
-//     ))}
-// </div>
-// )}
