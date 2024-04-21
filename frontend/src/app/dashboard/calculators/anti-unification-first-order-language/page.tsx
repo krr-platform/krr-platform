@@ -487,12 +487,11 @@ export default function CalculatorPage() {
                                         aria-labelledby="accordion-open-heading-1"
                                     >
                                         {result && (
-                                            // inputs.every((input) => input.trim() !== '')
                                             result.data.map((
                                                 input,
                                                 inputIdx,
                                             ) => (
-                                                <div key={uuidv4()} className="border-2 w-full p-4 shadow rounded-lg mb-8 flex flex-col sm:flex-row">
+                                                <div key={uuidv4()} className="border-2 w-full p-4 shadow rounded-lg mb-8 flex flex-col sm:flex-row h-fit">
                                                     <div className="sm:w-2/5 w-full text-center">
                                                         <p className="text-center">
                                                             Input #

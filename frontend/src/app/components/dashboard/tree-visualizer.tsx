@@ -8,15 +8,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import React, { useEffect, useRef, useState } from 'react';
-// import p5 from 'p5';
 import * as p5 from 'p5';
 import { calculateDepth, getDisplayValue, getDisplayColor } from '../../../../lib/CalculatorUtils';
 import TreeNode from '../../../../lib/TreeNode';
 
 export default function TreeVisualizer(tree: TreeNode) {
     const [depth, setDepth] = useState(calculateDepth(tree));
-    // console.log('DEBUG', tree);
-    // console.log('DEPTH', depth);
     const parentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -25,50 +22,50 @@ export default function TreeVisualizer(tree: TreeNode) {
             parentRef.current.innerHTML = '';
             setDepth(calculateDepth(tree));
             const parentWidth = parentRef.current.offsetWidth;
-            const nodeWidth = 50;
-            const nodeHeight = 50;
-            const horizontalSpacing = 50;
-            const verticalSpacing = 200;
+            const nodeWidth = 30;
+            const nodeHeight = 30;
+            const horizontalSpacing = parentWidth / 10;
+            const verticalSpacing = 60;
             const w = parentWidth;
-            const h = nodeHeight * depth + verticalSpacing;
+            const h = nodeHeight * depth + verticalSpacing + (verticalSpacing - nodeHeight) * depth;
 
-            const drawTree = (p: p5, node: TreeNode, x: number, y: number, dx: number, dy: number) => {
+            const drawTree = (p: p5, node: TreeNode, x: number, y: number, dx: number, dy: number, level: number) => {
                 const numChildren = node.children ? node.children.length : 0;
-                const spacingFactor = 1.5 / numChildren; // Adjust this factor as needed
+                const spacingFactor = (depth - level);
                 const adjustedDx = dx * spacingFactor;
-
                 if (node.children) {
+                    // const startX = x - (adjustedDx * (node.children.length - 1)) / 2;
                     const startX = x - (adjustedDx * (node.children.length - 1)) / 2;
                     const startY = y + dy;
                     for (let i = 0; i < node.children.length; i += 1) {
                         const child = node.children[i];
                         const childX = startX + i * adjustedDx;
-                        const childY = startY + 50;
+                        const childY = startY;
                         p.stroke(0);
                         p.line(x, y, childX, childY); // Draw edge
-                        drawTree(p, child, childX, childY, adjustedDx, dy);
+                        drawTree(p, child, childX, childY, dx, verticalSpacing, level + 1);
                     }
                 }
                 p.noStroke();
                 p.fill(getDisplayColor(node));
-                p.circle(x, y, 50); // Draw node
+                p.circle(x, y, 30);
                 p.fill(255);
                 p.textSize(20);
-                p.text(getDisplayValue(node), x - 5, y + 5); // Draw node label
+                if (node.type === 'LOGICAL_IMPLICATION' || node.type === 'LOGICAL_EQUIVALENT') {
+                    p.text(getDisplayValue(node), x - 10, y + 5);
+                } else if (node.type === 'CONSTANT' || node.type === 'PREDICATE') {
+                    p.text(getDisplayValue(node), x - 7, y + 7);
+                } else {
+                    p.text(getDisplayValue(node), x - 5, y + 5);
+                }
             };
 
             const sketch = (p: p5) => {
                 p.setup = () => {
                     p.createCanvas(w, h).parent(parentRef.current!);
                     p.background(255, 237, 213);
-                    // p.background(255, 247, 237);
-                    drawTree(p, tree, p.width / 2, 50, 100, 50);
-
-                    // p.background(255);
+                    drawTree(p, tree, p.width / 2, verticalSpacing, horizontalSpacing, verticalSpacing, 1);
                     p.noLoop();
-                    // p.translate(w / 2, 50);
-                    // p.circle(0, 0, 50);
-                    // p.text('forall', -15, 0);
                 };
             };
 
