@@ -8,11 +8,6 @@ import { getDisplayValue, getPrecedence } from '../../../lib/CalculatorUtils';
 
 type TreeNodeOrString = TreeNode | string;
 
-// export default function generateTokensFromTreeNode(node: TreeNode): Token[] {
-//     // Generate tokens for the root node
-//     return generateTokens(node);
-// }
-
 function processOperator(operatorsStack: TreeNodeOrString[], operandsStack: TreeNodeOrString[]): void {
     const operator = operatorsStack.pop() as TreeNode;
     if (operator.type === 'LOGICAL_NEG') {
@@ -30,16 +25,32 @@ function parse(tokens: Token[]): TreeNode {
     const operandsStack: TreeNodeOrString[] = [];
     const operatorsStack: TreeNodeOrString[] = [];
     const fnPdStack: TreeNode[] = [];
+    let negate: boolean = false;
 
     while (tokens.length > 0) {
         const token = tokens.pop()!;
         if ((token.type === 'VARIABLE' || token.type === 'CONSTANT') && token.value !== undefined) {
-            const node = new TreeNode(token.type, token.value);
-            operandsStack.push(node);
+            if (negate) {
+                const node = new TreeNode(token.type, token.value);
+                const negNode = new TreeNode('LOGICAL_NEG', '\\not', [node]);
+                operandsStack.push(negNode);
+                negate = false;
+            } else {
+                const node = new TreeNode(token.type, token.value);
+                operandsStack.push(node);
+            }
         } else if ((token.type === 'FUNCTION' || token.type === 'PREDICATE') && token.value !== undefined) {
-            const node = new TreeNode(token.type, token.value);
-            fnPdStack.push(node);
-            operandsStack.push('(');
+            if (negate) {
+                const node = new TreeNode(token.type, token.value);
+                const negNode = new TreeNode('LOGICAL_NEG', '\\not', [node]);
+                fnPdStack.push(negNode);
+                operandsStack.push('(');
+                negate = false;
+            } else {
+                const node = new TreeNode(token.type, token.value);
+                fnPdStack.push(node);
+                operandsStack.push('(');
+            }
         } else if (token.type === 'COMMA') {
             const node = new TreeNode(token.type);
             operandsStack.push(node);
@@ -58,8 +69,11 @@ function parse(tokens: Token[]): TreeNode {
                 }
             }
             operandsStack.pop();
-            if (fnOrPred !== undefined) {
+            if (fnOrPred !== undefined && fnOrPred.type !== 'LOGICAL_NEG') {
                 fnOrPred.children = content;
+                operandsStack.push(fnOrPred);
+            } else if (fnOrPred !== undefined && fnOrPred.children !== undefined) {
+                fnOrPred.children[0].children = content;
                 operandsStack.push(fnOrPred);
             }
         } else if (token.type === 'LEFT_SQUARE') {
@@ -76,7 +90,7 @@ function parse(tokens: Token[]): TreeNode {
             token.type === 'LOGICAL_AND' || token.type === 'LOGICAL_OR'
             || token.type === 'LOGICAL_IMPLICATION' || token.type === 'LOGICAL_EQUIVALENT'
             || token.type === 'UNIVERSAL_QUANTIFIER' || token.type === 'EXISTENTIAL_QUANTIFIER'
-            || token.type === 'LOGICAL_NEG'
+            // || token.type === 'LOGICAL_NEG'
         ) {
             if (!(operatorsStack.length === 0
                 || (operatorsStack.length > 0
@@ -88,13 +102,15 @@ function parse(tokens: Token[]): TreeNode {
             }
             const node = new TreeNode(token.type, token.value, []);
             operatorsStack.push(node);
+        } else if (token.type === 'LOGICAL_NEG') {
+            negate = true;
         }
+        console.log(negate);
     }
 
-    while (operandsStack.length > 1) {
+    while (operandsStack.length > 1 || operatorsStack.length > 0) {
         processOperator(operatorsStack, operandsStack);
     }
-
     return operandsStack.pop() as TreeNode;
 }
 
@@ -111,7 +127,7 @@ export function generateString(node: TreeNode): string {
             result += ')';
         } else if (node.type === 'UNIVERSAL_QUANTIFIER' || node.type === 'EXISTENTIAL_QUANTIFIER') {
             result = `${getDisplayValue(node) + generateString(node.children[0])} ${generateString(node.children[1])}`;
-        } else if (node.type === 'LOGICAL_NEGATION') {
+        } else if (node.type === 'LOGICAL_NEG') {
             result = `${getDisplayValue(node) + generateString(node.children[0])}`;
         } else {
             result = `${generateString(node.children[0])} ${getDisplayValue(node)} ${generateString(node.children[1])}`;
