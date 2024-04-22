@@ -8,6 +8,8 @@ import { getDisplayValue, getPrecedence } from '../../../lib/CalculatorUtils';
 
 type TreeNodeOrString = TreeNode | string;
 
+let negate: boolean = false;
+
 function processOperator(operatorsStack: TreeNodeOrString[], operandsStack: TreeNodeOrString[]): void {
     const operator = operatorsStack.pop() as TreeNode;
     if (operator.type === 'LOGICAL_NEG') {
@@ -25,14 +27,13 @@ function parse(tokens: Token[]): TreeNode {
     const operandsStack: TreeNodeOrString[] = [];
     const operatorsStack: TreeNodeOrString[] = [];
     const fnPdStack: TreeNode[] = [];
-    let negate: boolean = false;
 
     while (tokens.length > 0) {
         const token = tokens.pop()!;
         if ((token.type === 'VARIABLE' || token.type === 'CONSTANT') && token.value !== undefined) {
             if (negate) {
                 const node = new TreeNode(token.type, token.value);
-                const negNode = new TreeNode('LOGICAL_NEG', '\\not', [node]);
+                const negNode = new TreeNode('LOGICAL_NEG', undefined, [node]);
                 operandsStack.push(negNode);
                 negate = false;
             } else {
@@ -42,7 +43,7 @@ function parse(tokens: Token[]): TreeNode {
         } else if ((token.type === 'FUNCTION' || token.type === 'PREDICATE') && token.value !== undefined) {
             if (negate) {
                 const node = new TreeNode(token.type, token.value);
-                const negNode = new TreeNode('LOGICAL_NEG', '\\not', [node]);
+                const negNode = new TreeNode('LOGICAL_NEG', undefined, [node]);
                 fnPdStack.push(negNode);
                 operandsStack.push('(');
                 negate = false;
@@ -77,6 +78,10 @@ function parse(tokens: Token[]): TreeNode {
                 operandsStack.push(fnOrPred);
             }
         } else if (token.type === 'LEFT_SQUARE') {
+            if (negate) {
+                operatorsStack.push(new TreeNode('LOGICAL_NEG', undefined, []));
+                negate = false;
+            }
             operatorsStack.push('[');
         } else if (token.type === 'RIGHT_SQUARE') {
             while (operatorsStack.length > 0 && ((operatorsStack[operatorsStack.length - 1] as string) !== '[')) {
@@ -90,7 +95,6 @@ function parse(tokens: Token[]): TreeNode {
             token.type === 'LOGICAL_AND' || token.type === 'LOGICAL_OR'
             || token.type === 'LOGICAL_IMPLICATION' || token.type === 'LOGICAL_EQUIVALENT'
             || token.type === 'UNIVERSAL_QUANTIFIER' || token.type === 'EXISTENTIAL_QUANTIFIER'
-            // || token.type === 'LOGICAL_NEG'
         ) {
             if (!(operatorsStack.length === 0
                 || (operatorsStack.length > 0
@@ -105,10 +109,9 @@ function parse(tokens: Token[]): TreeNode {
         } else if (token.type === 'LOGICAL_NEG') {
             negate = true;
         }
-        console.log(negate);
     }
 
-    while (operandsStack.length > 1 || operatorsStack.length > 0) {
+    while (operandsStack.length > 1 || operatorsStack.length > 0 || negate) {
         processOperator(operatorsStack, operandsStack);
     }
     return operandsStack.pop() as TreeNode;
