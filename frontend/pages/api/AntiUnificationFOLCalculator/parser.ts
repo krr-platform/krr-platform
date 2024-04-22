@@ -1,11 +1,17 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-len */
 import Token from '../../../lib/Token';
 import TreeNode from '../../../lib/TreeNode';
-import { getPrecedence } from '../../../lib/CalculatorUtils';
+import { getDisplayValue, getPrecedence } from '../../../lib/CalculatorUtils';
 
 type TreeNodeOrString = TreeNode | string;
+
+// export default function generateTokensFromTreeNode(node: TreeNode): Token[] {
+//     // Generate tokens for the root node
+//     return generateTokens(node);
+// }
 
 function processOperator(operatorsStack: TreeNodeOrString[], operandsStack: TreeNodeOrString[]): void {
     const operator = operatorsStack.pop() as TreeNode;
@@ -83,11 +89,6 @@ function parse(tokens: Token[]): TreeNode {
             const node = new TreeNode(token.type, token.value, []);
             operatorsStack.push(node);
         }
-        // console.log(token);
-        // console.log('OPERATORS', operatorsStack);
-        // console.log('OPERANDS', operandsStack);
-        // console.log('FN', fnPdStack);
-        // console.log();
     }
 
     while (operandsStack.length > 1) {
@@ -95,6 +96,31 @@ function parse(tokens: Token[]): TreeNode {
     }
 
     return operandsStack.pop() as TreeNode;
+}
+
+export function generateString(node: TreeNode): string {
+    let result: string = '';
+    if (node.children && node.children.length > 0) {
+        // FUNCTIONS, PREDICATES, CONNECTORS, QUANTIFIERS
+        if (node.type === 'FUNCTION' || node.type === 'PREDICATE') {
+            result = `${node.value}(`;
+            node.children.forEach((child: TreeNode) => {
+                result += `${generateString(child)}, `;
+            });
+            result = result.slice(0, -2);
+            result += ')';
+        } else if (node.type === 'UNIVERSAL_QUANTIFIER' || node.type === 'EXISTENTIAL_QUANTIFIER') {
+            result = `${getDisplayValue(node) + generateString(node.children[0])} ${generateString(node.children[1])}`;
+        } else if (node.type === 'LOGICAL_NEGATION') {
+            result = `${getDisplayValue(node) + generateString(node.children[0])}`;
+        } else {
+            result = `${generateString(node.children[0])} ${getDisplayValue(node)} ${generateString(node.children[1])}`;
+        }
+    } else {
+        // VARIABLES and CONSTANTS
+        return node.value as string;
+    }
+    return result;
 }
 
 export default function parseAllTokens(tokensLists: Token[][]): TreeNode[] {

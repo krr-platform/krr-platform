@@ -28,6 +28,7 @@ interface Result {
     tokens: Token[][];
     trees: TreeNode[];
     generalization: TreeNode;
+    degeneralization: string;
 }
 
 function renderNode(node: TreeNode): React.ReactNode {
@@ -448,9 +449,13 @@ export default function CalculatorPage() {
                             >
                                 {result?.generalization && (
                                     <div>
-                                        <div className="flex text-center justify-center">
-                                            <p className="text-xl font-medium">Generalization:&nbsp;</p>
-                                            <p className="text-xl font-medium">
+                                        <div className="flex flex-col text-center justify-center text-xl font-medium">
+                                            <p className="text-center">
+                                                Generalization:&nbsp;
+                                                {result.degeneralization}
+                                            </p>
+                                            <br />
+                                            <p>
                                                 {renderNode(result.generalization)}
                                             </p>
                                         </div>
