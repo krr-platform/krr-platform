@@ -31,27 +31,24 @@ function parse(tokens: Token[]): TreeNode {
     while (tokens.length > 0) {
         const token = tokens.pop()!;
         if ((token.type === 'VARIABLE' || token.type === 'CONSTANT') && token.value !== undefined) {
+            const node = new TreeNode(token.type, token.value);
             if (negate) {
-                const node = new TreeNode(token.type, token.value);
                 const negNode = new TreeNode('LOGICAL_NEG', undefined, [node]);
                 operandsStack.push(negNode);
                 negate = false;
             } else {
-                const node = new TreeNode(token.type, token.value);
                 operandsStack.push(node);
             }
         } else if ((token.type === 'FUNCTION' || token.type === 'PREDICATE') && token.value !== undefined) {
+            const node = new TreeNode(token.type, token.value);
             if (negate) {
-                const node = new TreeNode(token.type, token.value);
                 const negNode = new TreeNode('LOGICAL_NEG', undefined, [node]);
                 fnPdStack.push(negNode);
-                operandsStack.push('(');
                 negate = false;
             } else {
-                const node = new TreeNode(token.type, token.value);
                 fnPdStack.push(node);
-                operandsStack.push('(');
             }
+            operandsStack.push('(');
         } else if (token.type === 'COMMA') {
             const node = new TreeNode(token.type);
             operandsStack.push(node);
