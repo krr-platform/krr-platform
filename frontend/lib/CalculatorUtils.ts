@@ -51,9 +51,9 @@ function getDisplayValue(node: TreeNode, tree: boolean): string {
         case 'PREDICATE':
         case 'VARIABLE':
         case 'CONSTANT':
-            if (node.value && node.value[0] === '{' && tree) {
-                return '_';
-            }
+            // if (node.value && node.value[0] === '{' && tree) {
+            //     return '_';
+            // }
             return node.value ?? '';
         case 'LOGICAL_AND':
             return '∧';

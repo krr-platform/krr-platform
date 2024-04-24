@@ -52,11 +52,11 @@ export default function TreeVisualizer(tree: TreeNode) {
                 p.fill(255);
                 p.textSize(20);
                 if (node.type === 'LOGICAL_IMPLICATION' || node.type === 'LOGICAL_EQUIVALENT') {
-                    p.text(getDisplayValue(node), x - 10, y + 5);
+                    p.text(getDisplayValue(node, true), x - 10, y + 5);
                 } else if (node.type === 'CONSTANT' || node.type === 'PREDICATE') {
-                    p.text(getDisplayValue(node), x - 7, y + 7);
+                    p.text(getDisplayValue(node, true), x - 7, y + 7);
                 } else {
-                    p.text(getDisplayValue(node), x - 5, y + 5);
+                    p.text(getDisplayValue(node, true), x - 5, y + 5);
                 }
             };
 

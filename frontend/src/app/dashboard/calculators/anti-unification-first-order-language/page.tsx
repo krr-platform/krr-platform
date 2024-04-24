@@ -44,14 +44,14 @@ function renderNode(node: TreeNode): React.ReactNode {
     return (
         <span className={node.type === 'FUNCTION' || node.type === 'PREDICATE' ? 'text-blue-900' : node.type === 'UNIVERSAL_QUANTIFIER' || node.type === 'EXISTENTIAL_QUANTIFIER' ? 'text-rose-600' : 'text-yellow-500'}>
             {getDisplayValue(node, false)}
-            (
+            (&nbsp;
             {node.children && node.children.map((child, index) => (
                 <React.Fragment key={uuidv4()}>
                     {renderNode(child)}
                     {index !== node.children!.length - 1 && ', '}
                 </React.Fragment>
             ))}
-            )
+            &nbsp;)
         </span>
     );
 }

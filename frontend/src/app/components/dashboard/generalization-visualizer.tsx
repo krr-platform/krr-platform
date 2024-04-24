@@ -32,7 +32,7 @@ export default function GeneralizationVisualizer(generalization: TreeNode) {
             const drawGeneralization = (p: p5, node: TreeNode, x: number, y: number, dx: number, dy: number, level: number) => {
                 const numChildren = node.children ? node.children.length : 0;
                 const spacingFactor = (depth - level);
-                const adjustedDx = (dx * spacingFactor) / numChildren;
+                const adjustedDx = (dx * spacingFactor);
                 if (node.children) {
                     const startX = x - (adjustedDx * (node.children.length - 1)) / 2;
                     const startY = y + dy;
@@ -52,8 +52,8 @@ export default function GeneralizationVisualizer(generalization: TreeNode) {
                 p.textSize(20);
                 if (node.type === 'LOGICAL_IMPLICATION' || node.type === 'LOGICAL_EQUIVALENT') {
                     p.text(getDisplayValue(node, true), x - 10, y + 5);
-                } else if (node.value && node.value[0] === ':') {
-                    p.text(getDisplayValue(node, true), x - 12, y + 5);
+                } else if (node.type !== 'OPERATOR' && node.value && node.value[0] === '{') {
+                    p.text(getDisplayValue(node, true), x - 15, y + 5);
                 } else {
                     p.text(getDisplayValue(node, true), x - 5, y + 5);
                 }
