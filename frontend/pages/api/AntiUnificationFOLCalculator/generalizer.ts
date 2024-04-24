@@ -110,6 +110,19 @@ export default function generalize(trees: TreeNode[]): TreeNode {
 
         // Nodes have different types, possibly due to being different operators
         // Check if any node is of type FUNCTION, VARIABLE, CONSTANT, or PREDICATE
+        if (nodes.some((node) => ['FUNCTION', 'PREDICATE'].includes(node.type))) {
+            // If mixed types including FUNCTION, VARIABLE, CONSTANT, or PREDICATE exist, default to VARIABLE
+            const generalizedNode: TreeNode = { type: 'FUNCTION', value: generateIdentifier('FUNCTION') };
+            if (nodes.some((node) => node.children && node.children.length > 0)) {
+                const generalizedChildren: TreeNode[] = [];
+                for (const childGroup of zipChildren(nodes)) {
+                    generalizedChildren.push(generalizeNodes(...childGroup));
+                }
+                generalizedNode.children = generalizedChildren;
+            }
+            return generalizedNode;
+        }
+
         if (nodes.some((node) => ['FUNCTION', 'VARIABLE', 'CONSTANT', 'PREDICATE'].includes(node.type))) {
             // If mixed types including FUNCTION, VARIABLE, CONSTANT, or PREDICATE exist, default to VARIABLE
             const generalizedNode: TreeNode = { type: 'VARIABLE', value: generateIdentifier('VARIABLE') };
