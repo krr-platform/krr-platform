@@ -45,12 +45,15 @@ function getPrecedence(token: { type: string }): number {
     }
 }
 
-function getDisplayValue(node: TreeNode): string {
+function getDisplayValue(node: TreeNode, tree: boolean): string {
     switch (node.type) {
         case 'FUNCTION':
         case 'PREDICATE':
         case 'VARIABLE':
         case 'CONSTANT':
+            if (node.value && node.value[0] === '{' && tree) {
+                return '_';
+            }
             return node.value ?? '';
         case 'LOGICAL_AND':
             return '∧';
@@ -66,8 +69,13 @@ function getDisplayValue(node: TreeNode): string {
             return '∀';
         case 'EXISTENTIAL_QUANTIFIER':
             return '∃';
+        case 'OPERATOR':
+            if (node.value && node.value[0] === '{' && !tree) {
+                return '{operator}';
+            }
+            return '?';
         default:
-            return node.type;
+            return '?';
     }
 }
 
@@ -79,18 +87,11 @@ function getDisplayColor(node: TreeNode): number[] {
         case 'VARIABLE':
         case 'CONSTANT':
             return [72, 159, 181];
-        case 'LOGICAL_AND':
-        case 'LOGICAL_OR':
-        case 'LOGICAL_NEG':
-        case 'LOGICAL_EQUIVALENT':
-        case 'LOGICAL_IMPLICATION':
-            return [255, 176, 31];
         case 'UNIVERSAL_QUANTIFIER':
         case 'EXISTENTIAL_QUANTIFIER':
             return [233, 19, 99];
-
         default:
-            return [0, 0, 0];
+            return [255, 176, 31];
     }
 }
 

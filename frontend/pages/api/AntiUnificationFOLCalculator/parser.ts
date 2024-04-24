@@ -126,11 +126,11 @@ export function generateString(node: TreeNode): string {
             result = result.slice(0, -2);
             result += ')';
         } else if (node.type === 'UNIVERSAL_QUANTIFIER' || node.type === 'EXISTENTIAL_QUANTIFIER') {
-            result = `${getDisplayValue(node) + generateString(node.children[0])} ${generateString(node.children[1])}`;
+            result = `${getDisplayValue(node, false) + generateString(node.children[0])} ${generateString(node.children[1])}`;
         } else if (node.type === 'LOGICAL_NEG') {
-            result = `${getDisplayValue(node) + generateString(node.children[0])}`;
+            result = `${getDisplayValue(node, false) + generateString(node.children[0])}`;
         } else {
-            result = `${generateString(node.children[0])} ${getDisplayValue(node)} ${generateString(node.children[1])}`;
+            result = `${generateString(node.children[0])} ${getDisplayValue(node, false)} ${generateString(node.children[1])}`;
         }
     } else {
         // VARIABLES and CONSTANTS

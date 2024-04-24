@@ -36,13 +36,14 @@ function renderNode(node: TreeNode): React.ReactNode {
         return null;
     }
 
-    if (!node.children || node.children.length === 0) {
+    // if (!node.children || node.children.length === 0) {
+    if (node.type === 'VARIABLE' || node.type === 'CONSTANT') {
         return <span className="text-cyan-600">{node.value}</span>;
     }
 
     return (
         <span className={node.type === 'FUNCTION' || node.type === 'PREDICATE' ? 'text-blue-900' : node.type === 'UNIVERSAL_QUANTIFIER' || node.type === 'EXISTENTIAL_QUANTIFIER' ? 'text-rose-600' : 'text-yellow-500'}>
-            {getDisplayValue(node)}
+            {getDisplayValue(node, false)}
             (
             {node.children && node.children.map((child, index) => (
                 <React.Fragment key={uuidv4()}>

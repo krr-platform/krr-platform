@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
 import TreeNode from '../../../lib/TreeNode';
 import CalculatorError from '../../../lib/CalculatorError';
@@ -31,42 +32,50 @@ export default function generalize(trees: TreeNode[]): TreeNode {
         switch (type) {
             case 'VARIABLE':
                 variableCount += 1;
-                return `:v${variableCount}`;
+                return `{v${variableCount}}`;
             case 'CONSTANT':
                 constantCount += 1;
-                return `:C${constantCount}`;
+                return `{C${constantCount}}`;
             case 'FUNCTION':
                 functionCount += 1;
-                return `:f${functionCount}`;
+                return `{f${functionCount}}`;
             case 'PREDICATE':
                 predicateCount += 1;
-                return `:P${predicateCount}`;
+                return `{P${predicateCount}}`;
             default:
-                return ':x';
+                return '{operator}';
         }
     }
 
     function generalizeNodes(...nodes: TreeNode[]): TreeNode {
-        const firstType = nodes[0].type;
-        const firstValue = nodes[0].value ?? null;
+        if (nodes.every((node) => node.type === nodes[0].type)) {
+            const firstType = nodes[0].type;
+            const firstValue = nodes[0].value ?? null;
 
-        if (nodes.every((node) => node.type === firstType && (node.value ?? null) === firstValue)) {
-            if (nodes[0].children) {
-                const generalizedChildren: TreeNode[] = [];
-                // eslint-disable-next-line no-restricted-syntax
-                for (const childGroup of zipChildren(nodes)) {
-                    generalizedChildren.push(generalizeNodes(...childGroup));
+            if (nodes.every((node) => (node.value ?? null) === firstValue)) {
+                if (nodes[0].children) {
+                    const generalizedChildren: TreeNode[] = [];
+                    for (const childGroup of zipChildren(nodes)) {
+                        generalizedChildren.push(generalizeNodes(...childGroup));
+                    }
+                    return firstValue !== null ? { type: firstType, value: firstValue, children: generalizedChildren } : { type: firstType, children: generalizedChildren };
                 }
-                return firstValue !== null ? { type: firstType, value: firstValue, children: generalizedChildren } : { type: firstType, children: generalizedChildren };
+                // Return the node structure based on whether it has a value
+                return firstValue !== null ? { type: firstType, value: firstValue } : { type: firstType };
             }
-            // Return the node structure based on whether it has a value
-            return firstValue !== null ? { type: firstType, value: firstValue } : { type: firstType };
+            return { value: generateIdentifier(firstType), type: firstType };
         }
-        // Nodes differ, use a placeholder
-        // return { type: 'VARIABLE', value: 'x' };
-        return { type: firstType, value: generateIdentifier(firstType) }; // Generate unique identifier based on node type
+
+        // Nodes differ or have different root types, analyze children further
+        const generalizedChildren: TreeNode[] = [];
+        if (nodes.some((node) => node.children && node.children.length > 0)) {
+            for (const childGroup of zipChildren(nodes)) {
+                generalizedChildren.push(generalizeNodes(...childGroup));
+            }
+        }
+        // Generate a generalized node that may represent a common structure
+        return { type: 'OPERATOR', value: generateIdentifier('OPERATOR'), children: generalizedChildren };
     }
 
-    // Start the generalization from the root nodes of each tree
     return generalizeNodes(...trees);
 }

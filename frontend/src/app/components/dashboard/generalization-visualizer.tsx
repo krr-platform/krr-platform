@@ -51,11 +51,11 @@ export default function GeneralizationVisualizer(generalization: TreeNode) {
                 p.fill(255);
                 p.textSize(20);
                 if (node.type === 'LOGICAL_IMPLICATION' || node.type === 'LOGICAL_EQUIVALENT') {
-                    p.text(getDisplayValue(node), x - 10, y + 5);
+                    p.text(getDisplayValue(node, true), x - 10, y + 5);
                 } else if (node.value && node.value[0] === ':') {
-                    p.text(getDisplayValue(node), x - 12, y + 5);
+                    p.text(getDisplayValue(node, true), x - 12, y + 5);
                 } else {
-                    p.text(getDisplayValue(node), x - 5, y + 5);
+                    p.text(getDisplayValue(node, true), x - 5, y + 5);
                 }
             };
 
