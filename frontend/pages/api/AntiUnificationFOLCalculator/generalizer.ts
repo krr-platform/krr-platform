@@ -47,35 +47,6 @@ export default function generalize(trees: TreeNode[]): TreeNode {
         }
     }
 
-    // function generalizeNodes(...nodes: TreeNode[]): TreeNode {
-    //     if (nodes.every((node) => node.type === nodes[0].type)) {
-    //         const firstType = nodes[0].type;
-    //         const firstValue = nodes[0].value ?? null;
-
-    //         if (nodes.every((node) => (node.value ?? null) === firstValue)) {
-    //             if (nodes[0].children) {
-    //                 const generalizedChildren: TreeNode[] = [];
-    //                 for (const childGroup of zipChildren(nodes)) {
-    //                     generalizedChildren.push(generalizeNodes(...childGroup));
-    //                 }
-    //                 return firstValue !== null ? { type: firstType, value: firstValue, children: generalizedChildren } : { type: firstType, children: generalizedChildren };
-    //             }
-    //             // Return the node structure based on whether it has a value
-    //             return firstValue !== null ? { type: firstType, value: firstValue } : { type: firstType };
-    //         }
-    //         return { value: generateIdentifier(firstType), type: firstType };
-    //     }
-
-    //     // Nodes differ or have different root types, analyze children further
-    //     const generalizedChildren: TreeNode[] = [];
-    //     if (nodes.some((node) => node.children && node.children.length > 0)) {
-    //         for (const childGroup of zipChildren(nodes)) {
-    //             generalizedChildren.push(generalizeNodes(...childGroup));
-    //         }
-    //     }
-    //     // Generate a generalized node that may represent a common structure
-    //     return { type: 'OPERATOR', value: generateIdentifier('OPERATOR'), children: generalizedChildren };
-    // }
     function generalizeNodes(...nodes: TreeNode[]): TreeNode {
         const firstType = nodes[0].type;
         const firstValue = nodes[0].value ?? null;
@@ -109,20 +80,6 @@ export default function generalize(trees: TreeNode[]): TreeNode {
         }
 
         // Nodes have different types, possibly due to being different operators
-        // Check if any node is of type FUNCTION, VARIABLE, CONSTANT, or PREDICATE
-        if (nodes.some((node) => ['FUNCTION', 'PREDICATE'].includes(node.type))) {
-            // If mixed types including FUNCTION, VARIABLE, CONSTANT, or PREDICATE exist, default to VARIABLE
-            const generalizedNode: TreeNode = { type: 'FUNCTION', value: generateIdentifier('FUNCTION') };
-            if (nodes.some((node) => node.children && node.children.length > 0)) {
-                const generalizedChildren: TreeNode[] = [];
-                for (const childGroup of zipChildren(nodes)) {
-                    generalizedChildren.push(generalizeNodes(...childGroup));
-                }
-                generalizedNode.children = generalizedChildren;
-            }
-            return generalizedNode;
-        }
-
         if (nodes.some((node) => ['FUNCTION', 'VARIABLE', 'CONSTANT', 'PREDICATE'].includes(node.type))) {
             // If mixed types including FUNCTION, VARIABLE, CONSTANT, or PREDICATE exist, default to VARIABLE
             const generalizedNode: TreeNode = { type: 'VARIABLE', value: generateIdentifier('VARIABLE') };
