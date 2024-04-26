@@ -374,7 +374,7 @@ export default function CalculatorPage() {
                                             value={inputs[index]}
                                             placeholder={
                                                 'Input first-order'
-                                                + `statement #${index + 1}`
+                                                + ` statement #${index + 1}`
                                             }
                                             className="
                                             w-10/12 rounded-lg my-2 p-2
