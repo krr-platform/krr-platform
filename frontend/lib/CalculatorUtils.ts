@@ -30,18 +30,19 @@ function getPrecedence(token: { type: string }): number {
             return 0;
         case 'UNIVERSAL_QUANTIFIER':
         case 'EXISTENTIAL_QUANTIFIER':
-        case 'LOGICAL_NEG':
             return 1;
-        case 'LOGICAL_AND':
+        case 'LOGICAL_NEG':
             return 2;
-        case 'LOGICAL_OR':
+        case 'LOGICAL_AND':
             return 3;
-        case 'LOGICAL_IMPLICATION':
+        case 'LOGICAL_OR':
             return 4;
-        case 'LOGICAL_EQUIVALENT':
+        case 'LOGICAL_IMPLICATION':
             return 5;
-        default:
+        case 'LOGICAL_EQUIVALENT':
             return 6;
+        default:
+            return 7;
     }
 }
 

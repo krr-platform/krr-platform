@@ -23,25 +23,29 @@ export default function generalize(trees: TreeNode[]): TreeNode {
         throw new CalculatorError(`Generalizer requires between 2 and 5 trees, but received ${trees.length}.`);
     }
 
-    let variableCount = 0;
-    let constantCount = 0;
-    let functionCount = 0;
-    let predicateCount = 0;
+    const variables: Set<string> = new Set<string>();
+    const constants: Set<string> = new Set<string>();
+    const functions: Set<string> = new Set<string>();
+    const predicates: Set<string> = new Set<string>();
 
-    function generateIdentifier(type: string): string {
-        switch (type) {
+    function generateIdentifier(node: TreeNode): string {
+        switch (node.type) {
             case 'VARIABLE':
-                variableCount += 1;
-                return `{v${variableCount}}`;
+                if (variables.has(node.value!)) return `{v${variables.size}}`;
+                variables.add(node.value!);
+                return `{v${variables.size}}`;
             case 'CONSTANT':
-                constantCount += 1;
-                return `{C${constantCount}}`;
+                if (constants.has(node.value!)) return `{C${constants.size}}`;
+                constants.add(node.value!);
+                return `{C${constants.size}}`;
             case 'FUNCTION':
-                functionCount += 1;
-                return `{f${functionCount}}`;
+                if (functions.has(node.value!)) return `{f${functions.size}}`;
+                functions.add(node.value!);
+                return `{f${functions.size}}`;
             case 'PREDICATE':
-                predicateCount += 1;
-                return `{P${predicateCount}}`;
+                if (predicates.has(node.value!)) return `{P${predicates.size}}`;
+                predicates.add(node.value!);
+                return `{P${predicates.size}}`;
             default:
                 return '{operator}';
         }
@@ -68,7 +72,7 @@ export default function generalize(trees: TreeNode[]): TreeNode {
             }
 
             // Nodes have the same type but different values
-            const generalizedNode: TreeNode = { type: firstType, value: generateIdentifier(firstType) };
+            const generalizedNode: TreeNode = { type: firstType, value: generateIdentifier(nodes[0]) };
             if (nodes.some((node) => node.children && node.children.length > 0)) {
                 const generalizedChildren: TreeNode[] = [];
                 for (const childGroup of zipChildren(nodes)) {
@@ -82,7 +86,7 @@ export default function generalize(trees: TreeNode[]): TreeNode {
         // Nodes have different types, possibly due to being different operators
         if (nodes.some((node) => ['FUNCTION', 'VARIABLE', 'CONSTANT', 'PREDICATE'].includes(node.type))) {
             // If mixed types including FUNCTION, VARIABLE, CONSTANT, or PREDICATE exist, default to VARIABLE
-            const generalizedNode: TreeNode = { type: 'VARIABLE', value: generateIdentifier('VARIABLE') };
+            const generalizedNode: TreeNode = { type: 'VARIABLE', value: generateIdentifier(new TreeNode('VARIABLE')) };
             if (nodes.some((node) => node.children && node.children.length > 0)) {
                 const generalizedChildren: TreeNode[] = [];
                 for (const childGroup of zipChildren(nodes)) {
@@ -94,7 +98,7 @@ export default function generalize(trees: TreeNode[]): TreeNode {
         }
 
         // Default case for different types that do not include the specified types
-        const generalizedNode: TreeNode = { type: 'OPERATOR', value: generateIdentifier('OPERATOR') };
+        const generalizedNode: TreeNode = { type: 'OPERATOR', value: generateIdentifier(new TreeNode('OPERATOR')) };
         if (nodes.some((node) => node.children && node.children.length > 0)) {
             const generalizedChildren: TreeNode[] = [];
             for (const childGroup of zipChildren(nodes)) {

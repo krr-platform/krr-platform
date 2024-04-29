@@ -20,13 +20,11 @@ export default function computeAntiUnificationFOL(
     const generalization = generalize(trees);
     const degeneralization = generateString(generalization);
 
-    const result: AntiUnificationResult = {
+    return {
         data,
         tokens,
         trees,
         generalization,
         degeneralization,
     };
-
-    return (result);
 }

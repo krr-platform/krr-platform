@@ -551,13 +551,13 @@ export default function CalculatorPage() {
                                                                     case 'COMMA':
                                                                     case 'RIGHT_SQUARE':
                                                                     case 'LEFT_SQUARE':
-                                                                        // tokenComponent = (
-                                                                        //     <div key={uuidv4()}>
-                                                                        //         <p className="bg-gray-800 border-4 border-gray-900 w-full text-white p-2" key={uuidv4()}>
-                                                                        //             {token.type}
-                                                                        //         </p>
-                                                                        //     </div>
-                                                                        // );
+                                                                        tokenComponent = (
+                                                                            <div key={uuidv4()}>
+                                                                                <p className="bg-gray-800 border-4 border-gray-900 w-full text-white p-2" key={uuidv4()}>
+                                                                                    {token.type}
+                                                                                </p>
+                                                                            </div>
+                                                                        );
                                                                         break;
                                                                     default:
                                                                         tokenComponent = (
