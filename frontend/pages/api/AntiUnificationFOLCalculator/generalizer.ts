@@ -23,29 +23,29 @@ export default function generalize(trees: TreeNode[]): TreeNode {
         throw new CalculatorError(`Generalizer requires between 2 and 5 trees, but received ${trees.length}.`);
     }
 
-    const variables: Set<string> = new Set<string>();
-    const constants: Set<string> = new Set<string>();
-    const functions: Set<string> = new Set<string>();
-    const predicates: Set<string> = new Set<string>();
+    const variables: Map<string, number> = new Map<string, number>();
+    const constants: Map<string, number> = new Map<string, number>();
+    const functions: Map<string, number> = new Map<string, number>();
+    const predicates: Map<string, number> = new Map<string, number>();
 
     function generateIdentifier(node: TreeNode): string {
         switch (node.type) {
             case 'VARIABLE':
-                if (variables.has(node.value!)) return `{v${variables.size}}`;
-                variables.add(node.value!);
-                return `{v${variables.size}}`;
+                if (variables.has(node.value!)) return `{v${variables.get(node.value!)}}`;
+                variables.set(node.value!, variables.size + 1);
+                return `{v${variables.get(node.value!)}}`;
             case 'CONSTANT':
-                if (constants.has(node.value!)) return `{C${constants.size}}`;
-                constants.add(node.value!);
-                return `{C${constants.size}}`;
+                if (constants.has(node.value!)) return `{C${constants.get(node.value!)}}`;
+                constants.set(node.value!, constants.size + 1);
+                return `{C${constants.get(node.value!)}}`;
             case 'FUNCTION':
-                if (functions.has(node.value!)) return `{f${functions.size}}`;
-                functions.add(node.value!);
-                return `{f${functions.size}}`;
+                if (functions.has(node.value!)) return `{f${functions.get(node.value!)}}`;
+                functions.set(node.value!, functions.size + 1);
+                return `{f${functions.get(node.value!)}}`;
             case 'PREDICATE':
-                if (predicates.has(node.value!)) return `{P${predicates.size}}`;
-                predicates.add(node.value!);
-                return `{P${predicates.size}}`;
+                if (predicates.has(node.value!)) return `{P${predicates.get(node.value!)}}`;
+                predicates.set(node.value!, predicates.size + 1);
+                return `{P${predicates.get(node.value!)}}`;
             default:
                 return '{operator}';
         }
