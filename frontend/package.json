@@ -26,7 +26,6 @@
     "react": "^18",
     "react-dom": "^18",
     "react-p5": "^1.4.1",
-    "react-p5-wrapper": "^4.1.2",
     "react-toastify": "^10.0.5",
     "uuid": "^9.0.1"
   },

@@ -1,4 +1,5 @@
 import React from 'react';
+import ListGames from '@/app/components/dashboard/list-games';
 
 export default function CalculatorsPage() {
     return (
@@ -10,6 +11,7 @@ export default function CalculatorsPage() {
                 Fun AI-related games to reinforce learned material.
             </p>
             <hr className="border-b border-gray-200 my-6 rounded" />
+            <ListGames />
         </div>
     );
 }
