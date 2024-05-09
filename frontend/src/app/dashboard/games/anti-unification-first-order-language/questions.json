@@ -20,5 +20,101 @@
             "All of the previous"
         ],
         "correctChoiceIndex": 3
+    },
+    {
+        "id": 2,
+        "text": "Find the anti-unification of the following first-order language statements:",
+        "body": "∀ x f(x)\n∀ y f(y)",
+        "choices": [
+            "∀ x f(x)",
+            "∀ y f(y)",
+            "∀ v f(v)",
+            "∀ x f(y)"
+        ],
+        "correctChoiceIndex": 2
+    },
+    {
+        "id": 3,
+        "text": "Which of the following statements is valid and matches this tree:",
+        "imgURL": "/question4.png",
+        "choices": [
+            "x ∀ ∧ [f(x) g(x)]",
+            "∀ x [f(x) ∧ g(x)]",
+            "[∀ x f(x)] ∧ g(x)",
+            "∀ x ∧ [f(g(x), x)] "
+        ],
+        "correctChoiceIndex": 1
+    },
+    {
+        "id": 4,
+        "text": "Find the anti-unification of the following first-order language statements:",
+        "body": "∀ x f(x)\n∀ y f(y)",
+        "choices": [
+            "∀ x f(x)",
+            "∀ y f(y)",
+            "∀ v f(v)",
+            "∀ x f(y)"
+        ],
+        "correctChoiceIndex": 2
+    },
+    {
+        "id": 5,
+        "text": "Find the anti-unification of the following first-order language statements:",
+        "body": "∀ x f(x)\n∀ y f(y)",
+        "choices": [
+            "∀ x f(x)",
+            "∀ y f(y)",
+            "∀ v f(v)",
+            "∀ x f(y)"
+        ],
+        "correctChoiceIndex": 2
+    },
+    {
+        "id": 6,
+        "text": "Find the anti-unification of the following first-order language statements:",
+        "body": "∀ x f(x)\n∀ y f(y)",
+        "choices": [
+            "∀ x f(x)",
+            "∀ y f(y)",
+            "∀ v f(v)",
+            "∀ x f(y)"
+        ],
+        "correctChoiceIndex": 2
+    },
+    {
+        "id": 7,
+        "text": "Find the anti-unification of the following first-order language statements:",
+        "body": "∀ x f(x)\n∀ y f(y)",
+        "choices": [
+            "∀ x f(x)",
+            "∀ y f(y)",
+            "∀ v f(v)",
+            "∀ x f(y)"
+        ],
+        "correctChoiceIndex": 2
+    },
+    {
+        "id": 8,
+        "text": "Find the anti-unification of the following first-order language statements:",
+        "body": "∀ x f(x)\n∀ y f(y)",
+        "choices": [
+            "∀ x f(x)",
+            "∀ y f(y)",
+            "∀ v f(v)",
+            "∀ x f(y)"
+        ],
+        "correctChoiceIndex": 2
+    },
+    {
+        "id": 9,
+        "text": "Find the anti-unification of the following first-order language statements:",
+        "body": "∀ x f(x)\n∀ y f(y)",
+        "choices": [
+            "∀ x f(x)",
+            "∀ y f(y)",
+            "∀ v f(v)",
+            "∀ x f(y)"
+        ],
+        "correctChoiceIndex": 2
     }
 ]

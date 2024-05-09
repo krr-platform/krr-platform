@@ -1,20 +1,13 @@
+/* eslint-disable react/jsx-no-undef */
 /* eslint-disable react/function-component-definition */
 /* eslint-disable react/button-has-type */
-/* eslint-disable max-len */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
+import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/react/24/solid';
+import Image from 'next/image';
 import questions from './questions.json';
-
-// interface Question {
-//     id: number;
-//     text: string;
-//     choices: string[];
-//     correctChoiceIndex: number;
-//     body?: string;
-//     imageUrl?: string;
-// }
 
 export default function Game() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -23,6 +16,7 @@ export default function Game() {
     const [showIncorrect, setShowIncorrect] = useState(false);
 
     const currentQuestion = questions[currentQuestionIndex];
+    console.log(questions);
 
     const handleAnswer = (selectedChoiceIndex: number) => {
         if (selectedChoiceIndex === currentQuestion.correctChoiceIndex) {
@@ -31,34 +25,61 @@ export default function Game() {
             setTimeout(() => {
                 setShowCorrect(false);
                 setCurrentQuestionIndex(currentQuestionIndex + 1);
-            }, 1500);
+            }, 3000);
         } else {
             setShowIncorrect(true);
             setTimeout(() => {
                 setShowIncorrect(false);
                 setCurrentQuestionIndex(currentQuestionIndex + 1);
-            }, 1500);
+            }, 3000);
         }
     };
 
     return (
         <div className="px-4">
             <div className="rounded-lg w-full p-8 shadow-lg border-2">
-                <div className="text-right">
-                    Score:&nbsp;
-                    {score}
+                <div className="grid grid-cols-10 border-b-2 pb-2 mb-8">
+                    <div className="text-center col-span-9">
+                        <h1
+                            className="text-lg font-medium pt-2"
+                        >
+                            {currentQuestion.text}
+                        </h1>
+                        <p className="pt-2 text-lg whitespace-pre-line">
+                            {currentQuestion.body}
+                        </p>
+                        {currentQuestion.imgURL && (
+                            <Image
+                                width="500"
+                                height="300"
+                                src={`/question${currentQuestion.id + 1}.png`}
+                                alt=""
+                            />
+                        )}
+                    </div>
+                    <div className="text-right mb-4 col-span-1">
+                        <div>
+                            Question&nbsp;
+                            {currentQuestion.id + 1}
+                        </div>
+                        <div>
+                            Score:&nbsp;
+                            {score}
+                        </div>
+                    </div>
                 </div>
-                <h1 className="text-center font-medium text-lg pb-4 mb-8 border-b-2">
-                    {currentQuestion.text}
-                </h1>
                 <div className="grid grid-cols-2 gap-4">
                     {currentQuestion.choices.map((choice, index) => (
                         <button
                             className="border-2
                             hover:text-blue-500 hover:bg-blue-50
-                            hover:border-blue-500 text-bold
-                            font-medium p-2 rounded-lg
-                            transition-colors duration-300 max-w-x"
+                            hover:border-blue-500
+                            font-normal p-4 rounded-lg
+                            transition-colors duration-300 max-w-x
+                            disabled:cursor-default disabled:text-slate-500
+                            disabled:border-slate-200 disabled:hover:bg-slate-50
+                            disabled:hover:border-slate-200"
+                            disabled={showCorrect || showIncorrect}
                             key={index}
                             onClick={() => handleAnswer(index)}
                         >
@@ -66,8 +87,28 @@ export default function Game() {
                         </button>
                     ))}
                 </div>
-                {showCorrect && <div>Correct!</div>}
-                {showIncorrect && <div>Incorrect!</div>}
+                <div className="mt-4">
+                    {showCorrect && (
+                        <span
+                            className="flex items-center justify-center text-lg"
+                        >
+                            Correct!
+                            <HandThumbUpIcon
+                                className="w-10 h-10 text-green-500 ml-4"
+                            />
+                        </span>
+                    )}
+                    {showIncorrect && (
+                        <span
+                            className="flex items-center justify-center text-lg"
+                        >
+                            Incorrect!
+                            <HandThumbDownIcon
+                                className="w-10 h-10 text-red-500 ml-4"
+                            />
+                        </span>
+                    )}
+                </div>
             </div>
         </div>
     );
