@@ -35,8 +35,20 @@
     },
     {
         "id": 3,
+        "text": "Find the anti-unification of the following first-order language statements:",
+        "body": "fn1(x) ∧ fn2(x) → fn3(x)\nfn1(x) ∧ fn2(x) → fn91(x)",
+        "choices": [
+            "x",
+            "fn1(x) ∧ fn2(x)",
+            "fn1(x) ∧ fn2(x) → x",
+            "fn1(x) ∧ fn2(x) → fn(x)"
+        ],
+        "correctChoiceIndex": 3
+    },
+    {
+        "id": 4,
         "text": "Which of the following statements is valid and matches this tree:",
-        "imgURL": "/question4.png",
+        "imgURL": "/question5.png",
         "choices": [
             "x ∀ ∧ [f(x) g(x)]",
             "∀ x [f(x) ∧ g(x)]",
@@ -46,74 +58,64 @@
         "correctChoiceIndex": 1
     },
     {
-        "id": 4,
-        "text": "Find the anti-unification of the following first-order language statements:",
-        "body": "∀ x f(x)\n∀ y f(y)",
-        "choices": [
-            "∀ x f(x)",
-            "∀ y f(y)",
-            "∀ v f(v)",
-            "∀ x f(y)"
-        ],
-        "correctChoiceIndex": 2
-    },
-    {
         "id": 5,
-        "text": "Find the anti-unification of the following first-order language statements:",
-        "body": "∀ x f(x)\n∀ y f(y)",
+        "text": "Which of the following statements is valid and matches this tree:",
+        "imgURL": "/question6.png",
         "choices": [
-            "∀ x f(x)",
-            "∀ y f(y)",
-            "∀ v f(v)",
-            "∀ x f(y)"
+            "∃ x [f(x) ∧ g(x) → h(x)]",
+            "∃ x [f(x) ∨ g(x) → h(x)]",
+            "∃ x f(x) ∧ [g(x) → h(x)]",
+            "∃ x [f(x) ∧ g(x)] → h(x)"
         ],
-        "correctChoiceIndex": 2
+        "correctChoiceIndex": 0
     },
     {
         "id": 6,
-        "text": "Find the anti-unification of the following first-order language statements:",
-        "body": "∀ x f(x)\n∀ y f(y)",
+        "text": "Given the following statements, what should replace the question mark in the figure?",
+        "body": "P(A) ∧ L(B) ∨ G(C)\nP(A) ∧ L(B) → G(C)\nP(A) ∧ L(B) ↔ G(C)\n",
+        "imgURL": "/question7.png",
         "choices": [
-            "∀ x f(x)",
-            "∀ y f(y)",
-            "∀ v f(v)",
-            "∀ x f(y)"
+            "→",
+            "∨",
+            "↔",
+            "{operator}"
         ],
-        "correctChoiceIndex": 2
+        "correctChoiceIndex": 3
     },
     {
         "id": 7,
-        "text": "Find the anti-unification of the following first-order language statements:",
-        "body": "∀ x f(x)\n∀ y f(y)",
+        "text": "What should replace {v1} in the figure in each statement to retrieve the original ones?",
+        "imgURL": "/question8.png",
+        "body": "∃x [P(x)∧Q(x)]\n∃y [P(y)∧Q(y)]",
         "choices": [
-            "∀ x f(x)",
-            "∀ y f(y)",
-            "∀ v f(v)",
-            "∀ x f(y)"
+            "x, y",
+            "y, x",
+            "P, Q",
+            "Q, P"
         ],
-        "correctChoiceIndex": 2
+        "correctChoiceIndex": 0
     },
     {
         "id": 8,
-        "text": "Find the anti-unification of the following first-order language statements:",
-        "body": "∀ x f(x)\n∀ y f(y)",
+        "text": "What is the anti-unification of these statements?",
+        "body": "∀x ∃y ∀z P(x, y, z)\n∀z ∃y ∀x P(z, y, x)\n∀y ∃z ∀x P(y, z, x)",
         "choices": [
-            "∀ x f(x)",
-            "∀ y f(y)",
-            "∀ v f(v)",
-            "∀ x f(y)"
+            "∀{v1} ∃{v2} ∀{v3} P({v1}, {v2}, {v3})",
+            "∀x P(x)",
+            "∀x ∃y ∀z P(x, y, z)",
+            "No correct answer"
         ],
-        "correctChoiceIndex": 2
+        "correctChoiceIndex": 0
     },
     {
         "id": 9,
-        "text": "Find the anti-unification of the following first-order language statements:",
-        "body": "∀ x f(x)\n∀ y f(y)",
+        "text": "What is the anti-unification of these statements?",
+        "body": "∀x ∃y ∀z ∃w[P(x, y, z) ∧ Q(y, z, w) ∨ R(x, w)]\n∀a ∃b ∀c ∃d [P(a, b, c) ∧ Q(b, c, d) ∨ S(a, d)]",
         "choices": [
-            "∀ x f(x)",
-            "∀ y f(y)",
-            "∀ v f(v)",
-            "∀ x f(y)"
+            "∀{v4} ∃{v3} ∀{v2} ∃{v1} P({v1}, {v2}, {v3}) ∧ Q({v2}, {v3}, {v4}) ∨ R({v1}, {v4})",
+            "∀{v1} ∃{v1} ∀{v1} ∃{v1} P({v2}, {v2}, {v2}) ∧ Q({v2}, {v2}, {v2}) ∨ S({v1}, {v4})",
+            "∀{v1} ∃{v2} ∀{v3} ∃{v4} P({v1}, {v2}, {v3}) ∧ Q({v2}, {v3}, {v4}) ∨ {PREDICATE}({v1}, {v4})",
+            "∀x ∃y ∀z ∃w P(x, y, z) ∧ Q(y, z, w) ∨ S(x, w)"
         ],
         "correctChoiceIndex": 2
     }

@@ -16,7 +16,6 @@ export default function Game() {
     const [showIncorrect, setShowIncorrect] = useState(false);
 
     const currentQuestion = questions[currentQuestionIndex];
-    console.log(questions);
 
     const handleAnswer = (selectedChoiceIndex: number) => {
         if (selectedChoiceIndex === currentQuestion.correctChoiceIndex) {
@@ -38,7 +37,10 @@ export default function Game() {
     return (
         <div className="px-4">
             <div className="rounded-lg w-full p-8 shadow-lg border-2">
-                <div className="md:grid md:grid-cols-10 border-b-2 pb-2 mb-8 flex flex-col-reverse">
+                <div
+                    className="md:grid md:grid-cols-10 border-b-2
+                     pb-2 mb-8 flex flex-col-reverse"
+                >
                     <div className="text-center md:col-span-9 ">
                         <h1
                             className="text-lg font-medium pt-2"
@@ -50,6 +52,7 @@ export default function Game() {
                         </p>
                         {currentQuestion.imgURL && (
                             <Image
+                                className="mx-auto"
                                 width="500"
                                 height="300"
                                 src={`/question${currentQuestion.id + 1}.png`}
@@ -57,7 +60,10 @@ export default function Game() {
                             />
                         )}
                     </div>
-                    <div className="text-right mb-4 md:col-span-1 flex justify-between md:block">
+                    <div
+                        className="text-right mb-4 md:col-span-1
+                        flex justify-between md:block"
+                    >
                         <div>
                             Question&nbsp;
                             {currentQuestion.id + 1}
@@ -68,26 +74,7 @@ export default function Game() {
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                    {currentQuestion.choices.map((choice, index) => (
-                        <button
-                            className="border-2
-                            hover:text-blue-500 hover:bg-blue-50
-                            hover:border-blue-500 active:border-slate-200
-                            font-normal p-4 rounded-lg
-                            transition-colors duration-300 max-w-x
-                            disabled:cursor-default disabled:text-slate-500
-                            disabled:border-slate-200 disabled:hover:bg-slate-50
-                            disabled:hover:border-slate-200"
-                            disabled={showCorrect || showIncorrect}
-                            key={index}
-                            onClick={() => handleAnswer(index)}
-                        >
-                            {choice}
-                        </button>
-                    ))}
-                </div>
-                <div className="mt-4">
+                <div className="my-4">
                     {showCorrect && (
                         <span
                             className="flex items-center justify-center text-lg"
@@ -108,6 +95,25 @@ export default function Game() {
                             />
                         </span>
                     )}
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                    {currentQuestion.choices.map((choice, index) => (
+                        <button
+                            className="border-2
+                            hover:text-blue-500 hover:bg-blue-50
+                            hover:border-blue-500
+                            font-normal p-4 rounded-lg
+                            transition-colors duration-300 max-w-x
+                            disabled:cursor-default disabled:text-slate-500
+                            disabled:border-slate-200 disabled:hover:bg-slate-50
+                            disabled:hover:border-slate-200"
+                            disabled={showCorrect || showIncorrect}
+                            key={index}
+                            onClick={() => handleAnswer(index)}
+                        >
+                            {choice}
+                        </button>
+                    ))}
                 </div>
             </div>
         </div>
