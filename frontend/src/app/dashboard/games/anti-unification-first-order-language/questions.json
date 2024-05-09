@@ -1,0 +1,24 @@
+[
+    {
+        "id": 0,
+        "text": "What is Anti-Unification in first-order logic?",
+        "choices": [
+            "Finding the most general generalization common to two given expressions",
+            "Finding the most specific generalization common to two given expressions",
+            "Finding the least general generalization common to two given expressions",
+            "Finding the most specific generalization common to two unrelated expressions"
+        ],
+        "correctChoiceIndex": 2
+    },
+    {
+        "id": 1,
+        "text": "Anti-Unification is used in which area of computer science?",
+        "choices": [
+            "Natural language processing",
+            "Artificial intelligence",
+            "Theoretical computer science",
+            "All of the previous"
+        ],
+        "correctChoiceIndex": 3
+    }
+]
