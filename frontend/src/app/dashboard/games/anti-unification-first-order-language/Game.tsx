@@ -73,7 +73,7 @@ export default function Game() {
                         <button
                             className="border-2
                             hover:text-blue-500 hover:bg-blue-50
-                            hover:border-blue-500
+                            hover:border-blue-500 active:border-slate-200
                             font-normal p-4 rounded-lg
                             transition-colors duration-300 max-w-x
                             disabled:cursor-default disabled:text-slate-500
