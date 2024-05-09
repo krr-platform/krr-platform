@@ -38,8 +38,8 @@ export default function Game() {
     return (
         <div className="px-4">
             <div className="rounded-lg w-full p-8 shadow-lg border-2">
-                <div className="grid grid-cols-10 border-b-2 pb-2 mb-8">
-                    <div className="text-center col-span-9">
+                <div className="md:grid md:grid-cols-10 border-b-2 pb-2 mb-8 flex flex-col-reverse">
+                    <div className="text-center md:col-span-9 ">
                         <h1
                             className="text-lg font-medium pt-2"
                         >
@@ -57,7 +57,7 @@ export default function Game() {
                             />
                         )}
                     </div>
-                    <div className="text-right mb-4 col-span-1">
+                    <div className="text-right mb-4 md:col-span-1 flex justify-between md:block">
                         <div>
                             Question&nbsp;
                             {currentQuestion.id + 1}
