@@ -51,8 +51,8 @@ export default function Game() {
                                 <button
                                     className="border-2
                               hover:text-blue-500 hover:bg-blue-50
-                              hover:border-blue-500
-                                font-normal p-4 rounded-lg
+                              hover:border-blue-500 py-2 px-4
+                                font-normal rounded-lg
                                 transition-colors duration-300 max-w-x"
                                 >
                                     Other Games
