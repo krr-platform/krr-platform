@@ -23,13 +23,7 @@ export default function Footer() {
                             <a href="/about" className="hover:underline me-4 md:me-6">About</a>
                         </li>
                         <li>
-                            <a href="/licensing" className="hover:underline me-4 md:me-6">Licensing</a>
-                        </li>
-                        <li>
                             <a href="/contact" className="hover:underline me-4 md:me-6">Contact</a>
-                        </li>
-                        <li>
-                            <a href="/contribute" className="hover:underline me-4 md:me-6">Contribute</a>
                         </li>
                         <li>
                             <a href="https://github.com/krr-platform" target="_blank" className="hover:underline flex align-middle me-4 md:me-6">
@@ -37,12 +31,12 @@ export default function Footer() {
                                 <ArrowTopRightOnSquareIcon className="h-4 ml-1" />
                             </a>
                         </li>
-                        <li>
+                        {/* <li>
                             <a href="https://github.com/krr-platform" target="_blank" className="hover:underline flex align-middle">
                                 GitHub
                                 <ArrowTopRightOnSquareIcon className="h-4 ml-1" />
                             </a>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
                 <hr className="my-2 border-gray-200 sm:mx-auto lg:my-2" />

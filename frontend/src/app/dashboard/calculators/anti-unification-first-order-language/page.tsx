@@ -22,6 +22,7 @@ import computeAntiUnificationFOL from '../../../../../pages/api/AntiUnificationF
 import Token from '../../../../../lib/Token';
 import TreeNode from '../../../../../lib/TreeNode';
 import { getDisplayValue } from '../../../../../lib/CalculatorUtils';
+import CalculatorError from '../../../../../lib/CalculatorError';
 
 interface Result {
     data: string[];
@@ -138,28 +139,10 @@ export default function CalculatorPage() {
                 jsonInputs.push(value);
             }
             setResult(computeAntiUnificationFOL(jsonInputs));
-        } catch (error) { // Mark error as unknown type
-            // First check if error is an instance of AxiosError
-            // if (axios.isAxiosError(error)) {
-            // Check if error has a response with the data property and errors array
-
-            // if (error.response && error.response.data && 'errors' in error.response.data) {
-            //     // Safely access the errors array and message
-            //     const { errors } = error.response.data;
-            //     if (errors.length > 0 && errors[0].message) {
-            //         toast.error(errors[0].message);
-            //     } else {
-            //         toast.error('Error during computation.');
-            //     }
-            // } else {
-            //     // Handle cases where the error format is not as expected
-            //     toast.error('Unexpected error format from server.');
-            // }
-
-            // } else {
-            // Handle non-Axios errors (could be network issues, or other unexpected errors)
-            // toast.error('Network or unknown error occurred.');
-            // }
+        } catch (error) {
+            if (error instanceof CalculatorError) {
+                toast.error(error.message);
+            }
         }
     };
 
