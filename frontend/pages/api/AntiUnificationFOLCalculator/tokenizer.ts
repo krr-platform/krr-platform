@@ -21,7 +21,7 @@ export default function tokenize(inputStrings: string[]): Token[][] {
                 continue;
             } else if (kind === 'FUNCTION' || kind === 'PREDICATE') {
                 tokens.push(new Token(kind, value.slice(0, -1)));
-            } else if (kind === 'VARIABLE' || kind === 'CONSTANT') {
+            } else if (kind === 'VARIABLE' || kind === 'CONSTANT' || kind === 'MISMATCH') {
                 tokens.push(new Token(kind, value));
             } else if (kind) {
                 tokens.push(new Token(kind));
