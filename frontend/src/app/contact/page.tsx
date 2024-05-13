@@ -1,17 +1,11 @@
 'use client';
 
-/* eslint-disable import/no-named-as-default */
-/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable max-len */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from 'react';
 import { toast, Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from '@/app/components/header';
 import Footer from '@/app/components/footer';
-// import sendEmail from '../../../pages/api/send-email';
 
 export default function ContactPage() {
     const [email, setEmail] = useState('');
@@ -20,72 +14,136 @@ export default function ContactPage() {
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        const response = await fetch('/api/sendEmail', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, subject, message }),
-        });
-        if (response.ok) {
-            toast.success('Message sent successfully!');
+        if (email === '') {
+            toast.warning('Please include an email.');
+        } else if (!email.includes('@') || !email.includes('.')) {
+            toast.warning('Please use a valid email.');
+        } else if (subject === '') {
+            toast.warning('Please include a subject.');
+        } else if (message === '') {
+            toast.warning('Please include a message.');
         } else {
-            toast.error('Failed to send message. Please try again later.');
+            const response = await fetch('/api/sendEmail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, subject, message }),
+            });
+            if (response.ok) {
+                toast.success('Message sent successfully!');
+                setEmail('');
+                setSubject('');
+                setMessage('');
+            } else {
+                toast.error('Failed to send message. Please try again later.');
+            }
         }
     };
 
     return (
         <div className="flex h-screen flex-col md:flex-row  md:overflow-hidden">
             <Header />
-            <div className="flex flex-col flex-grow pt-6 md:overflow-y-auto mt-16 scroll-smooth">
+            <div className="flex flex-col flex-grow pt-6 md:overflow-y-auto
+             mt-16 scroll-smooth"
+            >
                 <div className="flex-1">
                     <section>
-                        <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
-                            <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center">Contact Us</h2>
-                            <p className="mb-8 lg:mb-16 font-light text-center sm:text-xl">
-                                Got a technical issue? Want to send feedback about a feature?
+                        <div className="py-8 lg:py-16 px-4 mx-auto
+                         max-w-screen-md"
+                        >
+                            <h2 className="mb-4 text-4xl tracking-tight
+                            font-extrabold text-center"
+                            >
+                                Contact Us
+                            </h2>
+                            <p className="mb-8 lg:mb-16 font-light
+                            text-center sm:text-xl"
+                            >
+                                Got a technical issue?
+                                Want to send feedback about a feature?
                                 <br />
                                 Want to contribute? Let us know.
                             </p>
-                            <form onSubmit={handleSubmit} className="rounded-lg w-full mx-auto p-8 mt-12 shadow-lg border-2">
+                            <form
+                                onSubmit={handleSubmit}
+                                className="rounded-lg w-full
+                                mx-auto p-8 mt-12 shadow-lg border-2"
+                            >
                                 <div>
-                                    <label htmlFor="email" className="block mb-2 text-sm font-medium">Your email</label>
+                                    <label
+                                        htmlFor="email"
+                                        className="mb-2 text-sm font-medium"
+                                    >
+                                        Your email
+                                    </label>
                                     <input
-                                        type="email"
+                                        type="text"
                                         id="email"
-                                        className="w-full focus:bg-blue-50 rounded-lg my-2 p-2 border-2 focus:border-blue-300
-                                        hover:border-blue-300 active:border-blue-300 transition-colors duration-300
+                                        className="w-full focus:bg-blue-50
+                                        rounded-lg my-2 p-2 border-2
+                                        focus:border-blue-300
+                                        hover:border-blue-300
+                                        active:border-blue-300
+                                        transition-colors duration-300
                                         focus:outline-none focus:ring-blue-500"
                                         placeholder="john_doe@email.com"
-                                        required
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={
+                                            (e) => setEmail(e.target.value)
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="subject" className="block mb-2 mt-4 text-sm font-medium">Subject</label>
+                                    <label
+                                        htmlFor="subject"
+                                        className="block mb-2 mt-4
+                                        text-sm font-medium"
+                                    >
+                                        Subject
+                                    </label>
                                     <input
                                         type="text"
                                         id="subject"
-                                        className="w-full focus:bg-blue-50 rounded-lg my-2 p-2 border-2 focus:border-blue-300
-                                        hover:border-blue-300 active:border-blue-300 transition-colors duration-300
-                                        focus:outline-none focus:ring-blue-500 bg-white"
-                                        placeholder="Let us know how we can help you"
-                                        required
+                                        className="w-full focus:bg-blue-50
+                                        rounded-lg my-2 p-2 border-2
+                                        focus:border-blue-300
+                                        hover:border-blue-300
+                                        active:border-blue-300
+                                        transition-colors duration-300
+                                        focus:ring-blue-500
+                                        focus:outline-none bg-white"
+                                        placeholder="Let us know how
+                                         we can help you"
                                         value={subject}
-                                        onChange={(e) => setSubject(e.target.value)}
+                                        onChange={
+                                            (e) => setSubject(e.target.value)
+                                        }
                                     />
                                 </div>
                                 <div className="sm:col-span-2">
-                                    <label htmlFor="message" className="block mb-2 mt-4 text-sm font-medium">Your message</label>
+                                    <label
+                                        htmlFor="message"
+                                        className="block mb-2 mt-4
+                                        text-sm font-medium"
+                                    >
+                                        Your message
+                                    </label>
                                     <textarea
                                         id="message"
-                                        className="block p-2 w-full text-sm focus:border-blue-300 focus:bg-blue-50hover:border-blue-300 active:border-blue-300 transition-colors duration-300
-                                        focus:outline-none focus:ring-blue-500 border-2 my-2 rounded-lg focus:bg-blue-50"
+                                        className="block p-2 w-full text-sm
+                                        focus:border-blue-300
+                                        hover:border-blue-300
+                                        active:border-blue-300
+                                        transition-colors duration-300
+                                        focus:outline-none
+                                        focus:ring-blue-500 border-2
+                                        my-2 rounded-lg focus:bg-blue-50"
                                         placeholder="Leave a comment..."
-                                        required
                                         value={message}
-                                        onChange={(e) => setMessage(e.target.value)}
+                                        onChange={
+                                            (e) => setMessage(e.target.value)
+                                        }
                                     />
                                 </div>
                                 <div className="flex justify-center">
