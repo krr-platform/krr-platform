@@ -7,9 +7,10 @@
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from 'react';
+import { toast, Slide, ToastContainer } from 'react-toastify';
 import Header from '@/app/components/header';
 import Footer from '@/app/components/footer';
-import sendEmail from '../../../pages/api/send-email';
+// import sendEmail from '../../../pages/api/send-email';
 
 export default function ContactPage() {
     const [email, setEmail] = useState('');
@@ -18,21 +19,24 @@ export default function ContactPage() {
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        try {
-            sendEmail(email, subject, message);
-            console.log('RECEIPIENT:', process.env.RECIPIENT_EMAIL);
-            console.log('PASSWORD:', process.env.PASSWORD);
-            console.log('NUMBER:', process.env.NUMBER);
-        } catch (error) {
-            console.error('Error sending message:', error);
-            alert('An unexpected error occurred. Please try again later.');
+        const response = await fetch('/api/sendEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, subject, message }),
+        });
+        if (response.ok) {
+            toast.success('Message sent successfully!');
+        } else {
+            toast.error('Failed to send message. Please try again later.');
         }
     };
 
     return (
         <div className="flex h-screen flex-col md:flex-row  md:overflow-hidden">
             <Header />
-            <div className="flex flex-col flex-grow pt-6 md:overflow-y-auto mt-16">
+            <div className="flex flex-col flex-grow pt-6 md:overflow-y-auto mt-16 scroll-smooth">
                 <div className="flex-1">
                     <section>
                         <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
@@ -49,7 +53,7 @@ export default function ContactPage() {
                                         type="email"
                                         id="email"
                                         className="w-full focus:bg-blue-50 rounded-lg my-2 p-2 border-2 focus:border-blue-300
-                                        focus:bg-blue-50hover:border-blue-300 active:border-blue-300 transition-colors duration-300
+                                        hover:border-blue-300 active:border-blue-300 transition-colors duration-300
                                         focus:outline-none focus:ring-blue-500"
                                         placeholder="john_doe@email.com"
                                         required
@@ -63,8 +67,8 @@ export default function ContactPage() {
                                         type="text"
                                         id="subject"
                                         className="w-full focus:bg-blue-50 rounded-lg my-2 p-2 border-2 focus:border-blue-300
-                                        focus:bg-blue-50hover:border-blue-300 active:border-blue-300 transition-colors duration-300
-                                        focus:outline-none focus:ring-blue-500"
+                                        hover:border-blue-300 active:border-blue-300 transition-colors duration-300
+                                        focus:outline-none focus:ring-blue-500 bg-white"
                                         placeholder="Let us know how we can help you"
                                         required
                                         value={subject}
@@ -99,8 +103,21 @@ export default function ContactPage() {
                             </form>
                         </div>
                     </section>
+                    <Footer />
                 </div>
-                <Footer />
+                <ToastContainer
+                    position="bottom-left"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                    transition={Slide}
+                />
             </div>
         </div>
     );
