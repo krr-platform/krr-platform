@@ -8,6 +8,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from 'react';
 import { toast, Slide, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from '@/app/components/header';
 import Footer from '@/app/components/footer';
 // import sendEmail from '../../../pages/api/send-email';
