@@ -28,6 +28,7 @@
     "react-dom": "^18",
     "react-p5": "^1.4.1",
     "react-toastify": "^10.0.5",
+    "typed.js": "^2.1.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
