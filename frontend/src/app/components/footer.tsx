@@ -19,15 +19,15 @@ export default function Footer() {
                         <span className="self-center text-l font-semibold whitespace-nowrap">KRR Platform</span>
                     </Link>
                     <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0">
-                        <li>
+                        {/* <li>
                             <a href="/about" className="hover:underline me-4 md:me-6">About</a>
-                        </li>
+                        </li> */}
                         <li>
                             <a href="/contact" className="hover:underline me-4 md:me-6">Contact Us</a>
                         </li>
                         <li>
                             <a href="https://github.com/krr-platform" target="_blank" className="hover:underline flex align-middle me-4 md:me-6">
-                                Documentation
+                                GitHub
                                 <ArrowTopRightOnSquareIcon className="h-4 ml-1" />
                             </a>
                         </li>

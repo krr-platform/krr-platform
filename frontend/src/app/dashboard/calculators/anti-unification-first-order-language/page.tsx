@@ -138,6 +138,7 @@ export default function CalculatorPage() {
                 }
                 jsonInputs.push(value);
             }
+            console.log(jsonInputs);
             setResult(computeAntiUnificationFOL(jsonInputs));
         } catch (error) {
             if (error instanceof CalculatorError) {
